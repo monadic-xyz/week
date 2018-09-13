@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 
-export default ({options}) => (
-  <Select>
-    {options.map( option => <option value={option}>{option}</option>)}
+export default ({options, onChange, value}) => (
+  <Select onChange={onChange} value={value}>
+    {options.map( option => <option key={option} value={option}>{option}</option>)}
   </Select>
 )
 

@@ -1,13 +1,8 @@
-import React from 'react';
+// import React from 'react';
 import styled from 'styled-components';
 import { colors } from '../utils';
 
-
-export default ({CTA, onClick}) => (
-  <Button onClick={onClick}>{CTA}</Button>
-)
-
-const Button = styled.button`
+export default styled.button`
   height: 36px;
   width: 160px;
   font-size: 16px;
@@ -27,6 +22,5 @@ const Button = styled.button`
     -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
 	  -moz-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
 	  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
-
   }
 `
