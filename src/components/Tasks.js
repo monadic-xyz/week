@@ -2,21 +2,10 @@ import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import { colors } from '../utils';
 import { Select, Button } from '../elements';
+import TaskListItem from './TaskListItem'
 
 import firebase from '../firestore'
 const db = firebase.firestore();
-
-
-const TaskListItem = ({desc, owner, done, archived}) => (
-  <TaskListItemContainer>
-    <TaskBtn done={done} onClick={this.updateTask}>{desc}</TaskBtn>
-    <MetaData>
-      <Owner>{owner}</Owner>
-      <ArchiveBtn>Archive</ArchiveBtn>
-    </MetaData>
-  </TaskListItemContainer>
-)
-
 
 export default class Tasks extends Component {
   constructor() {
@@ -43,18 +32,6 @@ export default class Tasks extends Component {
     });
   }
 
-  updateTask = () => {
-    console.log("clicked");
-    this.setState({
-      done: !this.state.done
-    });
-    const userRef = db.collection("tasks").update({
-      done: this.state.done,
-    });
-    this.setState({
-      done: !this.state.done
-    });
-  }
 
   addTask = e => {
     e.preventDefault();
@@ -78,7 +55,7 @@ export default class Tasks extends Component {
       <Fragment>
         <TaskTitle>This weeks' tasks</TaskTitle>
         <Tasklist>
-        {tasks && tasks.map(task => <TaskListItem id={task.id} {...task.data}/>)}
+        {tasks && tasks.map(task => <TaskListItem key={task.id} id={task.id} {...task.data}/>)}
         </Tasklist>
         <form onSubmit={this.addTask}>
           <input
@@ -115,59 +92,4 @@ const Tasklist = styled.ul`
 `
 
 
-
-
-
-
-const TaskListItemContainer = styled.li`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 24px;;
-  &:nth-child(odd) {
-    background-color: ${colors.almostWhite};
-  }
-`
-
-const MetaData = styled.div`
-  display: flex;
-  flex-direction: row;
-`
-
-const Date = styled.p`
-
-`
-const Owner = styled.p`
-  border: 1px solid RGBA(36, 243, 139, 1.00);
-  border-radius: 2px;
-  padding: 4px;
-  margin-left: 16px;
-  background-color: rgba(36, 243, 139, .25);
-`
-const ArchiveBtn = styled.button`
-  background: none;
-  color: ${colors.blue};
-  margin-left: 16px;
-  &:hover {
-    text-decoration: underline;
-  }
-`
-const TaskBtn = styled.button`
-  background: none;
-  &:hover {
-    text-decoration: line-through;
-  }
-  &:active {
-    color: ${colors.darkGrey};
-  }
-
-  ${({ done }) => done && `
-    color: ${colors.grey};
-    text-decoration: line-through;
-    &:hover {
-      color: ${colors.black}
-    }
-  `}
-`
 
