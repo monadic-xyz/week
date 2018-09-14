@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import { Select, Button } from '../elements';
+import { colors } from '../utils';
 import TaskListItem from './TaskListItem'
 
 import firebase from '../firestore'
@@ -56,6 +57,8 @@ export default class Tasks extends Component {
         <Tasklist>
         {tasks && tasks
           .filter(task => task.data.archived === false)
+          .sort((a, b) => a.data.desc.toLowerCase() > b.data.desc.toLowerCase())
+          .sort((a, b) => (a.data.done === b.data.done)? 0 : a.data.done ? 1 : -1)
           .map(task => <TaskListItem key={task.id} id={task.id} {...task.data}/>)}
         </Tasklist>
         <AddTaskForm onSubmit={this.addTask}>
@@ -110,15 +113,27 @@ const AddTaskForm = styled.form`
   display: flex;
   justify-content: space-between;
   margin-top: 24px;
+  border: 1px solid ${colors.lightGrey};
+  border-radius: 4px;
+  padding: 24px;
 `
 const LeftWrapper = styled.div`
   > span {
     padding: 0 12px;
   }
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding-right: 24px;
 `
 const TaskInput = styled.input`
   height: 36px;
   font-size: 16px;
   padding-left: 12px;
+  flex: 1;
+  border: 1px solid ${colors.lightGrey};
+  border-radius: 4px;
+  background-color: ${colors.almostWhite};
+  color: ${colors.darkGray}
 `
 
