@@ -1,9 +1,6 @@
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
-
-
-
 const config = {
   apiKey: "AIzaSyDeSjVLasCiUsKwC1TPWsTjKvhz-FSQkCY",
   authDomain: "week-planner-b8136.firebaseapp.com",
@@ -13,4 +10,9 @@ const config = {
   messagingSenderId: "319543449843"
 };
 firebase.initializeApp(config);
+
+const firestore = firebase.firestore();
+const settings = {/* your settings... */ timestampsInSnapshots: true};
+firestore.settings(settings);
+
 export default firebase;
