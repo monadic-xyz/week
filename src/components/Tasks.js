@@ -116,6 +116,7 @@ const AddTaskForm = styled.form`
   display: flex;
   justify-content: space-between;
   margin-top: 24px;
+  margin-bottom: 48px;
   border: 1px solid ${colors.lightGrey};
   border-radius: 4px;
   -webkit-border-radius: 4px;

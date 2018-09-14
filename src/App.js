@@ -49,9 +49,6 @@ export default class App extends Component {
         <Header employees={EMPLOYEES} />
         <Tasks employees={EMPLOYEES} tasks={this.state.tasks}/>
         {/* <HiringUpdate /> */}
-
-        {/* <Debugger {...this.state} /> */}
-
       </Container>
     );
   }
