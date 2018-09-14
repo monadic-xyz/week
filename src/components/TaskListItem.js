@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Timestamp from 'react-timestamp';
 import styled from 'styled-components';
 import { colors } from '../utils';
 
@@ -30,11 +31,12 @@ export default class TaskListItem extends Component {
   }
 
   render() {
-    const {id, desc, owner, done, archived} = this.props
+    const {id, desc, owner, done, archived, createdAt} = this.props
     return (
       <TaskListItemContainer>
         <TaskBtn done={done} onClick={() => this.updateTask(id, done)}>{desc}</TaskBtn>
         <MetaData>
+          {/* <Timestamp time={createdAt.seconds} /> */}
           <Owner>{owner}</Owner>
           <ArchiveBtn
             archived={archived}
@@ -64,11 +66,16 @@ const MetaData = styled.div`
 `
 
 const Owner = styled.p`
-  border: 1px solid RGBA(36, 243, 139, 1.00);
   border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  color: white;
   padding: 4px;
   margin-left: 16px;
-  background-color: rgba(36, 243, 139, .25);
+  background-color: ${colors.green};
+  opacity: .75;
+  font-weight: bold;
+  font-size: 14px;
 `
 const ArchiveBtn = styled.button`
   background: none;

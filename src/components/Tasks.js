@@ -16,6 +16,7 @@ export default class Tasks extends Component {
       owner: "",
       done: false,
       archived: false,
+      createdAt: ""
     };
   }
 
@@ -39,13 +40,15 @@ export default class Tasks extends Component {
       desc: this.state.desc,
       owner: this.state.owner,
       done: this.state.done,
-      archived: this.state.archived
+      archived: this.state.archived,
+      createdAt: new Date(),
     });
     this.setState({
       desc: "",
       owner: "",
       done: false,
       archived: false,
+      createdAt: ""
     });
   };
 
@@ -66,7 +69,7 @@ export default class Tasks extends Component {
             <TaskInput
               type="text"
               name="desc"
-              placeholder="Describe task"
+              placeholder="Add a new task here"
               onChange={this.updateInput}
               value={this.state.desc}
               />
@@ -115,6 +118,8 @@ const AddTaskForm = styled.form`
   margin-top: 24px;
   border: 1px solid ${colors.lightGrey};
   border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
   padding: 24px;
 `
 const LeftWrapper = styled.div`
@@ -133,6 +138,8 @@ const TaskInput = styled.input`
   flex: 1;
   border: 1px solid ${colors.lightGrey};
   border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
   background-color: ${colors.almostWhite};
   color: ${colors.darkGray}
 `
