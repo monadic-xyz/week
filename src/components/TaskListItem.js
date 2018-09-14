@@ -1,7 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import { colors } from '../utils';
-import { Select, Button } from '../elements';
 
 import firebase from '../firestore'
 const db = firebase.firestore();
@@ -22,7 +21,12 @@ export default class TaskListItem extends Component {
   updateTask = (id, done) => {
     var doneUpdate = {}
     doneUpdate = { done: !done};
-    const taskRef = db.collection("tasks").doc(`${id}`).update(doneUpdate)
+    db.collection("tasks").doc(`${id}`).update(doneUpdate)
+  }
+  archiveTask = (id, archived) => {
+    var archiveUpdate = {}
+    archiveUpdate = { archived: !archived};
+    db.collection("tasks").doc(`${id}`).update(archiveUpdate)
   }
 
   render() {
@@ -32,16 +36,13 @@ export default class TaskListItem extends Component {
         <TaskBtn done={done} onClick={() => this.updateTask(id, done)}>{desc}</TaskBtn>
         <MetaData>
           <Owner>{owner}</Owner>
-          <ArchiveBtn>Archive</ArchiveBtn>
+          <ArchiveBtn archived={archived} onClick={() => this.archiveTask(id, archived)}>Archive</ArchiveBtn>
         </MetaData>
       </TaskListItemContainer>
 
     )
   }
 }
-
-
-
 
 const TaskListItemContainer = styled.li`
   display: flex;
@@ -59,9 +60,6 @@ const MetaData = styled.div`
   flex-direction: row;
 `
 
-const Date = styled.p`
-
-`
 const Owner = styled.p`
   border: 1px solid RGBA(36, 243, 139, 1.00);
   border-radius: 2px;
@@ -79,6 +77,7 @@ const ArchiveBtn = styled.button`
 `
 const TaskBtn = styled.button`
   background: none;
+  text-align: left;
   &:hover {
     text-decoration: line-through;
   }
