@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { colors } from './utils';
-import Debugger from './components/Debugger';
+// import Debugger from './components/Debugger';
 import Header from './components/Header';
 import Tasks from './components/Tasks';
 
