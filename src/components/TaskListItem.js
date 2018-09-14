@@ -36,7 +36,10 @@ export default class TaskListItem extends Component {
         <TaskBtn done={done} onClick={() => this.updateTask(id, done)}>{desc}</TaskBtn>
         <MetaData>
           <Owner>{owner}</Owner>
-          <ArchiveBtn archived={archived} onClick={() => this.archiveTask(id, archived)}>Archive</ArchiveBtn>
+          <ArchiveBtn
+            archived={archived}
+            onClick={() => this.archiveTask(id, archived)}
+          >{archived ? "Unarchive" : "Archive"}</ArchiveBtn>
         </MetaData>
       </TaskListItemContainer>
 
