@@ -14,13 +14,27 @@ export default styled.button`
   -moz-border-radius: 4px;
   -webkit-transition-duration: 0.2s;
 	-moz-transition-duration: 0.2s;
-	transition-duration: 0.2s;
+  transition-duration: 0.2s;
+  ${({ disabled }) => disabled && `
+    background-color: ${colors.almostWhite};
+    color: ${colors.lightGrey};
+  `}
   &:hover {
     background-color: ${colors.darkBlue};
+    ${({ disabled }) => disabled && `
+      background-color: ${colors.almostWhite};
+      color: ${colors.lightGrey};
+    `}
   }
   &:active {
     -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
 	  -moz-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
-	  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
+    ${({ disabled }) => disabled && `
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    `}
   }
+
 `
