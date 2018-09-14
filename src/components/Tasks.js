@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
-import { colors } from '../utils';
 import { Select, Button } from '../elements';
 import TaskListItem from './TaskListItem'
 
@@ -35,7 +34,7 @@ export default class Tasks extends Component {
 
   addTask = e => {
     e.preventDefault();
-    const userRef = db.collection("tasks").add({
+    db.collection("tasks").add({
       desc: this.state.desc,
       owner: this.state.owner,
       done: this.state.done,
@@ -45,7 +44,7 @@ export default class Tasks extends Component {
       desc: "",
       owner: "",
       done: false,
-      archived: false
+      archived: false,
     });
   };
 
@@ -55,25 +54,40 @@ export default class Tasks extends Component {
       <Fragment>
         <TaskTitle>This weeks' tasks</TaskTitle>
         <Tasklist>
-        {tasks && tasks.map(task => <TaskListItem key={task.id} id={task.id} {...task.data}/>)}
+        {tasks && tasks
+          .filter(task => task.data.archived === false)
+          .map(task => <TaskListItem key={task.id} id={task.id} {...task.data}/>)}
         </Tasklist>
-        <form onSubmit={this.addTask}>
-          <input
-            type="text"
-            name="desc"
-            placeholder="Describe task"
-            onChange={this.updateInput}
-            value={this.state.desc}
-          />
-          <span> for </span>
-          <Select
-            options={employees}
-            name="owner"
-            onChange={this.updateSelect}
-            value={this.state.owner}
-          />
-          <Button type="submit">Add task</Button>
-        </form>
+        <AddTaskForm onSubmit={this.addTask}>
+          <LeftWrapper>
+            <TaskInput
+              type="text"
+              name="desc"
+              placeholder="Describe task"
+              onChange={this.updateInput}
+              value={this.state.desc}
+              />
+            <span>for</span>
+            <Select
+              options={employees}
+              name="owner"
+              onChange={this.updateSelect}
+              value={this.state.owner}
+              />
+          </LeftWrapper>
+          <Button
+            type="submit"
+            disabled={!this.state.owner || !this.state.desc}
+          >
+            Add task
+          </Button>
+        </AddTaskForm>
+        <TaskTitle>Archived Tasks</TaskTitle>
+        <Tasklist>
+        {tasks && tasks
+          .filter(task => task.data.archived === true)
+          .map(task => <TaskListItem key={task.id} id={task.id} {...task.data}/>)}
+        </Tasklist>
       </Fragment>
     )
   }
@@ -92,4 +106,19 @@ const Tasklist = styled.ul`
 `
 
 
+const AddTaskForm = styled.form`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+`
+const LeftWrapper = styled.div`
+  > span {
+    padding: 0 12px;
+  }
+`
+const TaskInput = styled.input`
+  height: 36px;
+  font-size: 16px;
+  padding-left: 12px;
+`
 
