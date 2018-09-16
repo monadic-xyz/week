@@ -31,7 +31,7 @@ export default class TaskListItem extends Component {
   }
 
   render() {
-    const {id, desc, owner, done, archived, createdAt} = this.props
+    const {id, desc, owner, done, archived} = this.props
     return (
       <TaskListItemContainer>
         <TaskBtn done={done} onClick={() => this.updateTask(id, done)}>{desc}</TaskBtn>
@@ -54,7 +54,7 @@ const TaskListItemContainer = styled.li`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 24px;;
+  padding: 16px;
   &:nth-child(odd) {
     background-color: ${colors.almostWhite};
   }
