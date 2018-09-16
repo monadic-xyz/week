@@ -6,7 +6,7 @@ import { colors } from '../utils';
 import firebase from '../firestore'
 const db = firebase.firestore();
 
-export default class Tasks extends Component {
+export default class AddTask extends Component {
   constructor() {
     super();
     this.colRef = db.collection('tasks');
@@ -52,6 +52,8 @@ export default class Tasks extends Component {
 
   render() {
     const {employees} = this.props;
+    console.log("empl: ",employees[0].name);
+
 
     return (
       <AddTaskForm onSubmit={this.addTask}>
@@ -65,7 +67,7 @@ export default class Tasks extends Component {
             />
           <span>for</span>
           <Select
-            options={employees}
+            options={employees.map( employee => employee = employee.name)}
             defaultText={"Assign"}
             name="owner"
             onChange={this.updateSelect}

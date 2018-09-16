@@ -9,36 +9,52 @@ import firebase from './firestore'
 
 // import HiringUpdate from './components/HiringUpdate';
 
-const EMPLOYEES = ["Alexis","Ange","Ele","Emma","James","Julian","Julien","Kim","Onur","Sam","Thomas","Tomás"];
-
 const db = firebase.firestore();
 
 export default class App extends Component {
   constructor() {
     super();
-    this.colRef = db.collection('tasks');
+    this.tasksRef = db.collection('tasks');
+    this.employeesRef = db.collection('employees');
     this.state = {
       tasks: [],
-      fetching: false
+      employees: [],
+      fetchingTasks: false,
+      fetchingEmployees: false,
     };
   }
 
   componentDidMount() {
-    this.unsubscribeCol = this.colRef.onSnapshot(this.onColUpdate);
-    this.setState({fetching: true});
+    this.unsubscribeTasks = this.tasksRef.onSnapshot(this.onTaskUpdate);
+    this.unsubscribeEmployees = this.employeesRef.onSnapshot(this.onEmployeeUpdate);
+    this.setState({
+      fetchingTasks: true,
+      unsubscribeEmployees: true,
+    });
   }
   componentWillUnmount() {
-    this.unsubscribeCol();
+    this.unsubscribeTasks();
+    this.unsubscribeEmployees();
   }
 
-  onColUpdate = (snapshot) => {
+  onTaskUpdate = (snapshot) => {
     const docs = snapshot.docs.map((docSnapshot) => ({
       id: docSnapshot.id,
       data: docSnapshot.data()
     }));
     this.setState({
       tasks: docs,
-      fetching: false
+      fetchingTasks: false
+    });
+  };
+  onEmployeeUpdate = (snapshot) => {
+    const docs = snapshot.docs.map((docSnapshot) => ({
+      id: docSnapshot.id,
+      name: docSnapshot.data().name
+    }));
+    this.setState({
+      employees: docs,
+      fetchingEmployees: false
     });
   };
 
@@ -46,8 +62,8 @@ export default class App extends Component {
   render() {
     return (
       <Container>
-        <Header employees={EMPLOYEES} />
-        <Tasks employees={EMPLOYEES} tasks={this.state.tasks}/>
+        <Header />
+        <Tasks employees={this.state.employees} tasks={this.state.tasks}/>
         {/* <HiringUpdate /> */}
       </Container>
     );
