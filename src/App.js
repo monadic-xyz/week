@@ -9,7 +9,7 @@ import firebase from './firestore'
 
 // import HiringUpdate from './components/HiringUpdate';
 
-const EMPLOYEES = ["Assign","Alexis","Ange","Ele","Emma","James","Julian","Julien","Kim","Onur","Sam","Thomas","Tomás"];
+const EMPLOYEES = ["Alexis","Ange","Ele","Emma","James","Julian","Julien","Kim","Onur","Sam","Thomas","Tomás"];
 
 const db = firebase.firestore();
 
