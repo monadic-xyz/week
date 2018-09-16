@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Select, Button } from '../elements';
+import { Select, Button, Title } from '../elements';
 import { colors } from '../utils';
 
 import firebase from '../firestore'
@@ -52,28 +52,31 @@ export default class EditTask extends Component {
     const {id, employees} = this.props;
     return (
       <EditTaskForm onSubmit={(e) => this.EditTask(e, id)}>
-        <LeftWrapper>
-          <TaskInput
-            type="text"
-            name="desc"
-            onChange={this.updateInput}
-            value={this.state.desc}
-            />
-          <span>for</span>
-          <Select
-            options={employees.map( employee => employee = employee.name)}
-            defaultText={"Assign"}
-            name="owner"
-            onChange={this.updateSelect}
-            value={this.state.owner}
-            />
-        </LeftWrapper>
-        <Button
-          type="submit"
-          disabled={!this.state.owner || !this.state.desc}
-        >
-          Save
-        </Button>
+       <Title>Edit task</Title>
+        <InputRow>
+          <LeftWrapper>
+            <TaskInput
+              type="text"
+              name="desc"
+              onChange={this.updateInput}
+              value={this.state.desc}
+              />
+            <span>for</span>
+            <Select
+              options={employees.map( employee => employee = employee.name)}
+              defaultText={"Assign"}
+              name="owner"
+              onChange={this.updateSelect}
+              value={this.state.owner}
+              />
+          </LeftWrapper>
+          <Button
+            type="submit"
+            disabled={!this.state.owner || !this.state.desc}
+            >
+            Save
+          </Button>
+        </InputRow>
       </EditTaskForm>
     )
   }
@@ -83,8 +86,13 @@ export default class EditTask extends Component {
 const EditTaskForm = styled.form`
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   background-color: white;
   max-width: 1060px;
+`
+const InputRow = styled.div`
+ display: flex;
+ flex-direction: row;
 `
 
 const LeftWrapper = styled.div`

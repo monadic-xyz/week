@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
-import { Button } from '../elements';
+import { Button, Title } from '../elements';
 import { colors, Modal, Toggle } from '../utils';
 import TaskListItem from './TaskListItem'
 import AddTask from './AddTask'
@@ -79,10 +79,7 @@ export default class Tasks extends Component {
 }
 
 
-const SectionTitle = styled.h2`
-  font-size: 18px;
-  font-weight: bold;
-  padding: 24px 0;
+const SectionTitle = styled(Title)`
   margin-top: 48px;
 `
 
@@ -93,7 +90,9 @@ const Tasklist = styled.ul`
 const FilterBox = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 24px 0;
+  padding: 24px 0;
+  position: sticky; top: 0;
+  background-color: white;
 `
 
 const SearchInput = styled.input`

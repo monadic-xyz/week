@@ -113,7 +113,7 @@ const Owner = styled.p`
   padding: 4px;
   margin-left: 16px;
   background-color: ${colors.green};
-  opacity: .75;
+  /* opacity: .75; */
   font-weight: bold;
   font-size: 14px;
 `

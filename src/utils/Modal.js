@@ -12,10 +12,10 @@ export default class Modal extends Component {
           <ModalWrapper>
             <ModalCard>
 
-            {/* <CloseButton onClick={toggle}>close</CloseButton> */}
-            <div>{children}</div>
-          </ModalCard>
-          <Background onClick={toggle}/>
+              {/* <CloseButton onClick={toggle}>close</CloseButton> */}
+              <div>{children}</div>
+            </ModalCard>
+            <Background onClick={toggle}/>
           </ModalWrapper>
         }
       </Portal>
@@ -24,7 +24,7 @@ export default class Modal extends Component {
 }
 
 const ModalWrapper = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -39,7 +39,7 @@ const ModalWrapper = styled.div`
 const ModalCard = styled.div`
   position: relative;
   background: white;
-  padding: 24px;
+  padding: 32px 24px;
   min-width: 480px;
   z-index: 10;
   -webkit-box-shadow: 0px 4px 16px rgba(51, 51, 51, 0.08);
