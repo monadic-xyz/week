@@ -16,11 +16,16 @@ export default class Tasks extends Component {
       owner: "",
       done: false,
       archived: false,
-      createdAt: ""
+      createdAt: "",
+      searchInput: ""
     };
   }
 
-
+  handleSearch = e => {
+    this.setState({
+      searchInput: e.target.value
+    });
+  }
   updateInput = e => {
     this.setState({
       desc: e.target.value
@@ -32,7 +37,6 @@ export default class Tasks extends Component {
       owner: e.target.value
     });
   }
-
 
   addTask = e => {
     e.preventDefault();
@@ -56,9 +60,35 @@ export default class Tasks extends Component {
     const {tasks, employees} = this.props
     return (
       <Fragment>
-        <TaskTitle>This weeks' tasks</TaskTitle>
+        <TaskHeader>
+          <TaskTitle>This weeks' tasks</TaskTitle>
+          <FilterBox
+            // onSubmit={this.addTask}
+          >
+            <LeftWrapper>
+              <SearchInput
+                type="text"
+                name="search"
+                placeholder="Search for tasks, labels or people"
+                onChange={this.handleSearch}
+                value={this.state.searchInput}
+                />
+            </LeftWrapper>
+            <Button
+              type="submit"
+              // disabled={!this.state.owner || !this.state.desc}
+            >
+              Add new task
+            </Button>
+          </FilterBox>
+        </TaskHeader>
         <Tasklist>
         {tasks && tasks
+          .filter(task => (
+            this.state.searchInput === ''
+            || task.data.desc.toLowerCase().includes(this.state.searchInput.toLowerCase())
+            || task.data.owner.toLowerCase().includes(this.state.searchInput.toLowerCase()
+          )))
           .filter(task => task.data.archived === false)
           .sort((a, b) => a.data.desc.toLowerCase() > b.data.desc.toLowerCase())
           .sort((a, b) => (a.data.done === b.data.done)? 0 : a.data.done ? 1 : -1)
@@ -76,6 +106,7 @@ export default class Tasks extends Component {
             <span>for</span>
             <Select
               options={employees}
+              defaultText={"Assign"}
               name="owner"
               onChange={this.updateSelect}
               value={this.state.owner}
@@ -90,9 +121,10 @@ export default class Tasks extends Component {
         </AddTaskForm>
         <TaskTitle>Archived Tasks</TaskTitle>
         <Tasklist>
-        {tasks && tasks
-          .filter(task => task.data.archived === true)
-          .map(task => <TaskListItem key={task.id} id={task.id} {...task.data}/>)}
+          {tasks && tasks
+            .filter(task => task.data.archived === true)
+            .map(task => <TaskListItem key={task.id} id={task.id} {...task.data}/>)
+          }
         </Tasklist>
       </Fragment>
     )
@@ -100,18 +132,36 @@ export default class Tasks extends Component {
 }
 
 
-
-
 const TaskTitle = styled.h2`
   font-size: 18px;
   font-weight: bold;
   padding: 24px 0;
 `
+
 const Tasklist = styled.ul`
   font-size: 16px;
 `
+const TaskHeader = styled.div`
+`
 
+const FilterBox = styled.form`
+  display: flex;
+  justify-content: space-between;
+  margin: 24px 0;
+`
 
+const SearchInput = styled.input`
+  font-size: 16px;
+  height: 36px;
+  padding-left: 16px;
+  flex: 1;
+  border: 1px solid ${colors.lightGrey};
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  background-color: ${colors.almostWhite};
+  color: ${colors.darkGray}
+`
 const AddTaskForm = styled.form`
   display: flex;
   justify-content: space-between;
@@ -123,6 +173,7 @@ const AddTaskForm = styled.form`
   -moz-border-radius: 4px;
   padding: 24px;
 `
+
 const LeftWrapper = styled.div`
   > span {
     padding: 0 12px;
