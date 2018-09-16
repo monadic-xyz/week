@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import Timestamp from 'react-timestamp';
+import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
-import { colors } from '../utils';
+import { colors, Toggle, Modal } from '../utils';
+import EditTask from './EditTask';
 
 import firebase from '../firestore'
 const db = firebase.firestore();
@@ -19,7 +19,7 @@ export default class TaskListItem extends Component {
     };
   }
 
-  updateTask = (id, done) => {
+  completeTask = (id, done) => {
     var doneUpdate = {}
     doneUpdate = { done: !done};
     db.collection("tasks").doc(`${id}`).update(doneUpdate)
@@ -29,19 +29,59 @@ export default class TaskListItem extends Component {
     archiveUpdate = { archived: !archived};
     db.collection("tasks").doc(`${id}`).update(archiveUpdate)
   }
+  deleteTask = (id) => {
+    db.collection("tasks").doc(`${id}`).delete()
+    .then(function() {
+      console.log("Document successfully deleted!");
+    }).catch(function(error) {
+        console.error("Error removing document: ", error);
+    });
+  }
 
   render() {
     const {id, desc, owner, done, archived} = this.props
     return (
       <TaskListItemContainer>
-        <TaskBtn done={done} onClick={() => this.updateTask(id, done)}>{desc}</TaskBtn>
+        <Task done={done} onClick={() => this.completeTask(id, done)}>{desc}</Task>
         <MetaData>
           {/* <Timestamp time={createdAt.seconds} /> */}
           <Owner>{owner}</Owner>
-          <ArchiveBtn
+            { !archived
+              ?
+              <Toggle>
+                {({on, toggle}) => (
+                  <Fragment>
+                    <ActionBtn
+                      archived={archived}
+                      onClick={toggle}
+                    >
+                      Edit
+                    </ActionBtn>
+                    <Modal on={on} toggle={toggle}>
+                      <EditTask
+                        desc={desc}
+                        owner={owner}
+                        id={id}
+                        employees={this.props.employees}
+                        toggle={toggle}
+                      />
+                    </Modal>
+                  </Fragment>
+                )}
+              </Toggle>
+              :
+              <ActionBtn
+                onClick={() => this.deleteTask(id)}
+              >
+                Delete
+              </ActionBtn>
+            }
+          <ActionBtn
             archived={archived}
             onClick={() => this.archiveTask(id, archived)}
-          >{archived ? "Unarchive" : "Archive"}</ArchiveBtn>
+          >
+            {archived ? "Unarchive" : "Archive"}
+          </ActionBtn>
         </MetaData>
       </TaskListItemContainer>
 
@@ -77,7 +117,7 @@ const Owner = styled.p`
   font-weight: bold;
   font-size: 14px;
 `
-const ArchiveBtn = styled.button`
+const ActionBtn = styled.button`
   background: none;
   color: ${colors.blue};
   margin-left: 16px;
@@ -85,7 +125,7 @@ const ArchiveBtn = styled.button`
     text-decoration: underline;
   }
 `
-const TaskBtn = styled.button`
+const Task = styled.button`
   background: none;
   text-align: left;
   &:hover {
