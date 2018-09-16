@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
-import { Select, Button } from '../elements';
+import { Button } from '../elements';
 import { colors, Modal, Toggle } from '../utils';
 import TaskListItem from './TaskListItem'
 import AddTask from './AddTask'
@@ -57,7 +57,7 @@ export default class Tasks extends Component {
           .filter(task => task.data.archived === false)
           .sort((a, b) => a.data.desc.toLowerCase() > b.data.desc.toLowerCase())
           .sort((a, b) => (a.data.done === b.data.done)? 0 : a.data.done ? 1 : -1)
-          .map(task => <TaskListItem key={task.id} id={task.id} {...task.data}/>)}
+          .map(task => <TaskListItem employees={this.props.employees} key={task.id} id={task.id} {...task.data}/>)}
         </Tasklist>
         <SectionTitle>Archived Tasks</SectionTitle>
         <Tasklist>

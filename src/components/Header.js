@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Select } from '../elements';
 
 Date.prototype.getWeek = function() {
   var date = new Date(this.getTime());
