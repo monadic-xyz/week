@@ -19,7 +19,7 @@ export default ({employees}) => (
     <WeekNumber>Week {today.getWeek()}</WeekNumber>
     <div>
       <span>Demo: </span>
-      <Select options={employees} />
+      <p>Show from label demo</p>
     </div>
   </Header>
 )
