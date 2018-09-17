@@ -109,39 +109,6 @@ const TaskListItemContainer = styled.li`
     background-color: ${colors.almostWhite};
   }
 `
-
-const MetaData = styled.div`
-  display: flex;
-  flex-direction: row;
-`
-
-const Owner = styled.p`
-  border-radius: 2px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  color: white;
-  padding: 4px;
-  margin-left: 16px;
-  background-color: ${colors.green};
-  /* opacity: .75; */
-  font-weight: bold;
-  font-size: 14px;
-`
-const Label = styled.span`
-  background-color: ${colors.yellow};
-  padding: 4px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-`
-const ActionBtn = styled.button`
-  background: none;
-  color: ${colors.blue};
-  margin-left: 16px;
-  &:hover {
-    text-decoration: underline;
-  }
-`
 const Task = styled.button`
   background: none;
   text-align: left;
@@ -160,4 +127,35 @@ const Task = styled.button`
     }
   `}
 `
-
+const MetaData = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+const Owner = styled.p`
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  color: white;
+  padding: 4px;
+  margin-left: 16px;
+  background-color: ${colors.green};
+  /* opacity: .75; */
+  font-weight: bold;
+  font-size: 14px;
+`
+const Label = styled.span`
+  background-color: ${colors.yellow};
+  display:inline-block;
+  padding: 4px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+`
+const ActionBtn = styled.button`
+  background: none;
+  color: ${colors.blue};
+  margin-left: 16px;
+  &:hover {
+    text-decoration: underline;
+  }
+`
