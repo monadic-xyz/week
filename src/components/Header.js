@@ -16,10 +16,10 @@ const today = new Date();
 export default ({employees}) => (
   <Header>
     <WeekNumber>Week {today.getWeek()}</WeekNumber>
-    <div>
+    {/* <div>
       <span>Demo: </span>
       <p>Show from label demo</p>
-    </div>
+    </div> */}
   </Header>
 )
 
