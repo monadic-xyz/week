@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
-import { colors, Toggle, Modal } from '../utils';
+import { colors, Toggle, Modal, labelParser } from '../utils';
 import EditTask from './EditTask';
 
 import firebase from '../firestore'
@@ -38,20 +38,12 @@ export default class TaskListItem extends Component {
     });
   }
 
-  parseLabels = (desc) => {
-    const parts = desc.split(/\[(.*?)\]/);
-    for (var i = 1; i < parts.length; i += 2) {
-      parts[i] = <Label key={i}>{parts[i]}</Label>
-    }
-    return <Fragment>{parts}</Fragment>;
-  }
-
   render() {
     const {id, desc, owner, done, archived} = this.props
     return (
       <TaskListItemContainer>
         <Task done={done} onClick={() => this.completeTask(id, done)}>
-          {this.parseLabels(desc)}
+          {desc && labelParser(desc)}
         </Task>
         <MetaData>
           {/* <Timestamp time={createdAt.seconds} /> */}
@@ -142,18 +134,6 @@ const Owner = styled.p`
   /* opacity: .75; */
   font-weight: bold;
   font-size: 14px;
-`
-const Label = styled.span`
-  background-color: ${colors.yellow};
-  display:inline-block;
-  padding: 4px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  color: ${colors.black};
-  font-family: monospace;
-  font-size: 14px;
-  margin-left: 4px;
 `
 const ActionBtn = styled.button`
   background: none;
