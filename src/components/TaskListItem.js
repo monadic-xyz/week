@@ -150,6 +150,10 @@ const Label = styled.span`
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
+  color: ${colors.black};
+  font-family: monospace;
+  font-size: 14px;
+  margin-left: 4px;
 `
 const ActionBtn = styled.button`
   background: none;
