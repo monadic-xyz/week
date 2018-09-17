@@ -38,11 +38,21 @@ export default class TaskListItem extends Component {
     });
   }
 
+  parseLabels = (desc) => {
+    const parts = desc.split(/\[(.*?)\]/);
+    for (var i = 1; i < parts.length; i += 2) {
+      parts[i] = <Label key={i}>{parts[i]}</Label>
+    }
+    return <Fragment>{parts}</Fragment>;
+  }
+
   render() {
     const {id, desc, owner, done, archived} = this.props
     return (
       <TaskListItemContainer>
-        <Task done={done} onClick={() => this.completeTask(id, done)}>{desc}</Task>
+        <Task done={done} onClick={() => this.completeTask(id, done)}>
+          {this.parseLabels(desc)}
+        </Task>
         <MetaData>
           {/* <Timestamp time={createdAt.seconds} /> */}
           <Owner>{owner}</Owner>
@@ -116,6 +126,13 @@ const Owner = styled.p`
   /* opacity: .75; */
   font-weight: bold;
   font-size: 14px;
+`
+const Label = styled.span`
+  background-color: ${colors.yellow};
+  padding: 4px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
 `
 const ActionBtn = styled.button`
   background: none;
