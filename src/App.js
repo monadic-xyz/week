@@ -60,10 +60,18 @@ export default class App extends Component {
 
 
   render() {
+    const { tasks, employees } = this.state;
+    const demo = tasks
+      .filter(task => task.data.desc.includes('[demo]'))
+      .map(task => ({
+        owner: task.data.owner,
+        desc: task.data.desc
+      }))[0];
+
     return (
       <Container>
-        <Header />
-        <Tasks employees={this.state.employees} tasks={this.state.tasks}/>
+        <Header {...demo}/>
+        <Tasks employees={employees} tasks={tasks}/>
         {/* <HiringUpdate /> */}
       </Container>
     );

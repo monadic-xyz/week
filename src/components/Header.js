@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import {colors} from '../utils';
 
 Date.prototype.getWeek = function() {
   var date = new Date(this.getTime());
@@ -13,13 +14,17 @@ Date.prototype.getWeek = function() {
 }
 const today = new Date();
 
-export default ({employees}) => (
+
+export default ({owner, desc}) => (
   <Header>
     <WeekNumber>Week {today.getWeek()}</WeekNumber>
-    {/* <div>
-      <span>Demo: </span>
-      <p>Show from label demo</p>
-    </div> */}
+    {
+      desc &&
+      <DemoContainer>
+        <DemoLabel>demo</DemoLabel>
+        <Topic>{desc.replace(/ *\[[^)]*\] */g, "")} by {owner}</Topic>
+      </DemoContainer>
+    }
   </Header>
 )
 
@@ -29,7 +34,28 @@ const Header = styled.div`
   justify-content: space-between;
   padding-bottom: 24px;
 `
+const DemoContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`
 const WeekNumber = styled.h2`
   font-size: 24px;
   font-weight: bold;
+`
+const DemoLabel = styled.h4`
+  background-color: ${colors.pink};
+  display: inline-block;
+  padding: 4px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  color: ${colors.white};
+  font-family: monospace;
+  font-size: 14px;
+  margin-right: 4px;
+`
+const Topic = styled.span`
+
 `
