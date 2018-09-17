@@ -62,7 +62,7 @@ export default class App extends Component {
   render() {
     const { tasks, employees } = this.state;
     const demo = tasks
-      .filter(task => task.data.desc.includes('[demo]'))
+      .filter(task => task.data.desc.includes('[demo]') && !task.data.archived && !task.data.done )
       .map(task => ({
         owner: task.data.owner,
         desc: task.data.desc
