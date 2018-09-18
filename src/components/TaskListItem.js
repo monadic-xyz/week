@@ -114,9 +114,13 @@ const Task = styled.button`
   text-align: left;
   &:hover {
     text-decoration: line-through;
+    cursor: pointer;
   }
   &:active {
     color: ${colors.darkGrey};
+  }
+  &:focus {
+    outline: 0;
   }
 
   ${({ done }) => done && `
