@@ -11,7 +11,7 @@ export default (desc) => {
     return <Fragment>{parts}</Fragment>;
   } else {
     const parts = desc.split(/\[(.*?)\]/);
-    for (var i = 1; i < parts.length; i += 2) {
+    for (i = 1; i < parts.length; i += 2) {
       parts[i] = <Label key={i}>{parts[i]}</Label>
     }
     return <Fragment>{parts}</Fragment>;
