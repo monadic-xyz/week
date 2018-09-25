@@ -66,6 +66,7 @@ export default class AddTask extends Component {
               placeholder="Add a new task here"
               onChange={this.updateInput}
               value={this.state.desc}
+              autoFocus
               />
             <span>for</span>
             <Select
@@ -83,6 +84,9 @@ export default class AddTask extends Component {
             Add task
           </Button>
         </InputRow>
+        <InfoText>
+          Anything you add between [ ] will be rendered as a label. Label it [demo] and it will show up in the top right corner as this weeks' demo.
+        </InfoText>
       </AddTaskForm>
     )
   }
@@ -121,6 +125,14 @@ const TaskInput = styled.input`
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   background-color: ${colors.almostWhite};
-  color: ${colors.darkGray}
+  color: ${colors.black}
+`
+
+const InfoText = styled.p`
+  margin-top: 24px;
+  font-size: 14px;
+  line-height: 125%;
+  color: ${colors.grey};
+  max-width: 540px;
 `
 
