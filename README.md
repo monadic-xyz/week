@@ -6,6 +6,11 @@
 2. run `npm start`
 3. go wild
 
+## Build & Deploy
+
+1. run `npm run build`
+2. run `surge build --domain https://fragile-engine.surge.sh/`
+
 ## Under the hood
 
 - Created with (create-react-app)[https://github.com/facebook/create-react-app]
