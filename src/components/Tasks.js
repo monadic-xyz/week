@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import { Button, Title } from '../elements';
-import { colors, Modal, Toggle } from '../utils';
+import { colors, Modal, Toggle, media } from '../utils';
 import TaskListItem from './TaskListItem'
 import AddTask from './AddTask'
 
@@ -35,11 +35,11 @@ export default class Tasks extends Component {
           <Toggle>
             {({on, toggle}) => (
               <Fragment>
-                <Button
+                <AddButton
                   onClick={toggle}
                 >
                   Add new task
-                </Button>
+                </AddButton>
                 <Modal on={on} toggle={toggle}>
                   <AddTask {...this.props} toggle={toggle}/>
                 </Modal>
@@ -48,16 +48,17 @@ export default class Tasks extends Component {
           </Toggle>
         </FilterBox>
         <Tasklist>
-        {tasks && tasks
-          .filter(task => (
-            this.state.searchInput === ''
-            || task.data.desc.toLowerCase().includes(this.state.searchInput.toLowerCase())
-            || task.data.owner.toLowerCase().includes(this.state.searchInput.toLowerCase()
-          )))
-          .filter(task => task.data.archived === false)
-          .sort((a, b) => a.data.desc.toLowerCase() > b.data.desc.toLowerCase())
-          .sort((a, b) => (a.data.done === b.data.done)? 0 : a.data.done ? 1 : -1)
-          .map(task => <TaskListItem employees={this.props.employees} key={task.id} id={task.id} {...task.data}/>)}
+          {tasks && tasks
+            .filter(task => (
+              this.state.searchInput === ''
+              || task.data.desc.toLowerCase().includes(this.state.searchInput.toLowerCase())
+              || task.data.owner.toLowerCase().includes(this.state.searchInput.toLowerCase()
+            )))
+            .filter(task => task.data.archived === false)
+            .sort((a, b) => a.data.desc.toLowerCase() > b.data.desc.toLowerCase())
+            .sort((a, b) => (a.data.done === b.data.done)? 0 : a.data.done ? 1 : -1)
+            .map(task => <TaskListItem employees={this.props.employees} key={task.id} id={task.id} {...task.data}/>)
+          }
         </Tasklist>
         <SectionTitle>Archived Tasks</SectionTitle>
         <Tasklist>
@@ -82,17 +83,37 @@ export default class Tasks extends Component {
 const SectionTitle = styled(Title)`
   margin-top: 48px;
 `
-
 const Tasklist = styled.ul`
-  font-size: 16px;
+  display: grid;
+  grid-column-gap: 24px;
+  grid-row-gap: 24px;
+  grid-template-columns: repeat(4, 1fr);
+  ${media.extraWide`
+    grid-template-columns: repeat(3, 1fr);
+  `}
+  ${media.wide`
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+  `}
+  ${media.tablet`
+    display: grid;
+    grid-column-gap: 24px;
+    grid-row-gap: 24px;
+    grid-template-columns: 1fr;
+  `}
 `
 
 const FilterBox = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 24px 0;
-  position: sticky; top: 0;
+  position: sticky;
+  top: 0;
   background-color: white;
+  ${media.tablet`
+    flex-direction: column;
+  `}
 `
 
 const SearchInput = styled.input`
@@ -106,5 +127,17 @@ const SearchInput = styled.input`
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   background-color: ${colors.almostWhite};
-  color: ${colors.darkGray}
+  color: ${colors.darkGrey};
+  max-width: 960px;
+  ${media.tablet`
+    margin-right: 0;
+    margin-bottom: 16px;
+    padding: 9px 16px;
+  `}
+`
+
+const AddButton = styled(Button)`
+  ${media.tablet`
+    width: 100%;
+  `}
 `

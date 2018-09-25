@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled, { injectGlobal } from 'styled-components';
-import { colors } from './utils';
+import { colors, media } from './utils';
 // import Debugger from './components/Debugger';
 import Header from './components/Header';
 import Tasks from './components/Tasks';
@@ -79,9 +79,14 @@ export default class App extends Component {
 }
 
 const Container = styled.div`
-  max-width: 1060px;
   margin: 0 auto;
   padding: 40px;
+  ${media.wide`
+    max-width: 1060px;
+  `}
+  ${media.tablet`
+    padding: 24px;
+  `}
 `
 
 injectGlobal`
