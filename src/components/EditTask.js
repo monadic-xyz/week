@@ -60,6 +60,7 @@ export default class EditTask extends Component {
               name="desc"
               onChange={this.updateInput}
               value={this.state.desc}
+              autoFocus
               />
             <span>for</span>
             <Select
