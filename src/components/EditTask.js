@@ -65,7 +65,6 @@ export default class EditTask extends Component {
             <span>for</span>
             <Select
               options={employees.map( employee => employee = employee.name)}
-              defaultText={"Assign"}
               name="owner"
               onChange={this.updateSelect}
               value={this.state.owner}

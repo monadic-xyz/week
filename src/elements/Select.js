@@ -4,7 +4,9 @@ import styled from 'styled-components';
 
 export default ({options, onChange, value, defaultText}) => (
   <Select onChange={onChange} value={value}>
-    <option key={defaultText} value={defaultText}>{defaultText}</option>
+    {
+      (defaultText && defaultText !== "") ? <option key={defaultText} value={defaultText}>{defaultText}</option> : null
+    }
     {options.map( option => <option key={option} value={option}>{option}</option>)}
   </Select>
 )
