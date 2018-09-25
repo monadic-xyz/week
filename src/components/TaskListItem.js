@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
-import { colors, Toggle, Modal, labelParser } from '../utils';
+import { colors, Toggle, Modal, labelParser, media } from '../utils';
 import EditTask from './EditTask';
 
 import firebase from '../firestore'
@@ -48,6 +48,7 @@ export default class TaskListItem extends Component {
         <MetaData>
           {/* <Timestamp time={createdAt.seconds} /> */}
           <Owner>{owner}</Owner>
+          <div>
             { !archived
               ?
               <Toggle>
@@ -78,12 +79,13 @@ export default class TaskListItem extends Component {
                 Delete
               </ActionBtn>
             }
-          <ActionBtn
-            archived={archived}
-            onClick={() => this.archiveTask(id, archived)}
-          >
-            {archived ? "Unarchive" : "Archive"}
-          </ActionBtn>
+            <ActionBtn
+              archived={archived}
+              onClick={() => this.archiveTask(id, archived)}
+            >
+              {archived ? "Unarchive" : "Archive"}
+            </ActionBtn>
+          </div>
         </MetaData>
       </TaskListItemContainer>
 
@@ -92,18 +94,45 @@ export default class TaskListItem extends Component {
 }
 
 const TaskListItemContainer = styled.li`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  &:nth-child(odd) {
-    background-color: ${colors.almostWhite};
-  }
+  padding: 24px;
+  border: 1px solid ${colors.lightGrey};
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  margin: 0;
+  ${media.wide`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+    margin: 0;
+    border: none;
+    border-radius: none;
+    -webkit-border-radius: none;
+    -moz-border-radius: none;
+    padding: 16px;
+    &:nth-child(odd) {
+      background-color: ${colors.almostWhite};
+    }
+  `}
+  ${media.tablet`
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    border: 1px solid ${colors.lightGrey};
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    &:nth-child(odd) {
+      background-color: white;
+    }
+  `}
 `
 const Task = styled.button`
   background: none;
   text-align: left;
+  line-height: 125%;
   &:hover {
     text-decoration: line-through;
     cursor: pointer;
@@ -126,6 +155,18 @@ const Task = styled.button`
 const MetaData = styled.div`
   display: flex;
   flex-direction: row;
+  margin-left: 0;
+  margin-top: 24px;
+  justify-content: space-between;
+  align-self: flex-end;
+  ${media.wide`
+    margin-left: 16px;
+    margin-top: 0;
+  `}
+  ${media.tablet`
+    margin-left: 0
+    margin-top: 24px;
+  `}
 `
 const Owner = styled.p`
   border-radius: 2px;
@@ -133,7 +174,6 @@ const Owner = styled.p`
   -moz-border-radius: 2px;
   color: white;
   padding: 4px;
-  margin-left: 16px;
   background-color: ${colors.green};
   /* opacity: .75; */
   font-weight: bold;
