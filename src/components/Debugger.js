@@ -1,5 +1,5 @@
 import React from 'react';
 
-export default props => (
-  <pre>{JSON.stringify(props, null, 2) }</pre>
-)
+const Debugger = props => <pre>{JSON.stringify(props, null, 2)}</pre>;
+
+export default Debugger;

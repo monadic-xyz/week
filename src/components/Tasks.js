@@ -2,25 +2,25 @@ import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import { Button, Title } from '../elements';
 import { colors, Modal, Toggle, media } from '../utils';
-import TaskListItem from './TaskListItem'
-import AddTask from './AddTask'
+import TaskListItem from './TaskListItem';
+import AddTask from './AddTask';
 
 export default class Tasks extends Component {
   constructor() {
     super();
     this.state = {
-      searchInput: ""
+      searchInput: '',
     };
   }
 
-  handleSearch = e => {
+  handleSearch(e) {
     this.setState({
-      searchInput: e.target.value
+      searchInput: e.target.value,
     });
   }
 
   render() {
-    const {tasks} = this.props
+    const { tasks } = this.props;
     return (
       <Fragment>
         <SectionTitle>This weeks' tasks</SectionTitle>
@@ -33,56 +33,53 @@ export default class Tasks extends Component {
             value={this.state.searchInput}
           />
           <Toggle>
-            {({on, toggle}) => (
+            {({ on, toggle }) => (
               <Fragment>
-                <AddButton
-                  onClick={toggle}
-                >
-                  Add new task
-                </AddButton>
+                <AddButton onClick={toggle}>Add new task</AddButton>
                 <Modal on={on} toggle={toggle}>
-                  <AddTask {...this.props} toggle={toggle}/>
+                  <AddTask {...this.props} toggle={toggle} />
                 </Modal>
               </Fragment>
             )}
           </Toggle>
         </FilterBox>
         <Tasklist>
-          {tasks && tasks
-            .filter(task => (
-              this.state.searchInput === ''
-              || task.data.desc.toLowerCase().includes(this.state.searchInput.toLowerCase())
-              || task.data.owner.toLowerCase().includes(this.state.searchInput.toLowerCase()
-            )))
-            .filter(task => task.data.archived === false)
-            .sort((a, b) => a.data.desc.toLowerCase() > b.data.desc.toLowerCase())
-            .sort((a, b) => (a.data.done === b.data.done)? 0 : a.data.done ? 1 : -1)
-            .map(task => <TaskListItem employees={this.props.employees} key={task.id} id={task.id} {...task.data}/>)
-          }
+          {tasks &&
+            tasks
+              .filter(
+                task =>
+                  this.state.searchInput === '' ||
+                  task.data.desc.toLowerCase().includes(this.state.searchInput.toLowerCase()) ||
+                  task.data.owner.toLowerCase().includes(this.state.searchInput.toLowerCase())
+              )
+              .filter(task => task.data.archived === false)
+              .sort((a, b) => a.data.desc.toLowerCase() > b.data.desc.toLowerCase())
+              .sort((a, b) => (a.data.done === b.data.done ? 0 : a.data.done ? 1 : -1))
+              .map(task => <TaskListItem employees={this.props.employees} key={task.id} id={task.id} {...task.data} />)}
         </Tasklist>
         <SectionTitle>Archived Tasks</SectionTitle>
         <Tasklist>
-          {tasks && tasks
-            .filter(task => (
-              this.state.searchInput === ''
-              || task.data.desc.toLowerCase().includes(this.state.searchInput.toLowerCase())
-              || task.data.owner.toLowerCase().includes(this.state.searchInput.toLowerCase()
-            )))
-            .filter(task => task.data.archived === true)
-            .sort((a, b) => a.data.desc.toLowerCase() > b.data.desc.toLowerCase())
-            .sort((a, b) => (a.data.done === b.data.done)? 0 : a.data.done ? 1 : -1)
-            .map(task => <TaskListItem key={task.id} id={task.id} {...task.data}/>)
-          }
+          {tasks &&
+            tasks
+              .filter(
+                task =>
+                  this.state.searchInput === '' ||
+                  task.data.desc.toLowerCase().includes(this.state.searchInput.toLowerCase()) ||
+                  task.data.owner.toLowerCase().includes(this.state.searchInput.toLowerCase())
+              )
+              .filter(task => task.data.archived === true)
+              .sort((a, b) => a.data.desc.toLowerCase() > b.data.desc.toLowerCase())
+              .sort((a, b) => (a.data.done === b.data.done ? 0 : a.data.done ? 1 : -1))
+              .map(task => <TaskListItem key={task.id} id={task.id} {...task.data} />)}
         </Tasklist>
       </Fragment>
-    )
+    );
   }
 }
 
-
 const SectionTitle = styled(Title)`
   margin-top: 48px;
-`
+`;
 const Tasklist = styled.ul`
   display: grid;
   grid-column-gap: 24px;
@@ -102,7 +99,7 @@ const Tasklist = styled.ul`
     grid-row-gap: 24px;
     grid-template-columns: 1fr;
   `}
-`
+`;
 
 const FilterBox = styled.div`
   display: flex;
@@ -113,8 +110,8 @@ const FilterBox = styled.div`
   background-color: white;
   ${media.tablet`
     flex-direction: column;
-  `}
-`
+  `};
+`;
 
 const SearchInput = styled.input`
   font-size: 16px;
@@ -133,11 +130,11 @@ const SearchInput = styled.input`
     margin-right: 0;
     margin-bottom: 16px;
     padding: 9px 16px;
-  `}
-`
+  `};
+`;
 
 const AddButton = styled(Button)`
   ${media.tablet`
     width: 100%;
-  `}
-`
+  `};
+`;
