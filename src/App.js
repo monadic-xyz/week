@@ -16,6 +16,7 @@ export default class App extends Component {
     super();
     this.tasksRef = db.collection('tasks');
     this.employeesRef = db.collection('employees');
+    this.employeesRef = this.employeesRef.where('name', '>', '').orderBy('name', 'asc');
     this.state = {
       tasks: [],
       employees: [],
