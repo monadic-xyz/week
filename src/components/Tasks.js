@@ -95,10 +95,11 @@ const Tasklist = styled.ul`
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
+    grid-row-gap: 0;
   `}
   ${media.tablet`
     display: grid;
-    grid-column-gap: 24px;
+    grid-column-gap: 0;
     grid-row-gap: 24px;
     grid-template-columns: 1fr;
   `}

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 import Portal from './Portal';
-import colors from './colors'
 
 export default class Modal extends Component {
   render() {
