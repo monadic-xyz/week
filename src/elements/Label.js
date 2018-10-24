@@ -11,5 +11,5 @@ export default styled.span`
   font-size: 14px;
   font-weight: ${props => props.bold ? 'bold' : 'normal'};
   margin: 0px 4px;
-  padding: 6px;
+  padding: ${props => props.bold ? '6px' : '3px 6px 5px 6px'};
 `
