@@ -6,11 +6,15 @@ import TaskListItem from './TaskListItem'
 import AddTask from './AddTask'
 
 export default class Tasks extends Component {
-  constructor() {
-    super();
-    this.state = {
-      searchInput: ""
-    };
+  state = {
+    searchInput: "",
+    openTasks: true,
+  };
+
+  toggleOpenTasks = () => {
+    this.setState(prevState => ({
+      openTasks: !prevState.openTasks
+    }));
   }
 
   handleSearch = e => {
@@ -27,10 +31,17 @@ export default class Tasks extends Component {
 
 
   render() {
-    const {tasks} = this.props
+    const {tasks} = this.props;
+    const {openTasks} = this.state;
     return (
       <Fragment>
-        <SectionTitle>This weeks&#39; tasks</SectionTitle>
+        <TitleContainer>
+          <Title>{openTasks ? 'This weeks\' tasks' : 'Archived Tasks'}</Title>
+          <Nav>
+            <Option on={openTasks} onClick={() => this.toggleOpenTasks()}>Open</Option>
+            <Option on={!openTasks} onClick={() => this.toggleOpenTasks()}>Archived</Option>
+          </Nav>
+        </TitleContainer>
         <FilterBox>
           <SearchInput
             type="search"
@@ -39,20 +50,22 @@ export default class Tasks extends Component {
             onChange={this.handleSearch}
             value={this.state.searchInput}
           />
-          <Toggle>
-            {({on, toggle}) => (
-              <Fragment>
-                <AddButton
-                  onClick={toggle}
-                >
-                  Add new task
-                </AddButton>
-                <Modal on={on} toggle={toggle}>
-                  <AddTask {...this.props} toggle={toggle}/>
-                </Modal>
-              </Fragment>
-            )}
-          </Toggle>
+          {openTasks &&
+            <Toggle>
+              {({on, toggle}) => (
+                <Fragment>
+                  <AddButton
+                    onClick={toggle}
+                  >
+                    Add new task
+                  </AddButton>
+                  <Modal on={on} toggle={toggle}>
+                    <AddTask {...this.props} toggle={toggle}/>
+                  </Modal>
+                </Fragment>
+              )}
+            </Toggle>
+          }
         </FilterBox>
         <Tasklist>
           {tasks && tasks
@@ -61,24 +74,10 @@ export default class Tasks extends Component {
               || task.data.desc.toLowerCase().includes(this.state.searchInput.toLowerCase())
               || task.data.owner.toLowerCase().includes(this.state.searchInput.toLowerCase()
             )))
-            .filter(task => task.data.archived === false)
+            .filter(task => task.data.archived === !openTasks)
             .sort((a, b) => a.data.desc.toLowerCase() > b.data.desc.toLowerCase())
             .sort((a, b) => (a.data.done === b.data.done)? 0 : a.data.done ? 1 : -1)
             .map(task => <TaskListItem onLabelPress={() => this.handleLabelSearch(task.data.owner)} employees={this.props.employees} key={task.id} id={task.id} {...task.data}/>)
-          }
-        </Tasklist>
-        <SectionTitle>Archived Tasks</SectionTitle>
-        <Tasklist>
-          {tasks && tasks
-            .filter(task => (
-              this.state.searchInput === ''
-              || task.data.desc.toLowerCase().includes(this.state.searchInput.toLowerCase())
-              || task.data.owner.toLowerCase().includes(this.state.searchInput.toLowerCase()
-            )))
-            .filter(task => task.data.archived === true)
-            .sort((a, b) => a.data.desc.toLowerCase() > b.data.desc.toLowerCase())
-            .sort((a, b) => (a.data.done === b.data.done)? 0 : a.data.done ? 1 : -1)
-            .map(task => <TaskListItem key={task.id} id={task.id} {...task.data}/>)
           }
         </Tasklist>
       </Fragment>
@@ -87,8 +86,45 @@ export default class Tasks extends Component {
 }
 
 
-const SectionTitle = styled(Title)`
-  margin-top: 48px;
+const TitleContainer = styled.div`
+  margin: 48px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`
+const Nav = styled.div`
+  border-radius: 4px;
+  border: 1px solid ${colors.lightGrey};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 36px;
+`
+const Option = styled.span`
+  &:hover {
+    cursor: pointer;
+  }
+  ${({ on }) =>
+    on &&
+    `
+    background-color: ${colors.blue};
+    color: white;
+    font-weight: bold;
+  `};
+  padding: 10px 16px;
+  display: flex;
+  align-self: center;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 4px;
+  &:nth-child(even) {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 0px;
+
 `
 const Tasklist = styled.ul`
   display: grid;
@@ -115,7 +151,7 @@ const Tasklist = styled.ul`
 const FilterBox = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 24px 0;
+  padding-bottom: 24px;
   position: sticky;
   top: 0;
   background-color: white;
