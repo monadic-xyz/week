@@ -30,7 +30,7 @@ export default class Tasks extends Component {
     const {tasks} = this.props
     return (
       <Fragment>
-        <SectionTitle>This weeks' tasks</SectionTitle>
+        <SectionTitle>This weeks&#39; tasks</SectionTitle>
         <FilterBox>
           <SearchInput
             type="search"
