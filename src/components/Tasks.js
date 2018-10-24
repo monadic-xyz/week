@@ -19,6 +19,13 @@ export default class Tasks extends Component {
     });
   }
 
+  handleLabelSearch = label => {
+    this.setState({
+      searchInput: label
+    });
+  }
+
+
   render() {
     const {tasks} = this.props
     return (
@@ -26,7 +33,7 @@ export default class Tasks extends Component {
         <SectionTitle>This weeks' tasks</SectionTitle>
         <FilterBox>
           <SearchInput
-            type="text"
+            type="search"
             name="search"
             placeholder="Search for tasks, labels or people"
             onChange={this.handleSearch}
@@ -57,7 +64,7 @@ export default class Tasks extends Component {
             .filter(task => task.data.archived === false)
             .sort((a, b) => a.data.desc.toLowerCase() > b.data.desc.toLowerCase())
             .sort((a, b) => (a.data.done === b.data.done)? 0 : a.data.done ? 1 : -1)
-            .map(task => <TaskListItem employees={this.props.employees} key={task.id} id={task.id} {...task.data}/>)
+            .map(task => <TaskListItem onLabelPress={() => this.handleLabelSearch(task.data.owner)} employees={this.props.employees} key={task.id} id={task.id} {...task.data}/>)
           }
         </Tasklist>
         <SectionTitle>Archived Tasks</SectionTitle>
