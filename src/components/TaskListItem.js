@@ -40,20 +40,20 @@ export default class TaskListItem extends Component {
   }
 
   render() {
-    const {id, desc, owner, done, archived} = this.props
+    const {id, desc, owner, done, archived, onLabelPress} = this.props
     return (
       <TaskListItemContainer>
         <Task done={done} onClick={() => this.completeTask(id, done)}>
           {desc && labelParser(desc)}
         </Task>
         <MetaData>
-          {/* <Timestamp time={createdAt.seconds} /> */}
-          <Label
+          <OwnerLabel
             backgroundColor={colors.lightGrey}
+            onClick={() => onLabelPress()}
             bold
             color={colors.black}>
             {owner}
-          </Label>
+          </OwnerLabel>
           <div>
             { !archived
               ?
@@ -185,5 +185,10 @@ const ActionBtn = styled.button`
   margin-left: 16px;
   &:hover {
     text-decoration: underline;
+  }
+`
+const OwnerLabel = styled(Label)`
+  &:hover {
+    cursor: pointer;
   }
 `
