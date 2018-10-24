@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
+import Label from '../elements/Label';
 import { colors, Toggle, Modal, labelParser, media } from '../utils';
 import EditTask from './EditTask';
 
@@ -47,7 +48,12 @@ export default class TaskListItem extends Component {
         </Task>
         <MetaData>
           {/* <Timestamp time={createdAt.seconds} /> */}
-          <Owner>{owner}</Owner>
+          <Label
+            backgroundColor={colors.lightGrey}
+            bold
+            color={colors.black}>
+            {owner}
+          </Label>
           <div>
             { !archived
               ?
@@ -130,13 +136,16 @@ const TaskListItemContainer = styled.li`
   `}
 `
 const Task = styled.button`
+  align-items: baseline;
   background: none;
+  display: flex;
   text-align: left;
-  line-height: 125%;
+
   &:hover {
     text-decoration: line-through;
     cursor: pointer;
   }
+
   &:active {
     color: ${colors.darkGrey};
   }
@@ -153,6 +162,7 @@ const Task = styled.button`
   `}
 `
 const MetaData = styled.div`
+  align-items: baseline;
   display: flex;
   flex-direction: row;
   margin-left: 0;
@@ -168,17 +178,7 @@ const MetaData = styled.div`
     margin-top: 24px;
   `}
 `
-const Owner = styled.p`
-  border-radius: 2px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  color: white;
-  padding: 4px;
-  background-color: ${colors.green};
-  /* opacity: .75; */
-  font-weight: bold;
-  font-size: 14px;
-`
+
 const ActionBtn = styled.button`
   background: none;
   color: ${colors.blue};
