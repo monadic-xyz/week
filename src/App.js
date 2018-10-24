@@ -91,6 +91,8 @@ const Container = styled.div`
 `
 
 injectGlobal`
+  @import url('https://fonts.googleapis.com/css?family=Inconsolata');
+
   /* reset.css */
   *,
   *:before,
