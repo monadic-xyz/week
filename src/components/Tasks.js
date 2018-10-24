@@ -87,7 +87,7 @@ export default class Tasks extends Component {
 
 
 const TitleContainer = styled.div`
-  margin: 48px 0;
+  margin: 48px 0 24px 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -124,7 +124,6 @@ const Option = styled.span`
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
     border-bottom-left-radius: 0px;
-
 `
 const Tasklist = styled.ul`
   display: grid;
@@ -151,7 +150,7 @@ const Tasklist = styled.ul`
 const FilterBox = styled.div`
   display: flex;
   justify-content: space-between;
-  padding-bottom: 24px;
+  padding: 24px 0;
   position: sticky;
   top: 0;
   background-color: white;
@@ -164,7 +163,6 @@ const SearchInput = styled.input`
   font-size: 16px;
   height: 36px;
   padding-left: 16px;
-  margin-right: 24px;
   flex: 1;
   border: 1px solid ${colors.lightGrey};
   border-radius: 4px;
@@ -181,6 +179,7 @@ const SearchInput = styled.input`
 `
 
 const AddButton = styled(Button)`
+  margin-left: 24px;
   ${media.tablet`
     width: 100%;
   `}
