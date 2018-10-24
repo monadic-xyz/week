@@ -7,9 +7,16 @@ export default styled.span`
   border-radius: 2px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
-  font-family: ${props => props.monospace ? 'Inconsolata, monospace' : 'sans-serif'};
+  font-family: sans-serif;
   font-size: 14px;
+  ${({ monospace }) =>
+    monospace &&
+    `
+    font-family: 'Inconsolata', monospace;
+    font-size: 16px;
+  `};
+
   font-weight: ${props => props.bold ? 'bold' : 'normal'};
   margin: 0px 4px;
-  padding: ${props => props.bold ? '6px' : '3px 6px 5px 6px'};
+  padding: ${props => props.bold ? '6px' : '3px 6px 4px 6px'};
 `
