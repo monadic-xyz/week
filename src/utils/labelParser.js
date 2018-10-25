@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import colors, { white, pink } from './colors';
 
 import Label from '../elements/Label';
@@ -13,7 +13,7 @@ export default desc => {
         </Label>
       );
     }
-    return <Fragment>{parts}</Fragment>;
+    return <>{parts}</>;
   }
 
   for (let i = 1; i < parts.length; i += 2) {
@@ -25,5 +25,5 @@ export default desc => {
       </Label>
     );
   }
-  return <Fragment>{parts}</Fragment>;
+  return <>{parts}</>;
 };

@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Select, Button } from '../elements';
 
 export default () => (
-  <Fragment>
+  <>
     <HiringTitle>Hiring Update</HiringTitle>
     <HiringList>
       <li>Person name + next step</li>
@@ -18,7 +18,7 @@ export default () => (
       <Select options={['reach out', 'interested', 'interviewing', 'Offer made', 'Pass']} />
       <Button CTA="Add person" />
     </form>
-  </Fragment>
+  </>
 );
 
 const HiringTitle = styled.h2`

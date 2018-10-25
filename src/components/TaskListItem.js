@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Label from '../elements/Label';
@@ -63,14 +63,14 @@ export default class TaskListItem extends Component {
             {!archived ? (
               <Toggle>
                 {({ on, toggle }) => (
-                  <Fragment>
+                  <>
                     <ActionBtn archived={archived} onClick={toggle}>
                       Edit
                     </ActionBtn>
                     <Modal on={on} toggle={toggle}>
                       <EditTask desc={desc} owner={owner} id={id} employees={employees} toggle={toggle} />
                     </Modal>
-                  </Fragment>
+                  </>
                 )}
               </Toggle>
             ) : (

@@ -45,7 +45,7 @@ export default class App extends Component {
     const { employees } = this.state;
 
     return (
-      <React.Fragment>
+      <>
         <Container>
           <TaskProvider db={firebase.firestore()}>
             <Header />
@@ -54,7 +54,7 @@ export default class App extends Component {
           {/* <HiringUpdate /> */}
         </Container>
         <GlobalStyle />
-      </React.Fragment>
+      </>
     );
   }
 }

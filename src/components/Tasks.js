@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import { TaskContext } from 'providers/TaskProvider';
 import { Button, Title, Nav } from 'elements';
@@ -45,7 +45,7 @@ export default class Tasks extends Component {
     return (
       <TaskContext.Consumer>
         {tasks => (
-          <Fragment>
+          <>
             <TitleContainer>
               <Title>{activeTab === 'Open' ? "This weeks' tasks" : 'Archived Tasks'}</Title>
               <Nav
@@ -68,12 +68,12 @@ export default class Tasks extends Component {
               {activeTab === 'Open' && (
                 <Toggle>
                   {({ on, toggle }) => (
-                    <Fragment>
+                    <>
                       <AddButton onClick={toggle}>Add new task</AddButton>
                       <Modal on={on} toggle={toggle}>
                         <AddTask {...this.props} toggle={toggle} />
                       </Modal>
-                    </Fragment>
+                    </>
                   )}
                 </Toggle>
               )}
@@ -93,7 +93,7 @@ export default class Tasks extends Component {
                   );
                 })}
             </Tasklist>
-          </Fragment>
+          </>
         )}
       </TaskContext.Consumer>
     );
