@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import styled, { injectGlobal } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { colors, media } from './utils';
+
 // import Debugger from './components/Debugger';
 import Header from './components/Header';
 import Tasks from './components/Tasks';
+import { TaskProvider } from './TaskContext';
 
-import firebase from './firestore'
+import firebase from './firestore';
 
 // import HiringUpdate from './components/HiringUpdate';
 
@@ -33,48 +35,52 @@ export default class App extends Component {
       unsubscribeEmployees: true,
     });
   }
+
   componentWillUnmount() {
     this.unsubscribeTasks();
     this.unsubscribeEmployees();
   }
 
-  onTaskUpdate = (snapshot) => {
-    const docs = snapshot.docs.map((docSnapshot) => ({
+  onTaskUpdate = snapshot => {
+    const docs = snapshot.docs.map(docSnapshot => ({
       id: docSnapshot.id,
-      data: docSnapshot.data()
+      data: docSnapshot.data(),
     }));
     this.setState({
       tasks: docs,
-      fetchingTasks: false
-    });
-  };
-  onEmployeeUpdate = (snapshot) => {
-    const docs = snapshot.docs.map((docSnapshot) => ({
-      id: docSnapshot.id,
-      name: docSnapshot.data().name
-    }));
-    this.setState({
-      employees: docs,
-      fetchingEmployees: false
+      fetchingTasks: false,
     });
   };
 
+  onEmployeeUpdate = snapshot => {
+    const docs = snapshot.docs.map(docSnapshot => ({
+      id: docSnapshot.id,
+      name: docSnapshot.data().name,
+    }));
+    this.setState({
+      employees: docs,
+      fetchingEmployees: false,
+    });
+  };
 
   render() {
     const { tasks, employees } = this.state;
     const demo = tasks
-      .filter(task => task.data.desc.includes('[demo]') && !task.data.archived && !task.data.done )
+      .filter(task => task.data.desc.includes('[demo]') && !task.data.archived && !task.data.done)
       .map(task => ({
         owner: task.data.owner,
-        desc: task.data.desc
+        desc: task.data.desc,
       }))[0];
 
     return (
-      <Container>
-        <Header {...demo}/>
-        <Tasks employees={employees} tasks={tasks}/>
-        {/* <HiringUpdate /> */}
-      </Container>
+      <React.Fragment>
+        <Container>
+          <Header {...demo} />
+          <Tasks employees={employees} tasks={tasks} />
+          {/* <HiringUpdate /> */}
+        </Container>
+        <GlobalStyle />
+      </React.Fragment>
     );
   }
 }
@@ -84,13 +90,12 @@ const Container = styled.div`
   padding: 40px;
   ${media.wide`
     max-width: 1060px;
-  `}
-  ${media.tablet`
+  `} ${media.tablet`
     padding: 24px;
-  `}
-`
+  `};
+`;
 
-injectGlobal`
+const GlobalStyle = createGlobalStyle`
   /* reset.css */
   *,
   *:before,
@@ -102,8 +107,8 @@ injectGlobal`
     margin: 0;
     padding: 0;
     border: 0;
+    font-family: inherit;
     font-size: 100%;
-    font: inherit;
     color: inherit;
     text-decoration: none;
     vertical-align: baseline;
@@ -138,4 +143,4 @@ injectGlobal`
     font-size: 16px;
     color: ${colors.black}
   }
-`
+`;
