@@ -145,8 +145,9 @@ const FilterBox = styled.div`
 const SearchInput = styled.input`
   font-size: 16px;
   height: 36px;
-  padding-left: 16px;
+  padding-left: 12px;
   flex: 1;
+  appearance: none;
   border: 1px solid ${colors.lightGrey};
   border-radius: 4px;
   background-color: ${colors.almostWhite};
