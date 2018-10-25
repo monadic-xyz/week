@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Button, Select, Title } from 'elements';
 import firebase from 'firestore';
-import { colors } from 'utils';
+import { colors, extractLabels } from 'utils';
 
 export default class TaskFrom extends Component {
   static defaultProps = {
@@ -49,7 +49,6 @@ export default class TaskFrom extends Component {
   }
 
   addTask = () => {
-    console.log(this);
     const { desc, owner } = this.state;
 
     this.collection.add({
@@ -58,6 +57,7 @@ export default class TaskFrom extends Component {
       done: false,
       archived: false,
       createdAt: new Date(),
+      labels: extractLabels(desc),
     });
   };
 
@@ -68,6 +68,7 @@ export default class TaskFrom extends Component {
     this.collection.doc(task.id).update({
       desc,
       owner,
+      labels: extractLabels(desc),
     });
   };
 

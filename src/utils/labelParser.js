@@ -1,7 +1,17 @@
 import React from 'react';
+import Label from 'elements/Label';
 import colors, { white, pink } from './colors';
 
-import Label from '../elements/Label';
+export const extractLabels = str => {
+  const matches = [];
+  const re = new RegExp(/\[(.*?)\]/gu);
+  while (true) {
+    const match = re.exec(str);
+    if (match === null) break;
+    matches.push(match[1]);
+  }
+  return matches;
+};
 
 export default desc => {
   const parts = desc.split(/\[(.*?)\]/);
