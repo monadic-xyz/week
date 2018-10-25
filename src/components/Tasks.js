@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
-import { Button, Title } from '../elements';
+import { Button, Title, Nav } from '../elements';
 import { colors, Modal, Toggle, media } from '../utils';
 import TaskListItem from './TaskListItem'
 import AddTask from './AddTask'
@@ -8,13 +8,15 @@ import AddTask from './AddTask'
 export default class Tasks extends Component {
   state = {
     searchInput: "",
-    openTasks: true,
+    activeTab: "Open",
   };
 
-  toggleOpenTasks = () => {
-    this.setState(prevState => ({
-      openTasks: !prevState.openTasks
-    }));
+  componentDidMount() {
+    console.log("cdm " + this.state.activeTab)
+  }
+
+  setActiveTab = (option) => {
+    this.setState({activeTab: option});
   }
 
   handleSearch = e => {
@@ -32,15 +34,18 @@ export default class Tasks extends Component {
 
   render() {
     const {tasks} = this.props;
-    const {openTasks} = this.state;
+    const {activeTab} = this.state;
+    const openTasks = tasks.filter(task => task.data.archived === false)
+    const archivedTasks = tasks.filter(task => task.data.archived === true)
     return (
       <Fragment>
         <TitleContainer>
-          <Title>{openTasks ? 'This weeks\' tasks' : 'Archived Tasks'}</Title>
-          <Nav>
-            <Option on={openTasks} onClick={() => this.toggleOpenTasks()}>Open</Option>
-            <Option on={!openTasks} onClick={() => this.toggleOpenTasks()}>Archived</Option>
-          </Nav>
+          <Title>{activeTab === "Open" ? 'This weeks\' tasks' : 'Archived Tasks'}</Title>
+          <Nav
+            onOptionClick={(option) => this.setActiveTab(option)}
+            options={['Open', 'Archived']}
+            activeOption={activeTab}
+          />
         </TitleContainer>
         <FilterBox>
           <SearchInput
@@ -50,7 +55,7 @@ export default class Tasks extends Component {
             onChange={this.handleSearch}
             value={this.state.searchInput}
           />
-          {openTasks &&
+          {activeTab === "Open" &&
             <Toggle>
               {({on, toggle}) => (
                 <Fragment>
@@ -68,16 +73,16 @@ export default class Tasks extends Component {
           }
         </FilterBox>
         <Tasklist>
-          {tasks && tasks
+          {tasks && (
+            (activeTab === "Open" ? openTasks : archivedTasks)
             .filter(task => (
               this.state.searchInput === ''
               || task.data.desc.toLowerCase().includes(this.state.searchInput.toLowerCase())
               || task.data.owner.toLowerCase().includes(this.state.searchInput.toLowerCase()
             )))
-            .filter(task => task.data.archived === !openTasks)
             .sort((a, b) => a.data.desc.toLowerCase() > b.data.desc.toLowerCase())
             .sort((a, b) => (a.data.done === b.data.done)? 0 : a.data.done ? 1 : -1)
-            .map(task => <TaskListItem onLabelPress={() => this.handleLabelSearch(task.data.owner)} employees={this.props.employees} key={task.id} id={task.id} {...task.data}/>)
+            .map(task => <TaskListItem onLabelPress={() => this.handleLabelSearch(task.data.owner)} employees={this.props.employees} key={task.id} id={task.id} {...task.data}/>))
           }
         </Tasklist>
       </Fragment>
@@ -93,38 +98,7 @@ const TitleContainer = styled.div`
   align-items: center;
   justify-content: space-between;
 `
-const Nav = styled.div`
-  border-radius: 4px;
-  border: 1px solid ${colors.lightGrey};
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 36px;
-`
-const Option = styled.span`
-  &:hover {
-    cursor: pointer;
-  }
-  ${({ on }) =>
-    on &&
-    `
-    background-color: ${colors.blue};
-    color: white;
-    font-weight: bold;
-  `};
-  padding: 10px 16px;
-  display: flex;
-  align-self: center;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-  border-bottom-left-radius: 4px;
-  &:nth-child(even) {
-    border-top-left-radius: 0px;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-bottom-left-radius: 0px;
-`
+
 const Tasklist = styled.ul`
   display: grid;
   grid-column-gap: 24px;
