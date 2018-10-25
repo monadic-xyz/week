@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import colors from '../utils/colors';
+import { white, yellow } from '../utils/colors';
 
 export default styled.span`
-  background-color: ${props => props.backgroundColor || colors.yellow};
-  color: ${props => props.color || colors.white};
+  background-color: ${props => props.backgroundColor || yellow};
+  color: ${props => props.color || white};
   border-radius: 2px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -16,7 +16,7 @@ export default styled.span`
     font-size: 16px;
   `};
 
-  font-weight: ${props => props.bold ? 'bold' : 'normal'};
+  font-weight: ${props => (props.bold ? 'bold' : 'normal')};
   margin: 0px 4px;
-  padding: ${props => props.bold ? '6px' : '3px 6px 4px 6px'};
-`
+  padding: ${props => (props.bold ? '6px' : '3px 6px 4px 6px')};
+`;

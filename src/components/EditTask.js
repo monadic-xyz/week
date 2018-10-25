@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Select, Button, Title } from '../elements';
 import { colors } from '../utils';
 
-import firebase from '../firestore'
+import firebase from '../firestore';
+
 const db = firebase.firestore();
 
 export default class EditTask extends Component {
+  static propTypes = {
+    desc: PropTypes.string.isRequired,
+    owner: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    employees: PropTypes.array.isRequired,
+    toggle: PropTypes.func.isRequired,
+  };
+
   constructor() {
     super();
     this.colRef = db.collection('tasks');
     this.state = {
-      desc: "",
-      owner: "",
+      desc: '',
+      owner: '',
     };
   }
 
@@ -20,68 +30,63 @@ export default class EditTask extends Component {
     this.setState({
       desc: this.props.desc,
       owner: this.props.owner,
-    })
+    });
   }
 
   updateInput = e => {
     this.setState({
-      desc: e.target.value
+      desc: e.target.value,
     });
-  }
+  };
 
   updateSelect = e => {
     this.setState({
-      owner: e.target.value
+      owner: e.target.value,
     });
-  }
+  };
 
   EditTask = (e, id) => {
+    const { desc, owner } = this.state;
+    const { toggle } = this.props;
     e.preventDefault();
-    db.collection("tasks").doc(`${id}`).update({
-      desc: this.state.desc,
-      owner: this.state.owner,
-    });
+    db.collection('tasks')
+      .doc(`${id}`)
+      .update({
+        desc,
+        owner,
+      });
     this.setState({
-      desc: "",
-      owner: "",
+      desc: '',
+      owner: '',
     });
-    this.props.toggle();
+    toggle();
   };
 
   render() {
-    const {id, employees} = this.props;
+    const { desc, owner } = this.state;
+    const { id, employees } = this.props;
     return (
-      <EditTaskForm onSubmit={(e) => this.EditTask(e, id)}>
-       <Title>Edit task</Title>
+      <EditTaskForm onSubmit={e => this.EditTask(e, id)}>
+        <Title>Edit task</Title>
         <InputRow>
           <LeftWrapper>
-            <TaskInput
-              type="text"
-              name="desc"
-              onChange={this.updateInput}
-              value={this.state.desc}
-              autoFocus
-              />
+            <TaskInput type="text" name="desc" onChange={this.updateInput} value={desc} autoFocus />
             <span>for</span>
             <Select
-              options={employees.map( employee => employee = employee.name)}
+              options={employees.map(employee => (employee = employee.name))}
               name="owner"
               onChange={this.updateSelect}
-              value={this.state.owner}
-              />
+              value={owner}
+            />
           </LeftWrapper>
-          <Button
-            type="submit"
-            disabled={!this.state.owner || !this.state.desc}
-            >
+          <Button type="submit" disabled={!owner || !desc}>
             Save
           </Button>
         </InputRow>
       </EditTaskForm>
-    )
+    );
   }
 }
-
 
 const EditTaskForm = styled.form`
   display: flex;
@@ -89,11 +94,11 @@ const EditTaskForm = styled.form`
   flex-direction: column;
   background-color: white;
   max-width: 1060px;
-`
+`;
 const InputRow = styled.div`
- display: flex;
- flex-direction: row;
-`
+  display: flex;
+  flex-direction: row;
+`;
 
 const LeftWrapper = styled.div`
   > span {
@@ -103,7 +108,7 @@ const LeftWrapper = styled.div`
   flex: 1;
   align-items: center;
   padding-right: 24px;
-`
+`;
 const TaskInput = styled.input`
   height: 36px;
   font-size: 16px;
@@ -115,6 +120,5 @@ const TaskInput = styled.input`
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   background-color: ${colors.almostWhite};
-  color: ${colors.darkGray}
-`
-
+  color: ${colors.darkGray};
+`;

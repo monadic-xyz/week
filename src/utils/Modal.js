@@ -1,24 +1,30 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Portal from './Portal';
 
 export default class Modal extends Component {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    toggle: PropTypes.func.isRequired,
+    on: PropTypes.bool.isRequired,
+  };
+
   render() {
     const { children, toggle, on } = this.props;
     return (
       <Portal>
-        {on &&
+        {on && (
           <ModalWrapper>
             <ModalCard>
-
               {/* <CloseButton onClick={toggle}>close</CloseButton> */}
               <div>{children}</div>
             </ModalCard>
-            <Background onClick={toggle}/>
+            <Background onClick={toggle} />
           </ModalWrapper>
-        }
+        )}
       </Portal>
-    )
+    );
   }
 }
 
@@ -31,7 +37,7 @@ const ModalWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 const ModalCard = styled.div`
   position: relative;
   background: white;
@@ -44,7 +50,7 @@ const ModalCard = styled.div`
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-`
+`;
 const Background = styled.div`
   position: absolute;
   top: 0;
@@ -52,5 +58,5 @@ const Background = styled.div`
   width: 100%;
   height: 100%;
   background: black;
-  opacity: .3;
-`
+  opacity: 0.3;
+`;

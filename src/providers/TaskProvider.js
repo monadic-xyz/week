@@ -34,7 +34,7 @@ export class TaskProvider extends Component {
     const { filters, orders } = this.state;
 
     this.setState({
-      unsubscribe: this.buildQuqery(filters, orders).onSnapshot(this.onUpdate),
+      unsubscribe: this.buildQuery(filters, orders).onSnapshot(this.onUpdate),
     });
   }
 
@@ -43,7 +43,7 @@ export class TaskProvider extends Component {
     unsubscribe();
   }
 
-  buildQuqery = (filters, orders) => {
+  buildQuery = (filters, orders) => {
     const { db } = this.state;
     let query = db.collection('tasks');
 
@@ -67,7 +67,7 @@ export class TaskProvider extends Component {
 
     this.setState({
       filters,
-      unsubscribe: this.buildQuqery(filters, orders).onSnapshot(this.onUpdate),
+      unsubscribe: this.buildQuery(filters, orders).onSnapshot(this.onUpdate),
     });
   };
 

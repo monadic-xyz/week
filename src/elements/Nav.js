@@ -1,21 +1,23 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { colors } from '../utils';
 
-const Nav = ({activeOption, options, onOptionClick}) => (
+const Nav = ({ activeOption, options, onOptionClick }) => (
   <NavContainer>
-    {options.map((option) => (
-      <Option
-        active={activeOption === option}
-        key={option.toLowerCase()}
-        onClick={() => onOptionClick(option)}
-      >
+    {options.map(option => (
+      <Option active={activeOption === option} key={option.toLowerCase()} onClick={() => onOptionClick(option)}>
         {option}
       </Option>
-      ))
-    }
+    ))}
   </NavContainer>
 );
+
+Nav.propTypes = {
+  activeOption: PropTypes.string.isRequired,
+  options: PropTypes.array.isRequired,
+  onOptionClick: PropTypes.func.isRequired,
+};
 
 export default Nav;
 
@@ -26,7 +28,7 @@ const NavContainer = styled.div`
   flex-direction: row;
   align-items: center;
   height: 36px;
-`
+`;
 const Option = styled.span`
   &:hover {
     cursor: pointer;
@@ -50,4 +52,4 @@ const Option = styled.span`
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
     border-bottom-left-radius: 0px;
-`
+`;
