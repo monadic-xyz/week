@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
+import { TaskProvider } from 'providers/TaskProvider';
 import { colors, media } from './utils';
 
 // import Debugger from './components/Debugger';
 import Header from './components/Header';
 import Tasks from './components/Tasks';
-import { TaskProvider } from './TaskContext';
 
 import firebase from './firestore';
 
@@ -16,41 +16,20 @@ const db = firebase.firestore();
 export default class App extends Component {
   constructor() {
     super();
-    this.tasksRef = db.collection('tasks');
     this.employeesRef = db.collection('employees');
     this.employeesRef = this.employeesRef.where('name', '>', '').orderBy('name', 'asc');
     this.state = {
-      tasks: [],
       employees: [],
-      fetchingTasks: false,
-      fetchingEmployees: false,
     };
   }
 
   componentDidMount() {
-    this.unsubscribeTasks = this.tasksRef.onSnapshot(this.onTaskUpdate);
     this.unsubscribeEmployees = this.employeesRef.onSnapshot(this.onEmployeeUpdate);
-    this.setState({
-      fetchingTasks: true,
-      unsubscribeEmployees: true,
-    });
   }
 
   componentWillUnmount() {
-    this.unsubscribeTasks();
     this.unsubscribeEmployees();
   }
-
-  onTaskUpdate = snapshot => {
-    const docs = snapshot.docs.map(docSnapshot => ({
-      id: docSnapshot.id,
-      data: docSnapshot.data(),
-    }));
-    this.setState({
-      tasks: docs,
-      fetchingTasks: false,
-    });
-  };
 
   onEmployeeUpdate = snapshot => {
     const docs = snapshot.docs.map(docSnapshot => ({
@@ -59,24 +38,19 @@ export default class App extends Component {
     }));
     this.setState({
       employees: docs,
-      fetchingEmployees: false,
     });
   };
 
   render() {
-    const { tasks, employees } = this.state;
-    const demo = tasks
-      .filter(task => task.data.desc.includes('[demo]') && !task.data.archived && !task.data.done)
-      .map(task => ({
-        owner: task.data.owner,
-        desc: task.data.desc,
-      }))[0];
+    const { employees } = this.state;
 
     return (
       <React.Fragment>
         <Container>
-          <Header {...demo} />
-          <Tasks employees={employees} tasks={tasks} />
+          <TaskProvider db={firebase.firestore()}>
+            <Header />
+            <Tasks employees={employees} />
+          </TaskProvider>
           {/* <HiringUpdate /> */}
         </Container>
         <GlobalStyle />

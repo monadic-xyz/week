@@ -1,95 +1,104 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
-import { Button, Title, Nav } from '../elements';
-import { colors, Modal, Toggle, media } from '../utils';
-import TaskListItem from './TaskListItem'
-import AddTask from './AddTask'
+import { TaskContext } from 'providers/TaskProvider';
+import { Button, Title, Nav } from 'elements';
+import { colors, Modal, Toggle, media } from 'utils';
+import AddTask from 'components/AddTask';
+import TaskListItem from 'components/TaskListItem';
 
 export default class Tasks extends Component {
   state = {
-    searchInput: "",
-    activeTab: "Open",
+    searchInput: '',
+    activeTab: 'Open',
   };
 
-  componentDidMount() {
-    console.log("cdm " + this.state.activeTab)
-  }
+  filterTasks = tasks =>
+    tasks.filter(task => {
+      const { searchInput } = this.state;
 
-  setActiveTab = (option) => {
-    this.setState({activeTab: option});
-  }
+      return (
+        searchInput === '' ||
+        task.data.desc.toLowerCase().includes(searchInput.toLowerCase()) ||
+        task.data.owner.toLowerCase().includes(searchInput.toLowerCase())
+      );
+    });
+
+  setActiveTab = option => {
+    this.setState({ activeTab: option });
+  };
 
   handleSearch = e => {
     this.setState({
-      searchInput: e.target.value
+      searchInput: e.target.value,
     });
-  }
+  };
 
   handleLabelSearch = label => {
     this.setState({
-      searchInput: label
+      searchInput: label,
     });
-  }
-
+  };
 
   render() {
-    const {tasks} = this.props;
-    const {activeTab} = this.state;
-    const openTasks = tasks.filter(task => task.data.archived === false)
-    const archivedTasks = tasks.filter(task => task.data.archived === true)
+    const { activeTab, searchInput } = this.state;
+
     return (
-      <Fragment>
-        <TitleContainer>
-          <Title>{activeTab === "Open" ? 'This weeks\' tasks' : 'Archived Tasks'}</Title>
-          <Nav
-            onOptionClick={(option) => this.setActiveTab(option)}
-            options={['Open', 'Archived']}
-            activeOption={activeTab}
-          />
-        </TitleContainer>
-        <FilterBox>
-          <SearchInput
-            type="search"
-            name="search"
-            placeholder="Search for tasks, labels or people"
-            onChange={this.handleSearch}
-            value={this.state.searchInput}
-          />
-          {activeTab === "Open" &&
-            <Toggle>
-              {({on, toggle}) => (
-                <Fragment>
-                  <AddButton
-                    onClick={toggle}
-                  >
-                    Add new task
-                  </AddButton>
-                  <Modal on={on} toggle={toggle}>
-                    <AddTask {...this.props} toggle={toggle}/>
-                  </Modal>
-                </Fragment>
+      <TaskContext.Consumer>
+        {tasks => (
+          <Fragment>
+            <TitleContainer>
+              <Title>{activeTab === 'Open' ? "This weeks' tasks" : 'Archived Tasks'}</Title>
+              <Nav
+                onOptionClick={option => {
+                  this.setActiveTab(option);
+                  tasks.changeFilters([['archived', '==', option === 'Archived']]);
+                }}
+                options={['Open', 'Archived']}
+                activeOption={activeTab}
+              />
+            </TitleContainer>
+            <FilterBox>
+              <SearchInput
+                type="search"
+                name="search"
+                placeholder="Search for tasks, labels or people"
+                onChange={this.handleSearch}
+                value={searchInput}
+              />
+              {activeTab === 'Open' && (
+                <Toggle>
+                  {({ on, toggle }) => (
+                    <Fragment>
+                      <AddButton onClick={toggle}>Add new task</AddButton>
+                      <Modal on={on} toggle={toggle}>
+                        <AddTask {...this.props} toggle={toggle} />
+                      </Modal>
+                    </Fragment>
+                  )}
+                </Toggle>
               )}
-            </Toggle>
-          }
-        </FilterBox>
-        <Tasklist>
-          {tasks && (
-            (activeTab === "Open" ? openTasks : archivedTasks)
-            .filter(task => (
-              this.state.searchInput === ''
-              || task.data.desc.toLowerCase().includes(this.state.searchInput.toLowerCase())
-              || task.data.owner.toLowerCase().includes(this.state.searchInput.toLowerCase()
-            )))
-            .sort((a, b) => a.data.desc.toLowerCase() > b.data.desc.toLowerCase())
-            .sort((a, b) => (a.data.done === b.data.done)? 0 : a.data.done ? 1 : -1)
-            .map(task => <TaskListItem onLabelPress={() => this.handleLabelSearch(task.data.owner)} employees={this.props.employees} key={task.id} id={task.id} {...task.data}/>))
-          }
-        </Tasklist>
-      </Fragment>
-    )
+            </FilterBox>
+            <Tasklist>
+              {tasks.tasks &&
+                this.filterTasks(tasks.tasks).map(task => {
+                  const { employees } = this.props;
+                  return (
+                    <TaskListItem
+                      onLabelPress={() => this.handleLabelSearch(task.data.owner)}
+                      employees={employees}
+                      key={task.id}
+                      id={task.id}
+                      {...task.data}
+                    />
+                  );
+                })}
+            </Tasklist>
+          </Fragment>
+        )}
+      </TaskContext.Consumer>
+    );
   }
 }
-
 
 const TitleContainer = styled.div`
   margin: 48px 0 24px 0;
@@ -97,7 +106,7 @@ const TitleContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-`
+`;
 
 const Tasklist = styled.ul`
   display: grid;
@@ -119,7 +128,7 @@ const Tasklist = styled.ul`
     grid-row-gap: 24px;
     grid-template-columns: 1fr;
   `}
-`
+`;
 
 const FilterBox = styled.div`
   display: flex;
@@ -130,8 +139,8 @@ const FilterBox = styled.div`
   background-color: white;
   ${media.tablet`
     flex-direction: column;
-  `}
-`
+  `};
+`;
 
 const SearchInput = styled.input`
   font-size: 16px;
@@ -149,12 +158,12 @@ const SearchInput = styled.input`
     margin-right: 0;
     margin-bottom: 16px;
     padding: 9px 16px;
-  `}
-`
+  `};
+`;
 
 const AddButton = styled(Button)`
   margin-left: 24px;
   ${media.tablet`
     width: 100%;
-  `}
-`
+  `};
+`;
