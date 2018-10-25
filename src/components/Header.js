@@ -3,16 +3,18 @@ import styled from 'styled-components';
 import { colors } from 'utils';
 import { TaskContext } from 'providers/TaskProvider';
 
-Date.prototype.getWeek = function() {
-  const date = new Date(this.getTime());
-  date.setHours(0, 0, 0, 0);
+const getWeek = date => {
+  const time = new Date(date.getTime());
+
+  time.setHours(0, 0, 0, 0);
   // Thursday in current week decides the year.
-  date.setDate(date.getDate() + 3 - ((date.getDay() + 6) % 7));
+  time.setDate(time.getDate() + 3 - ((time.getDay() + 6) % 7));
   // January 4 is always in week 1.
-  const week1 = new Date(date.getFullYear(), 0, 4);
-  // Adjust to Thursday in week 1 and count number of weeks from date to week1.
-  return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7);
+  const week1 = new Date(time.getFullYear(), 0, 4);
+  // Adjust to Thursday in week 1 and count number of weeks from time to week1.
+  return 1 + Math.round(((time.getTime() - week1.getTime()) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7);
 };
+
 const today = new Date();
 
 export default class Header extends Component {
@@ -43,7 +45,7 @@ export default class Header extends Component {
 
     return (
       <Container>
-        <WeekNumber>Week {today.getWeek()}</WeekNumber>
+        <WeekNumber>Week {getWeek(today)}</WeekNumber>
         {desc && (
           <DemoContainer>
             <DemoLabel>demo</DemoLabel>
@@ -77,8 +79,6 @@ const DemoLabel = styled.h4`
   background-color: ${colors.pink};
   display: inline-block;
   padding: 4px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
   border-radius: 2px;
   color: ${colors.white};
   font-family: monospace;

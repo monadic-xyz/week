@@ -1,4 +1,5 @@
-export default ({ col, amt }) => {
+export default ({ cols, amt }) => {
+  let col = cols;
   let usePound = false;
 
   if (col[0] === '#') {

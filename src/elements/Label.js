@@ -5,8 +5,6 @@ export default styled.span`
   background-color: ${props => props.backgroundColor || yellow};
   color: ${props => props.color || white};
   border-radius: 2px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
   font-family: sans-serif;
   font-size: 14px;
   ${({ monospace }) =>

@@ -90,8 +90,6 @@ const TaskListItemContainer = styled.li`
   padding: 24px;
   border: 1px solid ${colors.lightGrey};
   border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
   margin: 0;
   ${media.wide`
     display: flex;

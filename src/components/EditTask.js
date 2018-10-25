@@ -27,9 +27,11 @@ export default class EditTask extends Component {
   }
 
   componentDidMount() {
+    const { desc, owner } = this.props;
+
     this.setState({
-      desc: this.props.desc,
-      owner: this.props.owner,
+      desc,
+      owner,
     });
   }
 
@@ -73,7 +75,7 @@ export default class EditTask extends Component {
             <TaskInput type="text" name="desc" onChange={this.updateInput} value={desc} autoFocus />
             <span>for</span>
             <Select
-              options={employees.map(employee => (employee = employee.name))}
+              options={employees.map(employee => employee.name)}
               name="owner"
               onChange={this.updateSelect}
               value={owner}
@@ -117,8 +119,6 @@ const TaskInput = styled.input`
   min-width: 540px;
   border: 1px solid ${colors.lightGrey};
   border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
   background-color: ${colors.almostWhite};
   color: ${colors.darkGray};
 `;

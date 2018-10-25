@@ -44,11 +44,7 @@ const ModalCard = styled.div`
   padding: 32px 24px;
   min-width: 480px;
   z-index: 10;
-  -webkit-box-shadow: 0px 4px 16px rgba(51, 51, 51, 0.08);
-  -moz-box-shadow: 0px 4px 16px rgba(51, 51, 51, 0.08);
   box-shadow: 0px 4px 16px rgba(51, 51, 51, 0.08);
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
   border-radius: 4px;
 `;
 const Background = styled.div`

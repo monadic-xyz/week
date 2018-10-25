@@ -149,8 +149,6 @@ const SearchInput = styled.input`
   flex: 1;
   border: 1px solid ${colors.lightGrey};
   border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
   background-color: ${colors.almostWhite};
   color: ${colors.darkGrey};
   max-width: 960px;

@@ -10,8 +10,8 @@ const db = firebase.firestore();
 
 export default class AddTask extends Component {
   static propTypes = {
-    toggle: PropTypes.func.isRequired,
     employees: PropTypes.array.isRequired,
+    toggle: PropTypes.func.isRequired,
   };
 
   constructor() {
@@ -22,7 +22,6 @@ export default class AddTask extends Component {
       owner: '',
       done: false,
       archived: false,
-      createdAt: '',
     };
   }
 
@@ -39,9 +38,11 @@ export default class AddTask extends Component {
   };
 
   addTask = e => {
-    const { toggle } = this.props;
-    const { desc, owner, done, archived } = this.state;
     e.preventDefault();
+
+    const { archived, desc, done, owner } = this.state;
+    const { toggle } = this.props;
+
     db.collection('tasks').add({
       desc,
       owner,
@@ -54,7 +55,6 @@ export default class AddTask extends Component {
       owner: '',
       done: false,
       archived: false,
-      createdAt: '',
     });
     toggle();
   };
@@ -62,7 +62,6 @@ export default class AddTask extends Component {
   render() {
     const { employees } = this.props;
     const { desc, owner } = this.state;
-    console.log('empl: ', employees[0].name);
 
     return (
       <AddTaskForm onSubmit={this.addTask}>
@@ -79,13 +78,13 @@ export default class AddTask extends Component {
             />
             <span>for</span>
             <Select
-              options={employees.map(employee => (employee = employee.name))}
+              options={employees.map(employee => employee.name)}
               name="owner"
               onChange={this.updateSelect}
               value={owner}
             />
           </LeftWrapper>
-          <Button type="submit" disabled={!owner || !desc}>
+          <Button type="submit" disabled={!desc || !owner}>
             Add task
           </Button>
         </InputRow>
@@ -127,8 +126,6 @@ const TaskInput = styled.input`
   min-width: 540px;
   border: 1px solid ${colors.lightGrey};
   border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
   background-color: ${colors.almostWhite};
   color: ${colors.black};
 `;

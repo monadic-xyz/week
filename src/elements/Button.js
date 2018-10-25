@@ -10,10 +10,6 @@ export default styled.button`
   background-color: ${colors.blue};
   color: ${colors.white};
   border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-transition-duration: 0.2s;
-  -moz-transition-duration: 0.2s;
   transition-duration: 0.2s;
   ${({ disabled }) =>
     disabled &&
@@ -31,7 +27,6 @@ export default styled.button`
   }
   &:active {
     -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
     box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
     ${({ disabled }) =>
       disabled &&

@@ -6,16 +6,16 @@ export default () => (
   <Fragment>
     <HiringTitle>Hiring Update</HiringTitle>
     <HiringList>
-      <HiringListItem>Person name + next step</HiringListItem>
-      <HiringListItem>Person name + next step</HiringListItem>
-      <HiringListItem>Person name + next step</HiringListItem>
-      <HiringListItem>Person name + next step</HiringListItem>
-      <HiringListItem>Person name + next step</HiringListItem>
+      <li>Person name + next step</li>
+      <li>Person name + next step</li>
+      <li>Person name + next step</li>
+      <li>Person name + next step</li>
+      <li>Person name + next step</li>
     </HiringList>
     <form>
       <input type="text" name="email" placeholder="New person" />
       <span> process: </span>
-      <Select options={['reach out','interested', 'interviewing', 'Offer made', 'Pass']} />
+      <Select options={['reach out', 'interested', 'interviewing', 'Offer made', 'Pass']} />
       <Button CTA="Add person" />
     </form>
   </Fragment>
@@ -29,4 +29,3 @@ const HiringTitle = styled.h2`
 const HiringList = styled.ul`
   font-size: 16px;
 `;
-const HiringListItem = styled.li``;

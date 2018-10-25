@@ -16,12 +16,14 @@ export const red = '#BF456B';
 export const pink = '#E074CB';
 
 const padZero = (str, len) => {
-  len = len || 2;
-  const zeros = new Array(len).join('0');
-  return (zeros + str).slice(-len);
+  const l = len || 2;
+  const zeros = new Array(l).join('0');
+  return (zeros + str).slice(-l);
 };
 
-const invertColor = (hex, bw) => {
+const invertColor = (hexCode, bw) => {
+  let hex = hexCode;
+
   if (hex.indexOf('#') === 0) {
     hex = hex.slice(1);
   }
