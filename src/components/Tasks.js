@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { TaskContext } from 'providers/TaskProvider';
 import { Button, Title, Nav } from 'elements';
 import { colors, Modal, Toggle, media } from 'utils';
-import AddTask from 'components/AddTask';
+import TaskForm from 'components/TaskForm';
 import TaskListItem from 'components/TaskListItem';
 
 export default class Tasks extends Component {
+  static propTypes = {
+    employees: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      })
+    ).isRequired,
+  };
+
   state = {
     searchInput: '',
     activeTab: 'Open',
@@ -40,6 +49,7 @@ export default class Tasks extends Component {
   };
 
   render() {
+    const { employees } = this.props;
     const { activeTab, searchInput } = this.state;
 
     return (
@@ -71,7 +81,7 @@ export default class Tasks extends Component {
                     <>
                       <AddButton onClick={toggle}>Add new task</AddButton>
                       <Modal on={on} toggle={toggle}>
-                        <AddTask {...this.props} toggle={toggle} />
+                        <TaskForm employees={employees} toggle={toggle} />
                       </Modal>
                     </>
                   )}
@@ -80,18 +90,14 @@ export default class Tasks extends Component {
             </FilterBox>
             <Tasklist>
               {tasks.tasks &&
-                this.filterTasks(tasks.tasks).map(task => {
-                  const { employees } = this.props;
-                  return (
-                    <TaskListItem
-                      onLabelPress={() => this.handleLabelSearch(task.data.owner)}
-                      employees={employees}
-                      key={task.id}
-                      id={task.id}
-                      {...task.data}
-                    />
-                  );
-                })}
+                this.filterTasks(tasks.tasks).map(task => (
+                  <TaskListItem
+                    employees={employees}
+                    key={task.id}
+                    onLabelPress={() => this.handleLabelSearch(task.data.owner)}
+                    task={task}
+                  />
+                ))}
             </Tasklist>
           </>
         )}

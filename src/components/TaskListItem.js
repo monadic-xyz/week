@@ -1,44 +1,42 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Label from '../elements/Label';
-import { colors, Toggle, Modal, labelParser, media } from '../utils';
-import EditTask from './EditTask';
+import TaskForm from 'components/TaskForm';
+import Label from 'elements/Label';
+import { colors, Toggle, Modal, labelParser, media } from 'utils';
 
-import firebase from '../firestore';
+import firebase from 'firestore';
 
 const db = firebase.firestore();
 
 export default class TaskListItem extends Component {
   static propTypes = {
-    id: PropTypes.string.isRequired,
-    desc: PropTypes.string.isRequired,
-    owner: PropTypes.string.isRequired,
-    done: PropTypes.bool.isRequired,
-    archived: PropTypes.bool.isRequired,
-    onLabelPress: PropTypes.func.isRequired,
     employees: PropTypes.array.isRequired,
+    onLabelPress: PropTypes.func.isRequired,
+    task: PropTypes.shape({
+      id: PropTypes.string,
+      desc: PropTypes.string,
+      owner: PropTypes.string,
+      done: PropTypes.bool,
+      archived: PropTypes.bool,
+    }).isRequired,
   };
 
   completeTask = (id, done) => {
-    let doneUpdate = {};
-    doneUpdate = { done: !done };
     db.collection('tasks')
-      .doc(`${id}`)
-      .update(doneUpdate);
+      .doc(id)
+      .update({ done: !done });
   };
 
   archiveTask = (id, archived) => {
-    let archiveUpdate = {};
-    archiveUpdate = { archived: !archived };
     db.collection('tasks')
-      .doc(`${id}`)
-      .update(archiveUpdate);
+      .doc(id)
+      .update({ archived: !archived });
   };
 
   deleteTask = id => {
     db.collection('tasks')
-      .doc(`${id}`)
+      .doc(id)
       .delete()
       .then(() => {
         console.log('Document successfully deleted!');
@@ -49,7 +47,10 @@ export default class TaskListItem extends Component {
   };
 
   render() {
-    const { id, desc, owner, done, archived, onLabelPress, employees } = this.props;
+    const { employees, onLabelPress, task } = this.props;
+    const { id } = task;
+    const { archived, desc, done, owner } = task.data;
+
     return (
       <TaskListItemContainer>
         <Task done={done} onClick={() => this.completeTask(id, done)}>
@@ -68,7 +69,7 @@ export default class TaskListItem extends Component {
                       Edit
                     </ActionBtn>
                     <Modal on={on} toggle={toggle}>
-                      <EditTask desc={desc} owner={owner} id={id} employees={employees} toggle={toggle} />
+                      <TaskForm employees={employees} task={task} toggle={toggle} />
                     </Modal>
                   </>
                 )}
