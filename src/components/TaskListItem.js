@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import TaskForm from 'components/TaskForm';
-import Label from 'elements/Label';
 import { colors, Toggle, Modal, labelParser, media } from 'utils';
-
 import firebase from 'firestore';
+import { Label } from '../elements';
 
 const db = firebase.firestore();
 

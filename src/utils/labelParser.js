@@ -1,5 +1,5 @@
 import React from 'react';
-import Label from 'elements/Label';
+import { Label } from '../elements';
 import colors, { white, pink } from './colors';
 
 export const extractLabels = str => {
@@ -25,7 +25,6 @@ export default desc => {
     }
     return <>{parts}</>;
   }
-
   for (let i = 1; i < parts.length; i += 2) {
     const labelColor = colors.strToHex(parts[i]);
 
