@@ -1,95 +1,119 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Button, Title } from '../elements';
-import { colors, Modal, Toggle, media } from '../utils';
-import TaskListItem from './TaskListItem'
-import AddTask from './AddTask'
+import { TaskContext } from 'providers/TaskProvider';
+import { Button, Title, Nav } from 'elements';
+import { colors, Modal, Toggle, media } from 'utils';
+import TaskForm from 'components/TaskForm';
+import TaskListItem from 'components/TaskListItem';
 
 export default class Tasks extends Component {
-  constructor() {
-    super();
-    this.state = {
-      searchInput: ""
-    };
-  }
+  static propTypes = {
+    employees: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      })
+    ).isRequired,
+  };
+
+  state = {
+    searchInput: '',
+    activeTab: 'Open',
+  };
+
+  filterTasks = tasks =>
+    tasks.filter(task => {
+      const { searchInput } = this.state;
+
+      return (
+        searchInput === '' ||
+        task.data.desc.toLowerCase().includes(searchInput.toLowerCase()) ||
+        task.data.owner.toLowerCase().includes(searchInput.toLowerCase())
+      );
+    });
+
+  setActiveTab = option => {
+    this.setState({ activeTab: option });
+  };
 
   handleSearch = e => {
     this.setState({
-      searchInput: e.target.value
+      searchInput: e.target.value,
     });
-  }
+  };
 
   handleLabelSearch = label => {
     this.setState({
-      searchInput: label
+      searchInput: label,
     });
-  }
-
+  };
 
   render() {
-    const {tasks} = this.props
+    const { employees } = this.props;
+    const { activeTab, searchInput } = this.state;
+
     return (
-      <Fragment>
-        <SectionTitle>This weeks' tasks</SectionTitle>
-        <FilterBox>
-          <SearchInput
-            type="search"
-            name="search"
-            placeholder="Search for tasks, labels or people"
-            onChange={this.handleSearch}
-            value={this.state.searchInput}
-          />
-          <Toggle>
-            {({on, toggle}) => (
-              <Fragment>
-                <AddButton
-                  onClick={toggle}
-                >
-                  Add new task
-                </AddButton>
-                <Modal on={on} toggle={toggle}>
-                  <AddTask {...this.props} toggle={toggle}/>
-                </Modal>
-              </Fragment>
-            )}
-          </Toggle>
-        </FilterBox>
-        <Tasklist>
-          {tasks && tasks
-            .filter(task => (
-              this.state.searchInput === ''
-              || task.data.desc.toLowerCase().includes(this.state.searchInput.toLowerCase())
-              || task.data.owner.toLowerCase().includes(this.state.searchInput.toLowerCase()
-            )))
-            .filter(task => task.data.archived === false)
-            .sort((a, b) => a.data.desc.toLowerCase() > b.data.desc.toLowerCase())
-            .sort((a, b) => (a.data.done === b.data.done)? 0 : a.data.done ? 1 : -1)
-            .map(task => <TaskListItem onLabelPress={() => this.handleLabelSearch(task.data.owner)} employees={this.props.employees} key={task.id} id={task.id} {...task.data}/>)
-          }
-        </Tasklist>
-        <SectionTitle>Archived Tasks</SectionTitle>
-        <Tasklist>
-          {tasks && tasks
-            .filter(task => (
-              this.state.searchInput === ''
-              || task.data.desc.toLowerCase().includes(this.state.searchInput.toLowerCase())
-              || task.data.owner.toLowerCase().includes(this.state.searchInput.toLowerCase()
-            )))
-            .filter(task => task.data.archived === true)
-            .sort((a, b) => a.data.desc.toLowerCase() > b.data.desc.toLowerCase())
-            .sort((a, b) => (a.data.done === b.data.done)? 0 : a.data.done ? 1 : -1)
-            .map(task => <TaskListItem key={task.id} id={task.id} {...task.data}/>)
-          }
-        </Tasklist>
-      </Fragment>
-    )
+      <TaskContext.Consumer>
+        {tasks => (
+          <>
+            <TitleContainer>
+              <Title>{activeTab === 'Open' ? "This weeks' tasks" : 'Archived Tasks'}</Title>
+              <Nav
+                onOptionClick={option => {
+                  this.setActiveTab(option);
+                  tasks.changeFilters([['archived', '==', option === 'Archived']]);
+                }}
+                options={['Open', 'Archived']}
+                activeOption={activeTab}
+              />
+            </TitleContainer>
+            <FilterBox>
+              <SearchInput
+                type="search"
+                name="search"
+                placeholder="Search for tasks, labels or people"
+                onChange={this.handleSearch}
+                value={searchInput}
+              />
+              {activeTab === 'Open' && (
+                <Toggle>
+                  {({ on, toggle }) => (
+                    <>
+                      <AddButton onClick={toggle}>Add new task</AddButton>
+                      <Modal on={on} toggle={toggle}>
+                        <TaskForm employees={employees} toggle={toggle} />
+                      </Modal>
+                    </>
+                  )}
+                </Toggle>
+              )}
+            </FilterBox>
+            <Tasklist>
+              {tasks.tasks &&
+                this.filterTasks(tasks.tasks).map(task => (
+                  <TaskListItem
+                    employees={employees}
+                    key={task.id}
+                    onLabelPress={() => this.handleLabelSearch(task.data.owner)}
+                    task={task}
+                  />
+                ))}
+            </Tasklist>
+          </>
+        )}
+      </TaskContext.Consumer>
+    );
   }
 }
 
+const TitleContainer = styled.div`
+  margin: 48px 0 24px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
 
-const SectionTitle = styled(Title)`
-  margin-top: 48px;
-`
 const Tasklist = styled.ul`
   display: grid;
   grid-column-gap: 24px;
@@ -110,7 +134,7 @@ const Tasklist = styled.ul`
     grid-row-gap: 24px;
     grid-template-columns: 1fr;
   `}
-`
+`;
 
 const FilterBox = styled.div`
   display: flex;
@@ -121,19 +145,17 @@ const FilterBox = styled.div`
   background-color: white;
   ${media.tablet`
     flex-direction: column;
-  `}
-`
+  `};
+`;
 
 const SearchInput = styled.input`
   font-size: 16px;
   height: 36px;
-  padding-left: 16px;
-  margin-right: 24px;
+  padding-left: 12px;
   flex: 1;
+  appearance: none;
   border: 1px solid ${colors.lightGrey};
   border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
   background-color: ${colors.almostWhite};
   color: ${colors.darkGrey};
   max-width: 960px;
@@ -141,11 +163,12 @@ const SearchInput = styled.input`
     margin-right: 0;
     margin-bottom: 16px;
     padding: 9px 16px;
-  `}
-`
+  `};
+`;
 
 const AddButton = styled(Button)`
+  margin-left: 24px;
   ${media.tablet`
     width: 100%;
-  `}
-`
+  `};
+`;
