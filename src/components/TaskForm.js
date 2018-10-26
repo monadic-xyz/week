@@ -142,19 +142,20 @@ const Form = styled.form`
 const Row = styled.div`
   display: flex;
   flex-direction: row;
+  margin-top: 24px;
 `;
 
 const Info = styled.p`
   color: ${colors.grey};
   font-size: 14px;
   line-height: 125%;
-  margin-top: 24px;
-  max-width: 540px;
+  margin-top: 16px;
 `;
 
 const Input = styled.input`
   background-color: ${colors.almostWhite};
   border: 1px solid ${colors.lightGrey};
+  appearance: none;
   border-radius: 4px;
   color: ${colors.black};
   flex: 1;
@@ -169,7 +170,6 @@ const Wrapper = styled.div`
   display: flex;
   flex: 1;
   padding-right: 24px;
-
   > span {
     padding: 0 12px;
   }
