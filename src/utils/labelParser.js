@@ -1,32 +1,38 @@
-import React, { Fragment } from 'react';
-import styled from 'styled-components';
-import colors from './colors';
+import React from 'react';
+import { Label } from '../elements';
+import colors, { white, pink } from './colors';
 
-export default (desc) => {
-  if (desc.includes('[demo]')) {
-    const parts = desc.split(/\[(.*?)\]/);
-    for (var i = 1; i < parts.length; i += 2) {
-      parts[i] = <Label pink key={i}>{parts[i]}</Label>
-    }
-    return <Fragment>{parts}</Fragment>;
-  } else {
-    const parts = desc.split(/\[(.*?)\]/);
-    for (i = 1; i < parts.length; i += 2) {
-      parts[i] = <Label key={i}>{parts[i]}</Label>
-    }
-    return <Fragment>{parts}</Fragment>;
+export const extractLabels = str => {
+  const matches = [];
+  const re = new RegExp(/\[(.*?)\]/gu);
+  while (true) {
+    const match = re.exec(str);
+    if (match === null) break;
+    matches.push(match[1]);
   }
-}
+  return matches;
+};
 
-const Label = styled.span`
-  background-color: ${props => props.pink ? colors.pink : colors.yellow};
-  display:inline-block;
-  padding: 4px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  color: ${props => props.pink ? colors.white : colors.black};
-  font-family: monospace;
-  font-size: 14px;
-  margin-left: 4px;
-`
+export default desc => {
+  const parts = desc.split(/\[(.*?)\]/);
+  if (desc.includes('[demo]')) {
+    for (let i = 1; i < parts.length; i += 2) {
+      parts[i] = (
+        <Label backgroundColor={pink} color={white} monospace key={i}>
+          {parts[i]}
+        </Label>
+      );
+    }
+    return <>{parts}</>;
+  }
+  for (let i = 1; i < parts.length; i += 2) {
+    const labelColor = colors.strToHex(parts[i]);
+
+    parts[i] = (
+      <Label backgroundColor={labelColor} color={colors.invertColor(labelColor, true)} monospace key={i}>
+        {parts[i]}
+      </Label>
+    );
+  }
+  return <>{parts}</>;
+};
