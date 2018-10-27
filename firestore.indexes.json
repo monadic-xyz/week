@@ -1,0 +1,12 @@
+{
+  "indexes": [
+    {
+      "collectionId": "tasks",
+      "fields": [
+        { "fieldPath": "archived", "mode": "ASCENDING" },
+        { "fieldPath": "done", "mode": "ASCENDING" },
+        { "fieldPath": "createdAt", "mode": "DESCENDING" }
+      ]
+    }
+  ]
+}
