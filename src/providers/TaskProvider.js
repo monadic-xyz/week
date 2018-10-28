@@ -1,40 +1,92 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+const buildQuery = (db, filter) => {
+  let query = db.collection('tasks');
+
+  query = query.where('archived', '==', filter.archived);
+
+  if (filter.done) {
+    query = query.where('done', '==', filter.done);
+  }
+
+  filter.label.forEach(label => {
+    query = query.where('labels', 'array-contains', label);
+  });
+
+  if (filter.owner && filter.owner !== '') {
+    query = query.where('owner', '==', filter.owner);
+  }
+
+  // TODO(xla): Implement task description text search.
+
+  [['done'], ['createdAt', 'desc']].forEach(order => {
+    query = query.orderBy(...order);
+  });
+
+  return query;
+};
+
+const NullableBool = (props, name, componentName) => {
+  if (props[name] !== null && typeof props[name] !== 'boolean') {
+    return new Error(
+      `${componentName} requires ${name} to either be a boolean or null`
+    );
+  }
+};
+
+const NullableString = (props, name, componentName) => {
+  if (props[name] !== null && typeof props[name] !== 'string') {
+    return new Error(
+      `${componentName} requires ${name} to either be a string or null`
+    );
+  }
+};
+
+const FilterProp = PropTypes.exact({
+  archived: PropTypes.bool.isRequired,
+  done: NullableBool,
+  label: PropTypes.arrayOf(PropTypes.string).isRequired,
+  owner: NullableString,
+  query: NullableString,
+});
+
+const defaultTask = {
+  archived: false,
+  archivedAt: null,
+  done: false,
+  doneAt: null,
+};
+
 export const TaskContext = React.createContext();
 
 export class TaskProvider extends Component {
-  static defaultProps = {
-    filters: [['archived', '==', false]],
-    orders: [['done'], ['createdAt', 'desc']],
-  };
+  static defaultProps = {};
 
   static propTypes = {
     children: PropTypes.node.isRequired,
-    db: PropTypes.object.isRequired,
-    filters: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.bool]))),
-    orders: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
+    db: PropTypes.shape({
+      collection: PropTypes.func.isRequired,
+    }).isRequired,
+    filter: FilterProp.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-
-    const { db, filters, orders } = this.props;
-
-    this.state = {
-      db,
-      filters,
-      orders,
-      tasks: [],
-      unsubscribe: null,
-    };
-  }
+  state = {
+    tasks: [],
+    unsubscribe: null,
+  };
 
   componentDidMount() {
-    const { filters, orders } = this.state;
+    const { db, filter } = this.props;
 
     this.setState({
-      unsubscribe: this.buildQuery(filters, orders).onSnapshot(this.onUpdate),
+      unsubscribe: buildQuery(db, filter).onSnapshot(this.onSnapshot),
+    });
+  }
+
+  componentWillReceiveProps(next) {
+    this.setState({
+      unsubscribe: buildQuery(next.db, next.filter).onSnapshot(this.onSnapshot),
     });
   }
 
@@ -43,35 +95,36 @@ export class TaskProvider extends Component {
     unsubscribe();
   }
 
-  buildQuery = (filters, orders) => {
-    const { db } = this.state;
-    let query = db.collection('tasks');
+  add = (desc, owner, labels) => {
+    const { db } = this.props;
 
-    filters.forEach(filter => {
-      const field = filter[0];
-      const comparator = filter[1];
-      const value = filter[2];
-
-      query = query.where(field, comparator, value);
-    });
-
-    orders.forEach(order => {
-      query = query.orderBy(...order);
-    });
-
-    return query;
-  };
-
-  changeFilters = filters => {
-    const { orders } = this.state;
-
-    this.setState({
-      filters,
-      unsubscribe: this.buildQuery(filters, orders).onSnapshot(this.onUpdate),
+    db.collection('tasks').add({
+      ...defaultTask,
+      createdAt: new Date(),
+      desc,
+      labels,
+      owner,
+      updatedAt: new Date(),
     });
   };
 
-  onUpdate = snapshot => {
+  archive = id =>
+    this.update(id, {
+      archivedAt: new Date(),
+      archived: true,
+    });
+
+  complete = id => this.update(id, { done: true, doneAt: new Date() });
+
+  edit = (id, desc, owner, labels) =>
+    this.update(id, {
+      desc,
+      labels,
+      owner,
+      updatedAt: new Date(),
+    });
+
+  onSnapshot = snapshot => {
     this.setState({
       tasks: snapshot.docs.map(doc => ({
         id: doc.id,
@@ -80,10 +133,24 @@ export class TaskProvider extends Component {
     });
   };
 
+  update = (id, fields) => {
+    const { db } = this.props;
+
+    db.collection('tasks')
+      .doc(id)
+      .update(fields);
+  };
+
   render() {
     const { children } = this.props;
     const { tasks } = this.state;
-    const ctx = { changeFilters: this.changeFilters, tasks };
+    const ctx = {
+      add: this.add,
+      archive: this.archive,
+      complete: this.complete,
+      edit: this.edit,
+      tasks,
+    };
 
     return <TaskContext.Provider value={ctx}>{children}</TaskContext.Provider>;
   }
