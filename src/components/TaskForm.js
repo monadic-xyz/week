@@ -116,6 +116,7 @@ export default class TaskFrom extends Component {
               name="owner"
               onChange={this.updateOwner}
               value={owner}
+              defaultText="Owner"
             />
           </Wrapper>
           <Button type="submit" disabled={!desc || !owner}>
