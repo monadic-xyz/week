@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { colors } from '../styles';
+import { colors } from 'styles';
 
 export default class Icon extends Component {
   static defaultProps = {
