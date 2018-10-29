@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Toggle from 'containers/Toggle';
+import { SearchIcon } from 'elements/icons';
+import styled from 'styled-components';
 
 export default class Search extends Component {
   static propTypes = {
@@ -48,9 +50,9 @@ export default class Search extends Component {
       <Toggle enabled={term !== null && term !== ''}>
         {({ enabled, toggle }) => (
           <>
-            <button onClick={toggle} type="button">
-              SearchIcon
-            </button>
+            <SearchBtn onClick={toggle} type="button">
+              <SearchIcon name="search" />
+            </SearchBtn>
             {enabled && (
               <form onSubmit={this.onSubmit}>
                 <input
@@ -66,3 +68,8 @@ export default class Search extends Component {
     );
   }
 }
+
+const SearchBtn = styled.button`
+  height: 24px;
+  width: 24px;
+`;
