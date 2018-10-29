@@ -1,3 +1,4 @@
 import colors from './colors';
+import GlobalStyle from './GlobalStyle';
 
-export { colors };
+export { colors, GlobalStyle };

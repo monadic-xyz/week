@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { createGlobalStyle } from 'styled-components';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
-import firebase from 'sources/firebase';
+import { GlobalStyle } from 'styles';
 
-import { colors } from 'styles';
+import firebase from 'sources/firebase';
 
 import Header from 'elements/Header';
 import SegmentTitle from 'elements/SegmentTitle';
@@ -13,7 +12,6 @@ import SegmentToggle from 'elements/SegmentToggle';
 
 import Search from 'components/Search';
 import Task from 'components/Task';
-
 import { TaskContext, TaskProvider } from 'providers/TaskProvider';
 
 const defaultFilter = {
@@ -128,23 +126,3 @@ export default class Tasks extends Component {
     );
   }
 }
-
-const GlobalStyle = createGlobalStyle`
-  body {
-    background: ${colors.black};
-    color: ${colors.grey};
-  }
-
-  a {
-    color: ${colors.white};
-    text-decoration: none;
-  }
-
-  a.active {
-    color: ${colors.pink};
-  }
-
-  a:hover {
-    text-decoration: underline;
-  }
-`;
