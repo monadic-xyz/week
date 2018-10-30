@@ -73,7 +73,7 @@ const SearchContainer = styled.div`
   flex-direction: row;
   > form {
     width: 0;
-    transition: width 0.6s ease-in-out;
+    transition: width 0.2s ease-in-out;
     overflow: hidden;
     ${({ enabled }) =>
       enabled &&

@@ -86,6 +86,18 @@ export default class Task extends Component {
     } else if (task) {
       edit(task.id, desc, owner, labels);
     }
+
+    if (task) {
+      this.setState({
+        editing: false,
+      });
+    }
+  };
+
+  setEditing = () => {
+    this.setState({
+      editing: true,
+    });
   };
 
   updateDesc = desc => {
@@ -97,6 +109,7 @@ export default class Task extends Component {
   };
 
   render() {
+    const { archive, complete } = this.context;
     const { desc, owner, editing } = this.state;
     const { task } = this.props;
 
@@ -116,9 +129,9 @@ export default class Task extends Component {
     return (
       <TaskItem
         {...task.data}
-        onEdit={() => null}
-        onArchive={() => null}
-        onDone={() => null}
+        onArchive={() => archive(task.id)}
+        onDone={() => complete(task.id)}
+        onEdit={this.setEditing}
       />
     );
   }

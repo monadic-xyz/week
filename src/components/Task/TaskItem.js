@@ -13,6 +13,7 @@ const replaceLabels = desc => {
     const labelColor = colors.strToHex(parts[i]);
     parts[i] = (
       <Label
+        key={i}
         backgroundColor={labelColor}
         color={colors.invertColor(labelColor, true)}
       >
@@ -26,7 +27,7 @@ const replaceLabels = desc => {
 
 const removeOwner = desc => desc.replace(/(?=\S)=([a-zA-Z0-9-_$]+)/, '');
 
-const ListItem = ({ desc, done, onDone, owner, onEdit, onArchive }) => (
+const TaskItem = ({ desc, done, onDone, owner, onEdit, onArchive }) => (
   <ListItemContainer>
     {done ? (
       <Action onClick={onDone}>
@@ -48,7 +49,7 @@ const ListItem = ({ desc, done, onDone, owner, onEdit, onArchive }) => (
   </ListItemContainer>
 );
 
-ListItem.propTypes = {
+TaskItem.propTypes = {
   desc: PropTypes.string.isRequired,
   owner: PropTypes.string.isRequired,
   done: PropTypes.bool.isRequired,
@@ -57,7 +58,7 @@ ListItem.propTypes = {
   onArchive: PropTypes.func.isRequired,
 };
 
-export default ListItem;
+export default TaskItem;
 
 const ListItemContainer = styled.div`
   display: flex;
