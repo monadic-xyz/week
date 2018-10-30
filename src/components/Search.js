@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'; // ES6
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { colors } from 'styles';
 
 import Toggle from 'containers/Toggle';
-import { SearchIcon } from 'elements/icons';
+import { SearchIcon, CloseIcon } from 'elements/icons';
 
 export default class Search extends Component {
   static propTypes = {
@@ -47,23 +48,20 @@ export default class Search extends Component {
 
   render() {
     const { term } = this.state;
-
     return (
       <Toggle enabled={term !== null && term !== ''}>
         {({ enabled, toggle }) => (
-          <SearchContainer>
+          <SearchContainer enabled={enabled}>
             <SearchBtn onClick={toggle} type="button">
-              <SearchIcon name="search" />
+              {enabled ? <CloseIcon /> : <SearchIcon />}
             </SearchBtn>
-            {enabled && (
-              <form onSubmit={this.onSubmit}>
-                <input
-                  value={term}
-                  onChange={this.updateTerm}
-                  placeholder="Search for tasks, labels or people"
-                />
-              </form>
-            )}
+            <form onSubmit={this.onSubmit}>
+              <input
+                value={term}
+                onChange={this.updateTerm}
+                placeholder="Search for tasks, labels or people"
+              />
+            </form>
           </SearchContainer>
         )}
       </Toggle>
@@ -74,6 +72,16 @@ export default class Search extends Component {
 const SearchContainer = styled.div`
   display: flex;
   flex-direction: row;
+  > form {
+    width: 0;
+    transition: width 0.6s ease-in-out;
+    overflow: hidden;
+    ${({ enabled }) =>
+      enabled &&
+      css`
+        width: 320px;
+      `};
+  }
   > form input {
     min-width: 320px;
     border-bottom: 1px solid ${colors.grey};
