@@ -26,6 +26,7 @@ const NavItem = styled(NavLink)`
   }
   color: ${colors.grey};
   &.active {
+    font-family: GTAmericaMonoMedium, monospace;
     color: ${colors.blue};
   }
 `;
