@@ -8,4 +8,5 @@ export default styled.span`
   border-radius: 2px;
   height: 24px;
   padding: 1px 6px;
+  display: inline-block;
 `;

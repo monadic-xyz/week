@@ -23,10 +23,13 @@ const replaceLabels = desc => {
 
   return parts;
 };
+
+const removeOwner = desc => desc.replace(/(?=\S)=([a-zA-Z0-9-_$]+)/, '');
+
 const ListItem = ({ desc, owner, done, onEdit, onArchive }) => (
   <ListItemContainer>
     {done ? <UncheckIcon /> : <CheckIcon />}
-    <p>{replaceLabels(desc)}</p>
+    <p>{replaceLabels(removeOwner(desc))}</p>
     <Label>{owner}</Label>
     <Action onClick={onEdit}>
       <EditIcon padding />
@@ -36,10 +39,6 @@ const ListItem = ({ desc, owner, done, onEdit, onArchive }) => (
     </Action>
   </ListItemContainer>
 );
-
-ListItem.defaultProps = {
-  labels: [],
-};
 
 ListItem.propTypes = {
   desc: PropTypes.string.isRequired,
