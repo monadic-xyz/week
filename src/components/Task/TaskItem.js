@@ -2,24 +2,35 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { ArchiveIcon, CheckIcon, EditIcon, UncheckIcon } from 'elements/icons';
+import {
+  ArchiveIcon,
+  CheckIcon,
+  EditIcon,
+  UnarchiveIcon,
+  UncheckIcon,
+} from 'elements/icons';
 import Label from 'elements/Label';
 import { colors } from 'styles';
 
-const replaceLabels = desc => {
+const replaceLabels = (desc, done) => {
   const parts = desc.split(/(?=\S)#([-_a-zA-Z0-9]+)/gm);
 
-  for (let i = 1; i < parts.length; i += 2) {
-    const labelColor = colors.strToHex(parts[i]);
-    parts[i] = (
-      <Label
-        key={i}
-        backgroundColor={labelColor}
-        color={colors.invertColor(labelColor, true)}
-      >
-        {parts[i]}
-      </Label>
-    );
+  for (let i = 0; i < parts.length; i += 1) {
+    if (i % 2 === 0) {
+      parts[i] = <span>{parts[i].trim()}</span>;
+    } else {
+      const labelColor = colors.strToHex(parts[i]);
+      parts[i] = (
+        <Label
+          key={i}
+          backgroundColor={labelColor}
+          color={colors.invertColor(labelColor, true)}
+          done={done}
+        >
+          {parts[i]}
+        </Label>
+      );
+    }
   }
 
   return parts;
@@ -27,7 +38,15 @@ const replaceLabels = desc => {
 
 const removeOwner = desc => desc.replace(/(?=\S)=([a-zA-Z0-9-_$]+)/, '');
 
-const TaskItem = ({ desc, done, onDone, owner, onEdit, onArchive }) => (
+const TaskItem = ({
+  archived,
+  desc,
+  done,
+  onDone,
+  owner,
+  onEdit,
+  onArchive,
+}) => (
   <ListItemContainer>
     {done ? (
       <Action onClick={onDone}>
@@ -38,18 +57,31 @@ const TaskItem = ({ desc, done, onDone, owner, onEdit, onArchive }) => (
         <CheckIcon />
       </Action>
     )}
-    <p>{replaceLabels(removeOwner(desc))}</p>
+    <Description done={done}>
+      {replaceLabels(removeOwner(desc), done)}
+    </Description>
     <Label>{owner}</Label>
-    <Action onClick={onEdit}>
-      <EditIcon padding />
-    </Action>
-    <Action onClick={onArchive}>
-      <ArchiveIcon padding />
-    </Action>
+    {!archived ? (
+      <>
+        <Action onClick={onEdit}>
+          <EditIcon padding />
+        </Action>
+        <Action onClick={onArchive}>
+          <ArchiveIcon padding />
+        </Action>
+      </>
+    ) : (
+      <>
+        <Action onClick={onArchive}>
+          <UnarchiveIcon padding />
+        </Action>
+      </>
+    )}
   </ListItemContainer>
 );
 
 TaskItem.propTypes = {
+  archived: PropTypes.bool.isRequired,
   desc: PropTypes.string.isRequired,
   owner: PropTypes.string.isRequired,
   done: PropTypes.bool.isRequired,
@@ -65,9 +97,25 @@ const ListItemContainer = styled.div`
   height: 58px;
   padding: 0 16px;
   align-items: center;
-  > p {
-    padding-left: 16px;
-    width: 100%;
+`;
+
+const Description = styled.p`
+  padding-left: 16px;
+  width: 100%;
+  > span {
+    margin: 0 8px;
+    &:first-child {
+      margin-left: 0;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+    ${({ done }) =>
+      done &&
+      `
+    color: ${colors.grey};
+    text-decoration: line-through;
+  `};
   }
 `;
 

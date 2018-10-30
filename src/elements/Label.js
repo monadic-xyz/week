@@ -12,4 +12,9 @@ export default styled.button`
   &:hover {
     cursor: pointer;
   }
+  ${({ done }) =>
+    done &&
+    `
+    opacity: .5;
+  `};
 `;
