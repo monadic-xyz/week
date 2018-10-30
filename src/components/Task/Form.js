@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+import { colors } from 'styles';
+import { PlusIcon } from 'elements/icons';
+
+import Button from 'elements/Button';
 
 const extractLabels = str => {
   const matches = [];
@@ -77,21 +83,35 @@ export default class TaskForm extends Component {
   render() {
     const { desc, owner } = this.state;
     return (
-      <form
+      <Form
         onSubmit={e => {
           e.preventDefault();
           return desc && owner && this.onSubmit(e);
         }}
       >
+        <PlusIcon color={colors.blue} />
         <input
           onChange={this.updateDesc}
           placeholder="Type here to add a new task. =name to assign / #label to annotate"
           value={desc}
         />
-        <button type="submit" disabled={!desc || !owner}>
-          save
-        </button>
-      </form>
+        <Button type="submit" disabled={!desc || !owner}>
+          Add
+        </Button>
+      </Form>
     );
   }
 }
+
+const Form = styled.form`
+  display: flex;
+  height: 58px;
+  padding: 0 16px;
+  border-radius: 4px;
+  align-items: center;
+  background: ${colors.almostWhite};
+  > input {
+    padding-left: 16px;
+    width: 100%;
+  }
+`;
