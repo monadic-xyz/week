@@ -26,9 +26,17 @@ const replaceLabels = desc => {
 
 const removeOwner = desc => desc.replace(/(?=\S)=([a-zA-Z0-9-_$]+)/, '');
 
-const ListItem = ({ desc, owner, done, onEdit, onArchive }) => (
+const ListItem = ({ desc, done, onDone, owner, onEdit, onArchive }) => (
   <ListItemContainer>
-    {done ? <UncheckIcon /> : <CheckIcon />}
+    {done ? (
+      <Action onClick={onDone}>
+        <UncheckIcon />
+      </Action>
+    ) : (
+      <Action onClick={onDone}>
+        <CheckIcon />
+      </Action>
+    )}
     <p>{replaceLabels(removeOwner(desc))}</p>
     <Label>{owner}</Label>
     <Action onClick={onEdit}>
@@ -45,6 +53,7 @@ ListItem.propTypes = {
   owner: PropTypes.string.isRequired,
   done: PropTypes.bool.isRequired,
   onEdit: PropTypes.func.isRequired,
+  onDone: PropTypes.func.isRequired,
   onArchive: PropTypes.func.isRequired,
 };
 
@@ -63,4 +72,10 @@ const ListItemContainer = styled.div`
 
 const Action = styled.button`
   padding-left: 12px;
+  &:hover {
+    cursor: pointer;
+  }
+  &:nth-child(1) {
+    padding: 0;
+  }
 `;

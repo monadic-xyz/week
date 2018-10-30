@@ -44,6 +44,13 @@ export default class Task extends Component {
       );
     }
 
-    return <TaskItem {...task.data} />;
+    return (
+      <TaskItem
+        {...task.data}
+        onEdit={() => null}
+        onArchive={() => null}
+        onDone={() => null}
+      />
+    );
   }
 }

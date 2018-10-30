@@ -9,4 +9,7 @@ export default styled.span`
   height: 24px;
   padding: 1px 6px;
   display: inline-block;
+  &:hover {
+    cursor: pointer;
+  }
 `;
