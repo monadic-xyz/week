@@ -7,95 +7,25 @@ import { PlusIcon } from 'elements/icons';
 
 import Button from 'elements/Button';
 
-const extractLabels = str => {
-  const matches = [];
-  const re = /(?=\S)#([-_a-zA-Z0-9]+)/gm;
-
-  for (;;) {
-    const match = re.exec(str);
-    if (match === null) break;
-    matches.push(match[1]);
-  }
-
-  return matches;
-};
-
-const extractOwner = str => {
-  const re = new RegExp(/(?=\S)=([a-zA-Z0-9-_$]+)/);
-  const match = re.exec(str);
-
-  if (!match) return null;
-
-  return match[1];
-};
-
 export default class TaskForm extends Component {
-  static defaultProps = {
-    desc: '',
-  };
-
   static propTypes = {
-    desc: PropTypes.string,
+    desc: PropTypes.string.isRequired,
+    disabled: PropTypes.bool.isRequired,
     onSubmit: PropTypes.func.isRequired,
-  };
-
-  state = {
-    desc: '',
-    labels: [],
-    owner: undefined,
-  };
-
-  componentWillMount() {
-    const { desc } = this.props;
-    this.setState({
-      desc,
-      labels: extractLabels(desc),
-      owner: extractOwner(desc),
-    });
-  }
-
-  componentWillReceiveProps(next) {
-    const { desc } = next;
-    this.setState({
-      desc,
-      labels: extractLabels(desc),
-      owner: extractOwner(desc),
-    });
-  }
-
-  onSubmit = e => {
-    e.preventDefault();
-
-    const { onSubmit } = this.props;
-    const { desc, owner, labels } = this.state;
-    onSubmit(desc, owner, labels);
-  };
-
-  updateDesc = e => {
-    const desc = e.target.value;
-    this.setState({
-      desc: e.target.value,
-      labels: extractLabels(desc),
-      owner: extractOwner(desc),
-    });
+    updateDesc: PropTypes.func.isRequired,
   };
 
   render() {
-    const { desc, owner } = this.state;
+    const { desc, disabled, onSubmit, updateDesc } = this.props;
     return (
-      <Form
-        onSubmit={e => {
-          e.preventDefault();
-          return desc && owner && this.onSubmit(e);
-        }}
-      >
+      <Form onSubmit={onSubmit}>
         <PlusIcon color={colors.blue} />
         <input
-          onChange={this.updateDesc}
+          onChange={updateDesc}
           placeholder="Type here to add a new task. =name to assign / #label to annotate"
           value={desc}
         />
-        <Button type="submit" disabled={!desc || !owner}>
+        <Button type="submit" disabled={disabled}>
           Add
         </Button>
       </Form>
