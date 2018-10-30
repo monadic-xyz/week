@@ -59,20 +59,9 @@ export default createGlobalStyle`
   body {
     font-family: GTAmericaMono, monospace;
     font-size: 15px;
-    background: ${colors.black};
-    color: ${colors.grey};
+    color: ${colors.black};
+    max-width: 1060px;
+    margin: 0 auto;
   }
 
-  a {
-    color: ${colors.white};
-    text-decoration: none;
-  }
-
-  a.active {
-    color: ${colors.pink};
-  }
-
-  a:hover {
-    text-decoration: underline;
-  }
 `;
