@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { TaskContext } from 'providers/TaskProvider';
 
 import Form from './Form';
-import ListItem from './ListItem';
+import TaskItem from './TaskItem';
 
 export default class Task extends Component {
   static contextType = TaskContext;
@@ -44,6 +44,6 @@ export default class Task extends Component {
       );
     }
 
-    return <ListItem desc={task.data.desc} />;
+    return <TaskItem {...task.data} />;
   }
 }

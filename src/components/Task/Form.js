@@ -109,7 +109,6 @@ const Form = styled.form`
   padding: 0 16px;
   border-radius: 4px;
   align-items: center;
-  background: ${colors.almostWhite};
   > input {
     padding-left: 16px;
     width: 100%;

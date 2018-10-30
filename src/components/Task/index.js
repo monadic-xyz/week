@@ -1,7 +1,7 @@
 import Container from './Container';
 import Form from './Form';
-import ListItem from './ListItem';
+import TaskItem from './TaskItem';
 
 export default Container;
 
-export { Container, Form, ListItem };
+export { Container, Form, TaskItem };

@@ -8,7 +8,6 @@ import firebase from 'sources/firebase';
 
 import Header from 'elements/Header';
 import List from 'elements/List';
-import ListItem from 'elements/ListItem';
 import SegmentTitle from 'elements/SegmentTitle';
 import SegmentToggle from 'elements/SegmentToggle';
 
@@ -124,14 +123,14 @@ export default class Tasks extends Component {
               <List>
                 <>
                   {segment === 'open' && (
-                    <ListItem key="add-task">
+                    <li key="add-task">
                       <Task />
-                    </ListItem>
+                    </li>
                   )}
                   {tasks.tasks.map(task => (
-                    <ListItem key={task.id}>
+                    <li key={task.id}>
                       <Task task={task} />
-                    </ListItem>
+                    </li>
                   ))}
                 </>
               </List>
