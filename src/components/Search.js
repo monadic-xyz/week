@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+import { colors } from 'styles';
 
 import Toggle from 'containers/Toggle';
 import { SearchIcon } from 'elements/icons';
-import styled from 'styled-components';
 
 export default class Search extends Component {
   static propTypes = {
@@ -49,7 +51,7 @@ export default class Search extends Component {
     return (
       <Toggle enabled={term !== null && term !== ''}>
         {({ enabled, toggle }) => (
-          <>
+          <SearchContainer>
             <SearchBtn onClick={toggle} type="button">
               <SearchIcon name="search" />
             </SearchBtn>
@@ -58,18 +60,28 @@ export default class Search extends Component {
                 <input
                   value={term}
                   onChange={this.updateTerm}
-                  placeholder="Search for tasks"
+                  placeholder="Search for tasks, labels or people"
                 />
               </form>
             )}
-          </>
+          </SearchContainer>
         )}
       </Toggle>
     );
   }
 }
 
+const SearchContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  > form input {
+    min-width: 320px;
+    border-bottom: 1px solid ${colors.grey};
+    padding-bottom: 4px;
+  }
+`;
 const SearchBtn = styled.button`
   height: 24px;
   width: 24px;
+  margin-right: 6px;
 `;
