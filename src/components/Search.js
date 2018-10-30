@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'; // ES6
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 
