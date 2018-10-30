@@ -45,6 +45,13 @@ export default createGlobalStyle`
     border-spacing: 0;
   }
 
+  input:focus,
+  select:focus,
+  textarea:focus,
+  button:focus {
+      outline: none;
+  }
+
   /* global styles */
 
   @font-face {
@@ -62,6 +69,7 @@ export default createGlobalStyle`
     color: ${colors.black};
     max-width: 1060px;
     margin: 0 auto;
+    padding-bottom: 220px;
   }
 
 `;
