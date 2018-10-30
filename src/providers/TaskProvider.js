@@ -124,6 +124,8 @@ export class TaskProvider extends Component {
       updatedAt: new Date(),
     });
 
+  reopen = id => this.update(id, { done: false, doneAt: null });
+
   onSnapshot = snapshot => {
     this.setState({
       tasks: snapshot.docs.map(doc => ({
@@ -149,6 +151,7 @@ export class TaskProvider extends Component {
       archive: this.archive,
       complete: this.complete,
       edit: this.edit,
+      reopen: this.reopen,
       tasks,
     };
 
