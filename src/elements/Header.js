@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 
-import { colors } from 'styles';
-
 export default styled.header`
-  background: ${colors.darkGrey};
+  display: grid;
+  grid-template-columns: 120px 220px auto;
+  height: 136px;
+  padding-top: 64px;
+  > div {
+    justify-self: end;
+  }
 `;
