@@ -7,6 +7,8 @@ import { GlobalStyle } from 'styles';
 import firebase from 'sources/firebase';
 
 import Header from 'elements/Header';
+import List from 'elements/List';
+import ListItem from 'elements/ListItem';
 import SegmentTitle from 'elements/SegmentTitle';
 import SegmentToggle from 'elements/SegmentToggle';
 
@@ -97,27 +99,20 @@ export default class Tasks extends Component {
         <TaskProvider db={firebase.firestore()} filter={filter}>
           <TaskContext.Consumer>
             {tasks => (
-              <>
-                {segment === 'open' && (
-                  <Task
-                    add={tasks.add}
-                    archive={tasks.archive}
-                    complete={tasks.complete}
-                    edit={tasks.edit}
-                    key="add-task"
-                  />
-                )}
-                {tasks.tasks.map(task => (
-                  <Task
-                    add={tasks.add}
-                    archive={tasks.archive}
-                    complete={tasks.complete}
-                    edit={tasks.edit}
-                    key={task.id}
-                    task={task}
-                  />
-                ))}
-              </>
+              <List>
+                <>
+                  {segment === 'open' && (
+                    <ListItem key="add-task">
+                      <Task />
+                    </ListItem>
+                  )}
+                  {tasks.tasks.map(task => (
+                    <ListItem key={task.id}>
+                      <Task task={task} />
+                    </ListItem>
+                  ))}
+                </>
+              </List>
             )}
           </TaskContext.Consumer>
         </TaskProvider>
