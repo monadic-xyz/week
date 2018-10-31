@@ -109,7 +109,7 @@ export default class Task extends Component {
   };
 
   render() {
-    const { archive, complete, reopen } = this.context;
+    const { archive, complete, reopen, unArchive } = this.context;
     const { desc, owner, editing } = this.state;
     const { task } = this.props;
 
@@ -130,6 +130,7 @@ export default class Task extends Component {
       <TaskItem
         {...task.data}
         onArchive={() => archive(task.id)}
+        onUnArchive={() => unArchive(task.id)}
         onDone={() => {
           if (task.data.done) {
             return reopen(task.id);

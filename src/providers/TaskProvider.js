@@ -114,6 +114,12 @@ export class TaskProvider extends Component {
       archived: true,
     });
 
+  unArchive = id =>
+    this.update(id, {
+      archivedAt: null,
+      archived: false,
+    });
+
   complete = id => this.update(id, { done: true, doneAt: new Date() });
 
   edit = (id, desc, owner, labels) =>
@@ -149,6 +155,7 @@ export class TaskProvider extends Component {
     const ctx = {
       add: this.add,
       archive: this.archive,
+      unArchive: this.unArchive,
       complete: this.complete,
       edit: this.edit,
       reopen: this.reopen,

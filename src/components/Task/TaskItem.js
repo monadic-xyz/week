@@ -46,6 +46,7 @@ const TaskItem = ({
   owner,
   onEdit,
   onArchive,
+  onUnArchive,
 }) => (
   <ListItemContainer>
     {done ? (
@@ -72,7 +73,7 @@ const TaskItem = ({
       </>
     ) : (
       <>
-        <Action onClick={onArchive}>
+        <Action onClick={onUnArchive}>
           <UnarchiveIcon padding />
         </Action>
       </>
@@ -88,6 +89,7 @@ TaskItem.propTypes = {
   onEdit: PropTypes.func.isRequired,
   onDone: PropTypes.func.isRequired,
   onArchive: PropTypes.func.isRequired,
+  onUnArchive: PropTypes.func.isRequired,
 };
 
 export default TaskItem;
