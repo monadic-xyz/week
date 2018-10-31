@@ -102,7 +102,10 @@ const ListItemContainer = styled.div`
 `;
 
 const Description = styled.p`
-  padding-left: 16px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 0 16px;
   width: 100%;
   > span {
     margin: 0 8px;
