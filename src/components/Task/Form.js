@@ -15,13 +15,26 @@ export default class TaskForm extends Component {
     updateDesc: PropTypes.func.isRequired,
   };
 
+  state = {
+    focussed: false,
+  };
+
+  onFocus = () => {
+    this.setState(prevState => ({
+      focussed: !prevState.focussed,
+    }));
+  };
+
   render() {
     const { desc, disabled, onSubmit, updateDesc } = this.props;
+    const { focussed } = this.state;
     return (
       <Form onSubmit={onSubmit}>
-        <PlusIcon color={colors.blue} />
+        <PlusIcon color={focussed ? colors.blue : colors.grey} />
         <input
           onChange={updateDesc}
+          onFocus={this.onFocus}
+          onBlur={this.onFocus}
           placeholder="Type here to add a new task. =name to assign / #label to annotate"
           value={desc}
         />
