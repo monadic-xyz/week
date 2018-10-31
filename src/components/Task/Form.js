@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { colors } from 'styles';
-import { PlusIcon } from 'elements/icons';
+import { PlusIcon, EditIcon } from 'elements/icons';
 
 import Button from 'elements/Button';
 
@@ -30,7 +30,12 @@ export default class TaskForm extends Component {
     const { focussed } = this.state;
     return (
       <Form onSubmit={onSubmit}>
-        <PlusIcon color={focussed ? colors.blue : colors.grey} />
+        {desc === '' ? (
+          <PlusIcon color={focussed ? colors.blue : colors.grey} />
+        ) : (
+          <EditIcon color={colors.blue} />
+        )}
+
         <input
           onChange={updateDesc}
           onFocus={this.onFocus}
@@ -39,7 +44,7 @@ export default class TaskForm extends Component {
           value={desc}
         />
         <Button type="submit" disabled={disabled}>
-          Add
+          Save
         </Button>
       </Form>
     );
