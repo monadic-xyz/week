@@ -26,9 +26,21 @@ export const defaultFilter = () => ({
   query: null,
 });
 
+export const filterTasks = (tasks, filter) =>
+  tasks.filter(task => {
+    if (filter.query !== null) {
+      return (
+        filter.query === '' ||
+        task.data.desc.toLowerCase().includes(filter.query.toLowerCase()) ||
+        task.data.owner.toLowerCase().includes(filter.query.toLowerCase())
+      );
+    }
+    return tasks;
+  });
+
+export const filterToQuery = filter => queryString.stringify(filter);
+
 export const parseFilterFromQuery = search => ({
   ...defaultFilter(),
   ...queryString.parse(search),
 });
-
-export const filterToQuery = filter => queryString.stringify(filter);
