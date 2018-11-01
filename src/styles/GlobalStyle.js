@@ -67,9 +67,9 @@ export default createGlobalStyle`
     font-family: GTAmericaMono, monospace;
     font-size: 15px;
     color: ${colors.black};
-    max-width: 1060px;
+    max-width: 1108px;
+    padding: 64px 24px 220px 24px;
     margin: 0 auto;
-    padding-bottom: 220px;
   }
 
 `;
