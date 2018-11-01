@@ -1,19 +1,19 @@
 import ArchiveIcon from './ArchiveIcon';
-import CheckIcon from './CheckIcon';
+import UnCheckedIcon from './UnCheckedIcon';
 import CloseIcon from './CloseIcon';
 import EditIcon from './EditIcon';
 import PlusIcon from './PlusIcon';
 import SearchIcon from './SearchIcon';
 import UnarchiveIcon from './UnarchiveIcon';
-import UncheckIcon from './UncheckIcon';
+import CheckedIcon from './CheckedIcon';
 
 export {
   ArchiveIcon,
-  CheckIcon,
+  UnCheckedIcon,
   CloseIcon,
   EditIcon,
   PlusIcon,
   SearchIcon,
   UnarchiveIcon,
-  UncheckIcon,
+  CheckedIcon,
 };
