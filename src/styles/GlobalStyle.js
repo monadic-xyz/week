@@ -71,5 +71,4 @@ export default createGlobalStyle`
     padding: 64px 24px 220px 24px;
     margin: 0 auto;
   }
-
 `;

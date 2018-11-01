@@ -1,32 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { extractLabels, extractOwner, stripOwner } from 'libs/description';
+
 import { TaskContext } from 'providers/TaskProvider';
 
 import Form from './Form';
 import TaskItem from './TaskItem';
-
-const extractLabels = str => {
-  const matches = [];
-  const re = /(?=\S)#([-_a-zA-Z0-9]+)/gm;
-
-  for (;;) {
-    const match = re.exec(str);
-    if (match === null) break;
-    matches.push(match[1]);
-  }
-
-  return matches;
-};
-
-const extractOwner = str => {
-  const re = new RegExp(/(?=\S)=([a-zA-Z0-9-_$]+)/);
-  const match = re.exec(str);
-
-  if (!match) return null;
-
-  return match[1];
-};
 
 const deriveStateFromTask = task => {
   const desc = (task && task.data.desc) || '';
@@ -118,7 +98,7 @@ export default class Task extends Component {
         {editing ? (
           <Form
             desc={desc}
-            disabled={!desc || !owner}
+            disabled={!owner || !desc || stripOwner(desc).trim() === ''}
             editing={editing}
             newTask={task !== undefined}
             onSubmit={this.onSubmit}

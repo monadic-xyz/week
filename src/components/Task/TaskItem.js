@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { stripOwner } from 'libs/description';
+
+import { colors } from 'styles';
+
 import {
   ArchiveIcon,
   CheckedIcon,
@@ -10,17 +14,21 @@ import {
   UnCheckedIcon,
 } from 'elements/icons';
 import Label from 'elements/Label';
-import { colors } from 'styles';
 
-const replaceLabels = (desc, done) => {
-  const parts = desc.split(/(?=\S)#([-_a-zA-Z0-9]+)/gm);
+const replaceLabels = (desc, done, labels) => {
+  let parts = desc.split(/(?=\S)#([-_a-zA-Z0-9]+)/gm);
 
-  for (let i = 0; i < parts.length; i += 1) {
-    if (i % 2 === 0) {
-      parts[i] = <span key={i}>{parts[i].trim()}</span>;
-    } else {
+  parts = parts.filter(p => {
+    const text = p.trim();
+
+    return text !== '' && text.length > 0;
+  });
+
+  return parts.map((p, i) => {
+    if (labels.includes(p)) {
       const labelColor = colors.strToHex(parts[i]);
-      parts[i] = (
+
+      return (
         <Label
           key={i}
           backgroundColor={labelColor}
@@ -31,17 +39,16 @@ const replaceLabels = (desc, done) => {
         </Label>
       );
     }
-  }
 
-  return parts;
+    return <span key={i}>{parts[i].trim()}</span>;
+  });
 };
-
-const removeOwner = desc => desc.replace(/(?=\S)=([a-zA-Z0-9-_$]+)/, '');
 
 const TaskItem = ({
   archived,
   desc,
   done,
+  labels,
   onDone,
   owner,
   onEdit,
@@ -59,7 +66,7 @@ const TaskItem = ({
       </Action>
     )}
     <Description done={done}>
-      {replaceLabels(removeOwner(desc), done)}
+      {replaceLabels(stripOwner(desc), done, labels)}
     </Description>
     <Label>{owner}</Label>
     {!archived ? (
@@ -84,23 +91,21 @@ const TaskItem = ({
 TaskItem.propTypes = {
   archived: PropTypes.bool.isRequired,
   desc: PropTypes.string.isRequired,
-  owner: PropTypes.string.isRequired,
   done: PropTypes.bool.isRequired,
+  labels: PropTypes.array.isRequired,
   onEdit: PropTypes.func.isRequired,
   onDone: PropTypes.func.isRequired,
   onArchive: PropTypes.func.isRequired,
   onUnArchive: PropTypes.func.isRequired,
+  owner: PropTypes.string.isRequired,
 };
 
 export default TaskItem;
 
-const ListItemContainer = styled.div`
-  display: grid;
-  grid-template-columns: 24px auto min-content 24px 24px;
-  grid-template-rows: 58px;
-  grid-gap: 0px 16px;
-  padding: 0 16px;
-  align-items: center;
+const Action = styled.button`
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Description = styled.p`
@@ -124,8 +129,11 @@ const Description = styled.p`
   }
 `;
 
-const Action = styled.button`
-  &:hover {
-    cursor: pointer;
-  }
+const ListItemContainer = styled.div`
+  display: grid;
+  grid-template-columns: 24px auto min-content 24px 24px;
+  grid-template-rows: 58px;
+  grid-gap: 0px 16px;
+  padding: 0 16px;
+  align-items: center;
 `;
