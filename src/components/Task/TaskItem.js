@@ -4,10 +4,10 @@ import styled from 'styled-components';
 
 import {
   ArchiveIcon,
-  CheckIcon,
+  CheckedIcon,
   EditIcon,
   UnarchiveIcon,
-  UncheckIcon,
+  UnCheckedIcon,
 } from 'elements/icons';
 import Label from 'elements/Label';
 import { colors } from 'styles';
@@ -51,11 +51,11 @@ const TaskItem = ({
   <ListItemContainer>
     {done ? (
       <Action onClick={onDone}>
-        <UncheckIcon />
+        <CheckedIcon />
       </Action>
     ) : (
       <Action onClick={onDone}>
-        <CheckIcon />
+        <UnCheckedIcon />
       </Action>
     )}
     <Description done={done}>
@@ -95,8 +95,10 @@ TaskItem.propTypes = {
 export default TaskItem;
 
 const ListItemContainer = styled.div`
-  display: flex;
-  height: 58px;
+  display: grid;
+  grid-template-columns: 24px auto min-content 24px 24px;
+  grid-template-rows: 58px;
+  grid-gap: 0px 16px;
   padding: 0 16px;
   align-items: center;
 `;
@@ -105,8 +107,6 @@ const Description = styled.p`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  padding: 0 16px;
-  width: 100%;
   > span {
     margin: 0 8px;
     &:first-child {
@@ -125,11 +125,7 @@ const Description = styled.p`
 `;
 
 const Action = styled.button`
-  padding-left: 12px;
   &:hover {
     cursor: pointer;
-  }
-  &:nth-child(1) {
-    padding: 0;
   }
 `;

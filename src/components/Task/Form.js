@@ -52,22 +52,27 @@ export default class TaskForm extends Component {
           placeholder="Type here to add a new task. =name to assign / #label to annotate"
           value={desc}
         />
-        <Button type="submit" disabled={disabled}>
+        <AlignedButton type="submit" disabled={disabled}>
           Save
-        </Button>
+        </AlignedButton>
       </Form>
     );
   }
 }
 
 const Form = styled.form`
-  display: flex;
-  height: 58px;
+  display: grid;
+  grid-template-columns: 24px auto min-content;
+  grid-template-rows: 58px;
+  grid-gap: 0px 16px;
   padding: 0 16px;
-  border-radius: 4px;
   align-items: center;
   > input {
-    padding-left: 16px;
     width: 100%;
+    padding-bottom: 4px;
   }
+`;
+
+const AlignedButton = styled(Button)`
+  justify-self: end;
 `;
