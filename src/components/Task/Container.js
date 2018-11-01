@@ -112,14 +112,15 @@ export default class Task extends Component {
     const { archive, complete, reopen, unArchive } = this.context;
     const { desc, owner, editing } = this.state;
     const { task } = this.props;
+
     return (
       <>
         {editing ? (
           <Form
-            newTask={task !== undefined}
-            editing={editing}
             desc={desc}
             disabled={!desc || !owner}
+            editing={editing}
+            newTask={task !== undefined}
             onSubmit={this.onSubmit}
             updateDesc={e => {
               this.updateDesc(e.target.value);

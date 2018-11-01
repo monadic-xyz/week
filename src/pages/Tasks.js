@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import queryString from 'query-string';
 
+import {
+  cleanFilter,
+  defaultFilter,
+  filterToQuery,
+  parseFilterFromQuery,
+} from 'libs/filter';
 import { GlobalStyle } from 'styles';
 
 import firebase from 'sources/firebase';
@@ -14,29 +19,6 @@ import SegmentToggle from 'elements/SegmentToggle';
 import Search from 'components/Search';
 import Task from 'components/Task';
 import { TaskContext, TaskProvider } from 'providers/TaskProvider';
-
-const defaultFilter = {
-  archived: false,
-  done: null,
-  label: [],
-  owner: null,
-  query: null,
-};
-
-const cleanFilter = (filter, term) => ({
-  ...filter,
-  archived: undefined,
-  done: undefined,
-  query: term,
-});
-
-const parseFilter = search => {
-  const extractedFilter = queryString.parse(search);
-  return {
-    ...defaultFilter,
-    ...extractedFilter,
-  };
-};
 
 const getWeek = date => {
   const time = new Date(date.getTime());
@@ -90,7 +72,7 @@ export default class Tasks extends Component {
   search = term => {
     const { history, match } = this.props;
     const { filter } = this.state;
-    const search = queryString.stringify(cleanFilter(filter, term));
+    const search = filterToQuery(cleanFilter(filter, term));
 
     history.push(`${match.url}?${search}`);
   };
@@ -100,7 +82,7 @@ export default class Tasks extends Component {
 
     this.setState({
       filter: {
-        ...parseFilter(location.search),
+        ...parseFilterFromQuery(location.search),
         archived: match.params.segment === 'archived',
       },
       segment: match.params.segment,

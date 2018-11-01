@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { FilterProp } from 'libs/filter';
+
 const buildQuery = (db, filter) => {
   let query = db.collection('tasks');
 
@@ -26,30 +28,6 @@ const buildQuery = (db, filter) => {
 
   return query;
 };
-
-const NullableBool = (props, name, componentName) => {
-  if (props[name] !== null && typeof props[name] !== 'boolean') {
-    return new Error(
-      `${componentName} requires ${name} to either be a boolean or null`
-    );
-  }
-};
-
-const NullableString = (props, name, componentName) => {
-  if (props[name] !== null && typeof props[name] !== 'string') {
-    return new Error(
-      `${componentName} requires ${name} to either be a string or null`
-    );
-  }
-};
-
-const FilterProp = PropTypes.exact({
-  archived: PropTypes.bool.isRequired,
-  done: NullableBool,
-  label: PropTypes.arrayOf(PropTypes.string).isRequired,
-  owner: NullableString,
-  query: NullableString,
-});
 
 const defaultTask = {
   archived: false,
