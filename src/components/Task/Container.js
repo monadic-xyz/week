@@ -55,6 +55,11 @@ export default class Task extends Component {
     }),
   };
 
+  constructor(props) {
+    super(props);
+    this.state = deriveStateFromTask(props.task);
+  }
+
   state = {
     desc: '',
     editing: false,
@@ -62,13 +67,8 @@ export default class Task extends Component {
     owner: undefined,
   };
 
-  componentWillMount() {
-    const { task } = this.props;
-    this.setState(deriveStateFromTask(task));
-  }
-
   componentWillReceiveProps(next) {
-    const { task } = this.props;
+    const { task } = next;
     this.setState(deriveStateFromTask(task));
   }
 
@@ -101,11 +101,14 @@ export default class Task extends Component {
   };
 
   updateDesc = desc => {
-    this.setState({
-      desc,
-      labels: extractLabels(desc),
-      owner: extractOwner(desc),
-    });
+    this.setState(
+      {
+        desc,
+        labels: extractLabels(desc),
+        owner: extractOwner(desc),
+      },
+      () => console.log(this.state.desc)
+    );
   };
 
   render() {

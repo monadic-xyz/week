@@ -20,7 +20,7 @@ const buildQuery = (db, filter) => {
 
   // TODO(xla): Implement task description text search.
 
-  [['done'], ['createdAt', 'desc']].forEach(order => {
+  [['done'], ['createdAt', 'desc'], ['owner', 'desc']].forEach(order => {
     query = query.orderBy(...order);
   });
 
@@ -89,6 +89,7 @@ export class TaskProvider extends Component {
     unsubscribe();
     this.setState({
       unsubscribe: buildQuery(next.db, next.filter).onSnapshot(this.onSnapshot),
+      tasks: [],
     });
   }
 
