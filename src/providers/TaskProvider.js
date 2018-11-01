@@ -85,6 +85,8 @@ export class TaskProvider extends Component {
   }
 
   componentWillReceiveProps(next) {
+    const { unsubscribe } = this.state;
+    unsubscribe();
     this.setState({
       unsubscribe: buildQuery(next.db, next.filter).onSnapshot(this.onSnapshot),
     });

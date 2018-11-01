@@ -109,7 +109,6 @@ export default class Tasks extends Component {
 
   render() {
     const { filter, segment } = this.state;
-
     return (
       <>
         <Header>

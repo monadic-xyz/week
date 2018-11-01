@@ -17,7 +17,7 @@ const replaceLabels = (desc, done) => {
 
   for (let i = 0; i < parts.length; i += 1) {
     if (i % 2 === 0) {
-      parts[i] = <span>{parts[i].trim()}</span>;
+      parts[i] = <span key={i}>{parts[i].trim()}</span>;
     } else {
       const labelColor = colors.strToHex(parts[i]);
       parts[i] = (

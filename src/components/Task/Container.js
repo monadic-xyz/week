@@ -112,33 +112,34 @@ export default class Task extends Component {
     const { archive, complete, reopen, unArchive } = this.context;
     const { desc, owner, editing } = this.state;
     const { task } = this.props;
-
-    if (editing) {
-      return (
-        <Form
-          desc={desc}
-          disabled={!desc || !owner}
-          onSubmit={this.onSubmit}
-          updateDesc={e => {
-            this.updateDesc(e.target.value);
-          }}
-        />
-      );
-    }
-
     return (
-      <TaskItem
-        {...task.data}
-        onArchive={() => archive(task.id)}
-        onUnArchive={() => unArchive(task.id)}
-        onDone={() => {
-          if (task.data.done) {
-            return reopen(task.id);
-          }
-          complete(task.id);
-        }}
-        onEdit={this.setEditing}
-      />
+      <>
+        {editing ? (
+          <Form
+            newTask={task !== undefined}
+            editing={editing}
+            desc={desc}
+            disabled={!desc || !owner}
+            onSubmit={this.onSubmit}
+            updateDesc={e => {
+              this.updateDesc(e.target.value);
+            }}
+          />
+        ) : (
+          <TaskItem
+            {...task.data}
+            onArchive={() => archive(task.id)}
+            onUnArchive={() => unArchive(task.id)}
+            onDone={() => {
+              if (task.data.done) {
+                return reopen(task.id);
+              }
+              complete(task.id);
+            }}
+            onEdit={this.setEditing}
+          />
+        )}
+      </>
     );
   }
 }

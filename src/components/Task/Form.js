@@ -11,7 +11,9 @@ export default class TaskForm extends Component {
   static propTypes = {
     desc: PropTypes.string.isRequired,
     disabled: PropTypes.bool.isRequired,
+    editing: PropTypes.bool.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    newTask: PropTypes.bool.isRequired,
     updateDesc: PropTypes.func.isRequired,
   };
 
@@ -26,14 +28,21 @@ export default class TaskForm extends Component {
   };
 
   render() {
-    const { desc, disabled, onSubmit, updateDesc } = this.props;
+    const {
+      desc,
+      disabled,
+      editing,
+      onSubmit,
+      newTask,
+      updateDesc,
+    } = this.props;
     const { focussed } = this.state;
     return (
       <Form onSubmit={onSubmit}>
-        {desc === '' ? (
-          <PlusIcon color={focussed ? colors.blue : colors.grey} />
-        ) : (
+        {editing && newTask ? (
           <EditIcon color={colors.blue} />
+        ) : (
+          <PlusIcon color={focussed ? colors.blue : colors.grey} />
         )}
 
         <input
