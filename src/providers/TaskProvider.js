@@ -20,7 +20,7 @@ const buildQuery = (db, filter) => {
 
   // TODO(xla): Implement task description text search.
 
-  [['done'], ['createdAt', 'desc'], ['owner', 'desc']].forEach(order => {
+  [['done'], ['owner'], ['createdAt', 'desc']].forEach(order => {
     query = query.orderBy(...order);
   });
 

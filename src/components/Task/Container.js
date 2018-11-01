@@ -101,14 +101,11 @@ export default class Task extends Component {
   };
 
   updateDesc = desc => {
-    this.setState(
-      {
-        desc,
-        labels: extractLabels(desc),
-        owner: extractOwner(desc),
-      },
-      () => console.log(this.state.desc)
-    );
+    this.setState({
+      desc,
+      labels: extractLabels(desc),
+      owner: extractOwner(desc),
+    });
   };
 
   render() {
