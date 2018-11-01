@@ -107,6 +107,19 @@ export default class Tasks extends Component {
     });
   };
 
+  filterTasks = tasks =>
+    tasks.filter(task => {
+      const { filter } = this.state;
+      if (filter.query !== null) {
+        return (
+          filter.query === '' ||
+          task.data.desc.toLowerCase().includes(filter.query.toLowerCase()) ||
+          task.data.owner.toLowerCase().includes(filter.query.toLowerCase())
+        );
+      }
+      return tasks;
+    });
+
   render() {
     const { filter, segment } = this.state;
     return (
@@ -126,11 +139,12 @@ export default class Tasks extends Component {
                       <Task />
                     </li>
                   )}
-                  {tasks.tasks.map(task => (
-                    <li key={task.id}>
-                      <Task task={task} />
-                    </li>
-                  ))}
+                  {tasks.tasks &&
+                    this.filterTasks(tasks.tasks).map(task => (
+                      <li key={task.id}>
+                        <Task task={task} />
+                      </li>
+                    ))}
                 </>
               </List>
             )}

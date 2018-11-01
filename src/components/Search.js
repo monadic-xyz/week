@@ -53,7 +53,13 @@ export default class Search extends Component {
 
   escape = () => {
     const { focused } = this.state;
+    const { onSubmit } = this.props;
     if (focused) this.input.current.blur();
+    this.setState({
+      term: '',
+      enabled: false,
+    });
+    onSubmit('');
   };
 
   shortcut = e => {
@@ -104,13 +110,28 @@ export default class Search extends Component {
     const { term } = this.state;
 
     onSubmit(term);
+    if (term === '') {
+      this.setState({
+        focused: false,
+      });
+    }
   };
 
   onToggle = () => {
     const { enabled, focused } = this.state;
 
+    const { onSubmit } = this.props;
+
     if (!focused) {
       this.focus();
+    }
+
+    if (enabled) {
+      this.setState({
+        term: '',
+        enabled: false,
+      });
+      onSubmit('');
     }
 
     this.setState({
