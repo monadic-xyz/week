@@ -9,6 +9,13 @@ export default styled.button`
   height: 24px;
   padding: 1px 6px 5px 6px;
   display: inline-block;
+  margin-left: 8px;
+  &:first-child {
+    margin-left: 0;
+  }
+  &:last-child {
+    margin-right: 0;
+  }
   &:hover {
     cursor: pointer;
   }

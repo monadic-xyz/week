@@ -113,7 +113,7 @@ const Description = styled.p`
   white-space: nowrap;
   text-overflow: ellipsis;
   > span {
-    margin: 0 8px;
+    margin-left: 8px;
     &:first-child {
       margin-left: 0;
     }
