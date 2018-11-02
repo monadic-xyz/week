@@ -55,7 +55,7 @@ const TaskItem = ({
   onArchive,
   onUnArchive,
 }) => (
-  <ListItemContainer>
+  <ListItemContainer archived={archived}>
     {done ? (
       <Action onClick={onDone}>
         <CheckedIcon />
@@ -130,7 +130,10 @@ const Description = styled.p`
 
 const ListItemContainer = styled.div`
   display: grid;
-  grid-template-columns: 24px auto min-content 24px 24px;
+  grid-template-columns: ${props =>
+    props.archived
+      ? '24px auto min-content 24px;'
+      : '24px auto min-content 24px 24px;'};
   grid-template-rows: minmax(58px, auto);
   grid-gap: 0px 16px;
   padding: 0 16px;
