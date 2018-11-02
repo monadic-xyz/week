@@ -5,6 +5,8 @@ import { extractLabels, extractOwner, stripOwner } from 'libs/description';
 
 import { TaskContext } from 'providers/TaskProvider';
 
+import Modal from 'components/Modal';
+
 import Form from './Form';
 import TaskItem from './TaskItem';
 
@@ -38,6 +40,7 @@ export default class Task extends Component {
   constructor(props) {
     super(props);
     this.state = deriveStateFromTask(props.task);
+    this.wrapper = React.createRef();
   }
 
   state = {
@@ -74,10 +77,13 @@ export default class Task extends Component {
     }
   };
 
-  setEditing = () => {
-    this.setState({
-      editing: true,
-    });
+  toggleEditing = () => {
+    const { task } = this.props;
+    if (task) {
+      this.setState(prevState => ({
+        editing: !prevState.editing,
+      }));
+    }
   };
 
   updateDesc = desc => {
@@ -92,20 +98,63 @@ export default class Task extends Component {
     const { archive, complete, reopen, unArchive } = this.context;
     const { desc, owner, editing } = this.state;
     const { task } = this.props;
+    let topModal = '0';
+    let leftModal = '0';
+    if (this.wrapper.current) {
+      const { top, left } = this.wrapper.current.getBoundingClientRect();
+      topModal = top;
+      leftModal = left;
+    }
 
     return (
-      <>
+      <div ref={this.wrapper}>
         {editing ? (
-          <Form
-            desc={desc}
-            disabled={!owner || !desc || stripOwner(desc).trim() === ''}
-            editing={editing}
-            newTask={task !== undefined}
-            onSubmit={this.onSubmit}
-            updateDesc={e => {
-              this.updateDesc(e.target.value);
-            }}
-          />
+          !task ? (
+            <Form
+              desc={desc}
+              disabled={!owner || !desc || stripOwner(desc).trim() === ''}
+              editing={editing}
+              newTask={task !== undefined}
+              onSubmit={this.onSubmit}
+              updateDesc={e => {
+                this.updateDesc(e.target.value);
+              }}
+              onEscape={this.toggleEditing}
+            />
+          ) : (
+            <>
+              <TaskItem
+                {...task.data}
+                onArchive={() => archive(task.id)}
+                onUnArchive={() => unArchive(task.id)}
+                onDone={() => {
+                  if (task.data.done) {
+                    return reopen(task.id);
+                  }
+                  complete(task.id);
+                }}
+                onEdit={this.toggleEditing}
+              />
+              <Modal
+                on
+                top={topModal}
+                left={leftModal}
+                toggle={this.toggleEditing}
+              >
+                <Form
+                  desc={desc}
+                  disabled={!owner || !desc || stripOwner(desc).trim() === ''}
+                  editing={editing}
+                  newTask={task !== undefined}
+                  onSubmit={this.onSubmit}
+                  updateDesc={e => {
+                    this.updateDesc(e.target.value);
+                  }}
+                  onEscape={this.toggleEditing}
+                />
+              </Modal>
+            </>
+          )
         ) : (
           <TaskItem
             {...task.data}
@@ -117,10 +166,10 @@ export default class Task extends Component {
               }
               complete(task.id);
             }}
-            onEdit={this.setEditing}
+            onEdit={this.toggleEditing}
           />
         )}
-      </>
+      </div>
     );
   }
 }

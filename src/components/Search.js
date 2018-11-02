@@ -33,7 +33,6 @@ export default class Search extends Component {
   }
 
   componentWillMount() {
-    Mousetrap.bind('esc', this.escape);
     Mousetrap.bind('/', this.shortcut);
   }
 
@@ -47,7 +46,6 @@ export default class Search extends Component {
   }
 
   componentWillUnmount() {
-    Mousetrap.unbind('esc', this.escape);
     Mousetrap.unbind('/', this.shortcut);
   }
 
@@ -87,10 +85,12 @@ export default class Search extends Component {
       enabled: term !== null && term !== '',
       focused: false,
     });
+    Mousetrap.unbind('esc', this.escape);
   };
 
   onFocus = e => {
     e.target.select();
+    Mousetrap.bind('esc', this.escape);
 
     this.setState({
       focused: true,
