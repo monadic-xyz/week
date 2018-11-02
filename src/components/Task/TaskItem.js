@@ -109,9 +109,8 @@ const Action = styled.button`
 `;
 
 const Description = styled.p`
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  padding: 12px 0;
+  line-height: 150%;
   > span {
     margin-left: 8px;
     &:first-child {
@@ -132,7 +131,7 @@ const Description = styled.p`
 const ListItemContainer = styled.div`
   display: grid;
   grid-template-columns: 24px auto min-content 24px 24px;
-  grid-template-rows: 58px;
+  grid-template-rows: minmax(58px, auto);
   grid-gap: 0px 16px;
   padding: 0 16px;
   align-items: center;
