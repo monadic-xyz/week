@@ -43,7 +43,7 @@ export default class TaskForm extends Component {
   onBlur = () => {
     Mousetrap.unbind('esc', this.onEscape);
     this.setState({
-      focused: true,
+      focused: false,
     });
   };
 
