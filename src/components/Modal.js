@@ -47,7 +47,6 @@ const ModalCard = styled.div`
   min-width: 1060px;
   position: absolute;
   top: ${props => `${props.top}px`};
-  left: ${props => `${props.left + 8}px`};
 `;
 const Background = styled.div`
   position: absolute;
