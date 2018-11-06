@@ -9,8 +9,12 @@ import { PlusIcon, EditIcon } from 'elements/icons';
 import Button from 'elements/Button';
 
 export default class TaskForm extends Component {
+  static defaultProps = {
+    desc: '',
+  };
+
   static propTypes = {
-    desc: PropTypes.string.isRequired,
+    desc: PropTypes.string,
     disabled: PropTypes.bool.isRequired,
     editing: PropTypes.bool.isRequired,
     onEscape: PropTypes.func.isRequired,
