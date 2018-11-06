@@ -21,6 +21,10 @@ import SegmentToggle from 'elements/SegmentToggle';
 import Search from 'components/Search';
 import Task from 'components/Task';
 import { TaskContext, TaskProvider } from 'providers/TaskProvider';
+import {
+  CollaboratorContext,
+  CollaboratorProvider,
+} from '../providers/CollaboratorProvider';
 
 export default class Tasks extends Component {
   static propTypes = {
@@ -78,27 +82,33 @@ export default class Tasks extends Component {
           <SegmentToggle />
           <Search onSubmit={this.search} term={filter.query || ''} />
         </Header>
-        <TaskProvider db={firebase.firestore()} filter={filter}>
-          <TaskContext.Consumer>
-            {tasks => (
-              <List>
-                <>
-                  {segment === 'open' && (
-                    <li key="add-task">
-                      <Task />
-                    </li>
+        <CollaboratorProvider db={firebase.firestore()}>
+          <CollaboratorContext.Consumer>
+            {collaborators => (
+              <TaskProvider db={firebase.firestore()} filter={filter}>
+                <TaskContext.Consumer>
+                  {tasks => (
+                    <List>
+                      <>
+                        {segment === 'open' && (
+                          <li key="add-task">
+                            <Task collaborators={collaborators} />
+                          </li>
+                        )}
+                        {tasks.tasks &&
+                          filterTasks(tasks.tasks, filter).map(task => (
+                            <li key={task.id}>
+                              <Task collaborators={collaborators} task={task} />
+                            </li>
+                          ))}
+                      </>
+                    </List>
                   )}
-                  {tasks.tasks &&
-                    filterTasks(tasks.tasks, filter).map(task => (
-                      <li key={task.id}>
-                        <Task task={task} />
-                      </li>
-                    ))}
-                </>
-              </List>
+                </TaskContext.Consumer>
+              </TaskProvider>
             )}
-          </TaskContext.Consumer>
-        </TaskProvider>
+          </CollaboratorContext.Consumer>
+        </CollaboratorProvider>
         <GlobalStyle />
       </>
     );

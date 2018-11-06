@@ -29,6 +29,7 @@ export default class Task extends Component {
   };
 
   static propTypes = {
+    collaborators: PropTypes.array.isRequired,
     task: PropTypes.shape({
       data: PropTypes.shape({
         desc: PropTypes.string.isRequired,
@@ -94,10 +95,14 @@ export default class Task extends Component {
   };
 
   updateDesc = desc => {
+    const { collaborators } = this.props;
+    const owner = extractOwner(desc);
+    const contains = collaborators.map(c => c.data.name).includes(owner);
+
     this.setState({
       desc,
       labels: extractLabels(desc),
-      owner: extractOwner(desc),
+      owner: contains ? owner : null,
     });
   };
 
