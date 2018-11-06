@@ -39,8 +39,6 @@ const defaultTask = {
 export const TaskContext = React.createContext();
 
 export class TaskProvider extends Component {
-  static defaultProps = {};
-
   static propTypes = {
     children: PropTypes.node.isRequired,
     db: PropTypes.shape({
