@@ -1,39 +1,19 @@
-// import React from 'react';
 import styled from 'styled-components';
-import { colors } from '../utils';
+
+import { colors } from 'styles';
 
 export default styled.button`
-  height: 36px;
-  width: 160px;
-  font-size: 16px;
-  font-weight: bold;
-  background-color: ${colors.blue};
-  color: ${colors.white};
+  height: 34px;
+  padding: 0px 12px 4px 12px;
+  border: 2px solid ${colors.blue};
+  color: ${colors.blue};
   border-radius: 4px;
-  transition-duration: 0.2s;
-  ${({ disabled }) =>
-    disabled &&
-    `
-    background-color: ${colors.almostWhite};
+  font-family: GTAmericaMonoMedium, monospace;
+  cursor: pointer;
+  &:disabled,
+  &[disabled] {
+    cursor: default;
+    border-color: ${colors.lightGrey};
     color: ${colors.lightGrey};
-  `} &:hover {
-    background-color: ${colors.darkBlue};
-    ${({ disabled }) =>
-      disabled &&
-      `
-      background-color: ${colors.almostWhite};
-      color: ${colors.lightGrey};
-    `};
-  }
-  &:active {
-    -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
-    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
-    ${({ disabled }) =>
-      disabled &&
-      `
-      -webkit-box-shadow: none;
-      -moz-box-shadow: none;
-      box-shadow: none;
-    `};
   }
 `;

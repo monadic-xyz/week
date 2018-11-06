@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import Portal from './Portal';
 
 export default class Modal extends Component {
@@ -8,19 +8,21 @@ export default class Modal extends Component {
     children: PropTypes.node.isRequired,
     toggle: PropTypes.func.isRequired,
     on: PropTypes.bool.isRequired,
+    top: PropTypes.number.isRequired,
+    left: PropTypes.number.isRequired,
   };
 
   render() {
-    const { children, toggle, on } = this.props;
+    const { children, toggle, on, top, left } = this.props;
     return (
       <Portal>
         {on && (
           <ModalWrapper>
-            <ModalCard>
-              {/* <CloseButton onClick={toggle}>close</CloseButton> */}
+            <ModalCard top={top} left={left}>
               <div>{children}</div>
             </ModalCard>
             <Background onClick={toggle} />
+            <Global />
           </ModalWrapper>
         )}
       </Portal>
@@ -39,13 +41,12 @@ const ModalWrapper = styled.div`
   align-items: center;
 `;
 const ModalCard = styled.div`
-  position: relative;
-  background: white;
-  padding: 32px 24px;
-  min-width: 480px;
-  z-index: 10;
-  box-shadow: 0px 4px 16px rgba(51, 51, 51, 0.08);
   border-radius: 4px;
+  background-color: white;
+  z-index: 10;
+  min-width: 1060px;
+  position: absolute;
+  top: ${props => `${props.top}px`};
 `;
 const Background = styled.div`
   position: absolute;
@@ -55,4 +56,11 @@ const Background = styled.div`
   height: 100%;
   background: black;
   opacity: 0.3;
+`;
+
+const Global = createGlobalStyle`
+  body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
 `;

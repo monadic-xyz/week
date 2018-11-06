@@ -8,7 +8,7 @@ let config = {
   projectId: 'week-planner-dev',
   storageBucket: 'week-planner-dev.appspot.com',
   messagingSenderId: '205542384572',
-}
+};
 
 if (process.env.NODE_ENV === 'production') {
   config = {

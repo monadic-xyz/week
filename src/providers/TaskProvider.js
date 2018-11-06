@@ -1,40 +1,71 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { FilterProp } from 'libs/filter';
+
+const buildQuery = (db, filter) => {
+  let query = db.collection('tasks');
+
+  query = query.where('archived', '==', filter.archived);
+
+  if (filter.done) {
+    query = query.where('done', '==', filter.done);
+  }
+
+  filter.label.forEach(label => {
+    query = query.where('labels', 'array-contains', label);
+  });
+
+  if (filter.owner && filter.owner !== '') {
+    query = query.where('owner', '==', filter.owner);
+  }
+
+  // TODO(xla): Implement task description text search.
+
+  [['done'], ['owner'], ['createdAt', 'desc']].forEach(order => {
+    query = query.orderBy(...order);
+  });
+
+  return query;
+};
+
+const defaultTask = {
+  archived: false,
+  archivedAt: null,
+  done: false,
+  doneAt: null,
+};
+
 export const TaskContext = React.createContext();
 
 export class TaskProvider extends Component {
-  static defaultProps = {
-    filters: [['archived', '==', false]],
-    orders: [['done'], ['createdAt', 'desc']],
-  };
-
   static propTypes = {
     children: PropTypes.node.isRequired,
-    db: PropTypes.object.isRequired,
-    filters: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.bool]))),
-    orders: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
+    db: PropTypes.shape({
+      collection: PropTypes.func.isRequired,
+    }).isRequired,
+    filter: FilterProp.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-
-    const { db, filters, orders } = this.props;
-
-    this.state = {
-      db,
-      filters,
-      orders,
-      tasks: [],
-      unsubscribe: null,
-    };
-  }
+  state = {
+    tasks: [],
+    unsubscribe: null,
+  };
 
   componentDidMount() {
-    const { filters, orders } = this.state;
+    const { db, filter } = this.props;
 
     this.setState({
-      unsubscribe: this.buildQuery(filters, orders).onSnapshot(this.onUpdate),
+      unsubscribe: buildQuery(db, filter).onSnapshot(this.onSnapshot),
+    });
+  }
+
+  componentWillReceiveProps(next) {
+    const { unsubscribe } = this.state;
+    unsubscribe();
+    this.setState({
+      unsubscribe: buildQuery(next.db, next.filter).onSnapshot(this.onSnapshot),
+      tasks: [],
     });
   }
 
@@ -43,35 +74,44 @@ export class TaskProvider extends Component {
     unsubscribe();
   }
 
-  buildQuery = (filters, orders) => {
-    const { db } = this.state;
-    let query = db.collection('tasks');
+  add = (desc, owner, labels) => {
+    const { db } = this.props;
 
-    filters.forEach(filter => {
-      const field = filter[0];
-      const comparator = filter[1];
-      const value = filter[2];
-
-      query = query.where(field, comparator, value);
-    });
-
-    orders.forEach(order => {
-      query = query.orderBy(...order);
-    });
-
-    return query;
-  };
-
-  changeFilters = filters => {
-    const { orders } = this.state;
-
-    this.setState({
-      filters,
-      unsubscribe: this.buildQuery(filters, orders).onSnapshot(this.onUpdate),
+    db.collection('tasks').add({
+      ...defaultTask,
+      createdAt: new Date(),
+      desc,
+      labels,
+      owner,
+      updatedAt: new Date(),
     });
   };
 
-  onUpdate = snapshot => {
+  archive = id =>
+    this.update(id, {
+      archivedAt: new Date(),
+      archived: true,
+    });
+
+  unArchive = id =>
+    this.update(id, {
+      archivedAt: null,
+      archived: false,
+    });
+
+  complete = id => this.update(id, { done: true, doneAt: new Date() });
+
+  edit = (id, desc, owner, labels) =>
+    this.update(id, {
+      desc,
+      labels,
+      owner,
+      updatedAt: new Date(),
+    });
+
+  reopen = id => this.update(id, { done: false, doneAt: null });
+
+  onSnapshot = snapshot => {
     this.setState({
       tasks: snapshot.docs.map(doc => ({
         id: doc.id,
@@ -80,10 +120,26 @@ export class TaskProvider extends Component {
     });
   };
 
+  update = (id, fields) => {
+    const { db } = this.props;
+
+    db.collection('tasks')
+      .doc(id)
+      .update(fields);
+  };
+
   render() {
     const { children } = this.props;
     const { tasks } = this.state;
-    const ctx = { changeFilters: this.changeFilters, tasks };
+    const ctx = {
+      add: this.add,
+      archive: this.archive,
+      unArchive: this.unArchive,
+      complete: this.complete,
+      edit: this.edit,
+      reopen: this.reopen,
+      tasks,
+    };
 
     return <TaskContext.Provider value={ctx}>{children}</TaskContext.Provider>;
   }

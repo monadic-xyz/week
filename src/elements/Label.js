@@ -1,20 +1,27 @@
 import styled from 'styled-components';
-import { white, yellow } from '../utils/colors';
 
-export default styled.span`
-  background-color: ${props => props.backgroundColor || yellow};
-  color: ${props => props.color || white};
+import { lightGrey, darkGrey } from 'styles';
+
+export default styled.button`
+  background-color: ${props => props.backgroundColor || lightGrey};
+  color: ${props => props.color || darkGrey};
   border-radius: 2px;
-  font-family: sans-serif;
-  font-size: 14px;
-  ${({ monospace }) =>
-    monospace &&
+  height: 24px;
+  padding: 1px 6px 5px 6px;
+  display: inline-block;
+  margin-left: 8px;
+  &:first-child {
+    margin-left: 0;
+  }
+  &:last-child {
+    margin-right: 0;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+  ${({ done }) =>
+    done &&
     `
-    font-family: 'Inconsolata', monospace;
-    font-size: 16px;
+    opacity: .5;
   `};
-
-  font-weight: ${props => (props.bold ? 'bold' : 'normal')};
-  margin: 0px 4px;
-  padding: ${props => (props.bold ? '6px' : '3px 6px 4px 6px')};
 `;
