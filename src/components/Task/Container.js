@@ -10,11 +10,11 @@ import Modal from 'components/Modal';
 import Form from './Form';
 import TaskItem from './TaskItem';
 
-const deriveStateFromTask = task => {
-  const desc = (task && task.data.desc) || '';
+const deriveStateFromTask = (task, desc) => {
+  const d = (task && task.data.desc) || desc;
 
   return {
-    desc,
+    d,
     editing: task === undefined,
     labels: extractLabels(desc),
     owner: extractOwner(desc),
@@ -39,7 +39,7 @@ export default class Task extends Component {
 
   constructor(props) {
     super(props);
-    this.state = deriveStateFromTask(props.task);
+    this.state = deriveStateFromTask(props.task, '');
     this.wrapper = React.createRef();
   }
 
@@ -52,7 +52,8 @@ export default class Task extends Component {
 
   componentWillReceiveProps(next) {
     const { task } = next;
-    this.setState(deriveStateFromTask(task));
+    const { desc } = this.state;
+    this.setState(deriveStateFromTask(task, desc));
   }
 
   onSubmit = e => {
@@ -115,11 +116,11 @@ export default class Task extends Component {
               disabled={!owner || !desc || stripOwner(desc).trim() === ''}
               editing={editing}
               newTask={task !== undefined}
+              onEscape={this.toggleEditing}
               onSubmit={this.onSubmit}
               updateDesc={e => {
                 this.updateDesc(e.target.value);
               }}
-              onEscape={this.toggleEditing}
             />
           ) : (
             <>
@@ -146,11 +147,11 @@ export default class Task extends Component {
                   disabled={!owner || !desc || stripOwner(desc).trim() === ''}
                   editing={editing}
                   newTask={task !== undefined}
+                  onEscape={this.toggleEditing}
                   onSubmit={this.onSubmit}
                   updateDesc={e => {
                     this.updateDesc(e.target.value);
                   }}
-                  onEscape={this.toggleEditing}
                 />
               </Modal>
             </>
