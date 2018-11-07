@@ -91,7 +91,7 @@ export default class TaskForm extends Component {
           {collaborators.map(collaborator => (
             <AutocompleteItem
               key={collaborator.id}
-              selected={collaborator.data.name === 'Julien'}
+              selected={collaborator.data.name === 'Angie'}
             >
               {collaborator.data.name}
             </AutocompleteItem>
@@ -105,13 +105,27 @@ export default class TaskForm extends Component {
 const Autocomplete = styled.ul`
   background: ${colors.white};
   display: ${props => (props.active ? 'block' : 'none')};
-  min-width: 200px;
+  min-width: 180px;
   position: absolute;
+  border: 1px solid ${colors.lightGrey};
+  border-radius: 4px;
+  box-shadow: 0px 4px 8px rgba(51, 51, 51, 0.12);
 `;
 
 const AutocompleteItem = styled.li`
-  background-color: ${props =>
-    props.selected ? colors.lightGrey : colors.white};
+  background-color: ${props => (props.selected ? colors.blue : colors.white)};
+  color: ${props => (props.selected ? colors.white : colors.black)};
+  height: 36px;
+  border-bottom: 1px solid ${colors.lightGrey};
+  padding: 6px 12px 0 12px;
+  &:first-child {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+  &:last-child {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
 `;
 
 const Form = styled.form`
