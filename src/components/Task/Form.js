@@ -14,6 +14,7 @@ export default class TaskForm extends Component {
   };
 
   static propTypes = {
+    collaborators: PropTypes.array.isRequired,
     desc: PropTypes.string,
     disabled: PropTypes.bool.isRequired,
     editing: PropTypes.bool.isRequired,
@@ -56,6 +57,7 @@ export default class TaskForm extends Component {
 
   render() {
     const {
+      collaborators,
       desc,
       disabled,
       editing,
@@ -64,6 +66,7 @@ export default class TaskForm extends Component {
       updateDesc,
     } = this.props;
     const { focused } = this.state;
+
     return (
       <Form onSubmit={onSubmit}>
         {editing && newTask ? (
@@ -84,21 +87,44 @@ export default class TaskForm extends Component {
         <AlignedButton type="submit" disabled={disabled}>
           Save
         </AlignedButton>
+        <Autocomplete active>
+          {collaborators.map(collaborator => (
+            <AutocompleteItem
+              key={collaborator.id}
+              selected={collaborator.data.name === 'Julien'}
+            >
+              {collaborator.data.name}
+            </AutocompleteItem>
+          ))}
+        </Autocomplete>
       </Form>
     );
   }
 }
 
+const Autocomplete = styled.ul`
+  background: ${colors.white};
+  display: ${props => (props.active ? 'block' : 'none')};
+  min-width: 200px;
+  position: absolute;
+`;
+
+const AutocompleteItem = styled.li`
+  background-color: ${props =>
+    props.selected ? colors.lightGrey : colors.white};
+`;
+
 const Form = styled.form`
+  align-items: center;
   display: grid;
+  grid-gap: 0px 16px;
   grid-template-columns: 24px auto min-content;
   grid-template-rows: 58px;
-  grid-gap: 0px 16px;
   padding: 0 16px;
-  align-items: center;
+  position: relative;
   > input {
-    width: 100%;
     padding-bottom: 4px;
+    width: 100%;
   }
 `;
 
