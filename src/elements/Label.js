@@ -7,7 +7,7 @@ export default styled.button`
   color: ${props => props.color || darkGrey};
   border-radius: 2px;
   height: 24px;
-  padding: 1px 6px 5px 6px;
+  padding: 1px 6px 4px 6px;
   display: inline-block;
   margin-left: 8px;
   &:first-child {
