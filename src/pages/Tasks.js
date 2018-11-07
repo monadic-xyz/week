@@ -19,6 +19,7 @@ import SegmentTitle from 'elements/SegmentTitle';
 import SegmentToggle from 'elements/SegmentToggle';
 
 import Search from 'components/Search';
+import FilterBar from 'components/FilterBar';
 import Task from 'components/Task';
 import Shortcuts from 'components/Shortcuts';
 
@@ -84,6 +85,7 @@ export default class Tasks extends Component {
           <SegmentToggle />
           <Search onSubmit={this.search} term={filter.query || ''} />
         </Header>
+        <FilterBar />
         <CollaboratorProvider db={firebase.firestore()}>
           <CollaboratorContext.Consumer>
             {collaborators => (
