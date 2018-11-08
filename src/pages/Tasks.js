@@ -20,6 +20,8 @@ import SegmentToggle from 'elements/SegmentToggle';
 
 import Search from 'components/Search';
 import Task from 'components/Task';
+import Shortcuts from 'components/Shortcuts';
+
 import { TaskContext, TaskProvider } from 'providers/TaskProvider';
 import {
   CollaboratorContext,
@@ -110,6 +112,7 @@ export default class Tasks extends Component {
           </CollaboratorContext.Consumer>
         </CollaboratorProvider>
         <GlobalStyle />
+        <Shortcuts />
       </>
     );
   }
