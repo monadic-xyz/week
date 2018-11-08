@@ -111,11 +111,9 @@ export default class Task extends Component {
     const { desc, owner, editing } = this.state;
     const { task } = this.props;
     let topModal = '0';
-    let leftModal = '0';
     if (this.wrapper.current) {
-      const { top, left } = this.wrapper.current.getBoundingClientRect();
+      const { top } = this.wrapper.current.getBoundingClientRect();
       topModal = top;
-      leftModal = left;
     }
 
     if (editing && !task) {
@@ -150,7 +148,7 @@ export default class Task extends Component {
             }}
             onEdit={this.toggleEditing}
           />
-          <Modal on top={topModal} left={leftModal} toggle={this.toggleEditing}>
+          <Modal on top={topModal} toggle={this.toggleEditing}>
             <Form
               desc={desc}
               disabled={!owner || !desc || stripOwner(desc).trim() === ''}
