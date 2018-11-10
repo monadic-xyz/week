@@ -20,7 +20,7 @@ const keybindings = [
 
 export default () => (
   <>
-    <Modal on width="160px" toggle={() => null}>
+    <Modal width="160px" toggle={() => null}>
       <ModalContent>
         <SegmentTitle>Keyboard shortcuts</SegmentTitle>
         <Grid>
@@ -60,9 +60,16 @@ const ShortcutItem = styled.div`
 `;
 
 const Hint = styled.div`
-  position: absolute;
-  bottom: 24px;
-  right: 24px;
-  font-size: 13px;
+  background-color: white;
+  bottom: 0;
   color: ${darkGrey};
+  font-size: 13px;
+  opacity: 0.3;
+  padding: 12px 24px;
+  position: fixed;
+  right: 0px;
+  transition: opacity 0.2s ease-in-out;
+  &:hover {
+    opacity: 1;
+  }
 `;
