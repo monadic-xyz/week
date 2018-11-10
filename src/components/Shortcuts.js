@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { darkGrey, lightGrey } from 'styles/colors';
+
 import SegmentTitle from 'elements/SegmentTitle';
 
 import Modal from 'components/Modal';
 
-import { darkGrey, lightGrey } from 'styles/colors';
-
 const keybindings = [
-  { key: '/', helpText: 'Open &amp; focus search' },
+  { key: '/', helpText: 'Open & focus search' },
   { key: 'n', helpText: 'Create new task' },
   { key: 'esc', helpText: 'Escape any operation' },
   { key: 'd', helpText: 'Mark task as done' },
