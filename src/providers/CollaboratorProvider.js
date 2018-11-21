@@ -7,7 +7,7 @@ const buildQuery = db => {
   let query = db.collection('employees');
 
   query = query.where('name', '>', '');
-  query = query.orderBy('name', 'desc');
+  query = query.orderBy('name', 'asc');
 
   return query;
 };

@@ -7,7 +7,7 @@ import { TaskContext } from 'providers/TaskProvider';
 
 import Modal from 'components/Modal';
 
-import Form from './Form';
+import TaskForm from './TaskForm';
 import TaskItem from './TaskItem';
 
 const deriveStateFromTask = (task, desc) => {
@@ -57,9 +57,7 @@ export default class Task extends Component {
     this.setState(deriveStateFromTask(task, desc));
   }
 
-  onSubmit = e => {
-    e.preventDefault();
-
+  onSubmit = () => {
     const { add, edit } = this.context;
     const { task } = this.props;
     const { desc, labels, owner } = this.state;
@@ -108,27 +106,31 @@ export default class Task extends Component {
 
   render() {
     const { archive, complete, reopen, unArchive } = this.context;
+    const { collaborators, task } = this.props;
     const { desc, owner, editing } = this.state;
-    const { task } = this.props;
-    let topModal = '0';
+    let topModal = 0;
+    let widthModal = 0;
+    let wrapperRect = {};
     if (this.wrapper.current) {
-      const { top } = this.wrapper.current.getBoundingClientRect();
-      topModal = top;
+      const { width } = this.wrapper.current.getBoundingClientRect();
+      topModal = this.wrapper.current.offsetTop;
+      widthModal = width;
+      wrapperRect = this.wrapper.current.getBoundingClientRect()
     }
 
     if (editing && !task) {
       return (
         <div ref={this.wrapper}>
-          <Form
+          <TaskForm
+            collaborators={collaborators}
             desc={desc}
             disabled={!owner || !desc || stripOwner(desc).trim() === ''}
             editing={editing}
-            newTask={task !== undefined}
+            newTask
             onEscape={this.toggleEditing}
             onSubmit={this.onSubmit}
-            updateDesc={e => {
-              this.updateDesc(e.target.value);
-            }}
+            updateDesc={this.updateDesc}
+            wrapperRect={wrapperRect}
           />
         </div>
       );
@@ -148,17 +150,22 @@ export default class Task extends Component {
             }}
             onEdit={this.toggleEditing}
           />
-          <Modal on top={topModal} toggle={this.toggleEditing}>
-            <Form
+          <Modal
+            on
+            top={topModal}
+            toggle={this.toggleEditing}
+            width={widthModal}
+          >
+            <TaskForm
+              collaborators={collaborators}
               desc={desc}
               disabled={!owner || !desc || stripOwner(desc).trim() === ''}
               editing={editing}
-              newTask={task !== undefined}
+              newTask={false}
               onEscape={this.toggleEditing}
               onSubmit={this.onSubmit}
-              updateDesc={e => {
-                this.updateDesc(e.target.value);
-              }}
+              updateDesc={this.updateDesc}
+              wrapperRect={wrapperRect}
             />
           </Modal>
         </div>
