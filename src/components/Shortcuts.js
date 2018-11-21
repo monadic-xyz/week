@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { darkGrey, lightGrey } from 'styles/colors';
+import { colors } from 'styles';
 
 import SegmentTitle from 'elements/SegmentTitle';
 
@@ -20,12 +20,12 @@ const keybindings = [
 
 export default () => (
   <>
-    <Modal width="160px" toggle={() => null}>
+    <Modal width={160} toggle={() => null}>
       <ModalContent>
         <SegmentTitle>Keyboard shortcuts</SegmentTitle>
         <Grid>
           {keybindings.map(keybinding => (
-            <ShortcutItem>
+            <ShortcutItem key={keybinding.key}>
               <span>{keybinding.key}</span>
               <p>{keybinding.helpText}</p>
             </ShortcutItem>
@@ -53,16 +53,16 @@ const ShortcutItem = styled.div`
     height: 24px;
     width: auto;
     border-radius: 2px;
-    background-color: ${lightGrey};
+    background-color: ${colors.lightGrey};
     padding: 1px 7px 0 7px;
     margin-right: 12px;
   }
 `;
 
 const Hint = styled.div`
-  background-color: white;
+  background-color: ${colors.white};
   bottom: 0;
-  color: ${darkGrey};
+  color: ${colors.darkGrey};
   font-size: 13px;
   opacity: 0.3;
   padding: 12px 24px;

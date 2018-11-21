@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled from 'styled-components';
+
+import { colors } from 'styles';
+
 import Portal from './Portal';
 
 export default class Modal extends Component {
   static defaultProps = {
+    on: false,
     top: null,
     width: '1060px',
   };
@@ -12,7 +16,7 @@ export default class Modal extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
     toggle: PropTypes.func.isRequired,
-    on: PropTypes.bool.isRequired,
+    on: PropTypes.bool,
     top: PropTypes.number,
     width: PropTypes.number,
   };
@@ -22,13 +26,14 @@ export default class Modal extends Component {
     return (
       <Portal>
         {on && (
-          <ModalWrapper>
-            <ModalCard top={top || false} width={width}>
-              <div>{children}</div>
-            </ModalCard>
+          <>
+            <ModalWrapper>
+              <ModalCard top={top || false} width={width}>
+                <div>{children}</div>
+              </ModalCard>
+            </ModalWrapper>
             <Background onClick={toggle} />
-            <Global />
-          </ModalWrapper>
+          </>
         )}
       </Portal>
     );
@@ -36,20 +41,23 @@ export default class Modal extends Component {
 }
 
 const ModalWrapper = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
+
 const ModalCard = styled.div`
+  background-color: ${colors.white};
   border-radius: 4px;
-  background-color: white;
+  min-width: ${props => `${props.width}px`};
+  position: fixed;
   z-index: 10;
-  min-width: ${props => props.width};
+
   ${({ top }) =>
     top &&
     `
@@ -57,19 +65,13 @@ const ModalCard = styled.div`
     top: ${top}px;
   `};
 `;
+
 const Background = styled.div`
-  position: absolute;
+  background: ${colors.black};
+  opacity: 0.3;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: black;
-  opacity: 0.3;
-`;
-
-const Global = createGlobalStyle`
-  body {
-    overflow-x: hidden;
-    overflow-y: hidden;
-  }
+  position: absolute;
 `;

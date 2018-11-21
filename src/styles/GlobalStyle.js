@@ -63,11 +63,17 @@ export default createGlobalStyle`
     src: url(${MonoMedium}) format("opentype");
   }
 
+  html {
+    min-height: 100%;
+    position: relative;
+  }
+
   body {
     font-family: GTAmericaMono, monospace;
     font-size: 15px;
     color: ${colors.black};
     max-width: 1108px;
+    height: 100%;
     padding: 64px 24px 220px 24px;
     margin: 0 auto;
   }
