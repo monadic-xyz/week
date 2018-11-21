@@ -117,7 +117,7 @@ export default class TaskForm extends Component {
   };
 
   handleChange = event => {
-    const { collaborators, editing, updateDesc, wrapperRect } = this.props;
+    const { collaborators, newTask, updateDesc, wrapperRect } = this.props;
     const {
       selectedId,
       triggered,
@@ -144,7 +144,7 @@ export default class TaskForm extends Component {
       state.selectionText = text;
       state.selectionTop = event.target.offsetTop + height;
 
-      if (editing) {
+      if (!newTask) {
         state.selectionLeft -= wrapperRect.left;
       }
     }
