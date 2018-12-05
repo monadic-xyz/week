@@ -187,4 +187,7 @@ const SearchBtn = styled.button`
   &:first-child {
     margin-right: 6px;
   }
+  &:hover {
+    cursor: pointer;
+  }
 `;

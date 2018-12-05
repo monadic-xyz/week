@@ -319,8 +319,8 @@ export default class TaskForm extends Component {
         {editing && !newTask ? (
           <EditIcon color={focused ? colors.blue : colors.grey} />
         ) : (
-            <PlusIcon color={focused ? colors.blue : colors.grey} />
-          )}
+          <PlusIcon color={focused ? colors.blue : colors.grey} />
+        )}
 
         <input
           onBlur={this.handleBlur}
