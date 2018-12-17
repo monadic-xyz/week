@@ -21,8 +21,6 @@ class FilterBar extends Component {
     const hasLabels = filter.label.length > 0;
     const hasOwner = !!filter.owner;
 
-    console.log(filter);
-
     // Botth labels and owner are present.
     if (hasLabels && hasOwner) {
       return (

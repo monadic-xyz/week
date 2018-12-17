@@ -54,39 +54,40 @@ const TaskItem = ({
   onEdit,
   onArchive,
   onUnArchive,
+  onOwnerSelect,
 }) => (
-  <ListItemContainer archived={archived}>
-    {done ? (
-      <Action onClick={onDone}>
-        <CheckedIcon />
-      </Action>
-    ) : (
-      <Action onClick={onDone}>
-        <UnCheckedIcon />
-      </Action>
-    )}
-    <Description done={done}>
-      {replaceLabels(stripOwner(desc), done, labels)}
-    </Description>
-    <Label>{owner}</Label>
-    {!archived ? (
-      <>
-        <Action onClick={onEdit}>
-          <EditIcon padding />
+    <ListItemContainer archived={archived}>
+      {done ? (
+        <Action onClick={onDone}>
+          <CheckedIcon />
         </Action>
-        <Action onClick={onArchive}>
-          <ArchiveIcon padding />
-        </Action>
-      </>
-    ) : (
-      <>
-        <Action onClick={onUnArchive}>
-          <UnarchiveIcon padding />
-        </Action>
-      </>
-    )}
-  </ListItemContainer>
-);
+      ) : (
+          <Action onClick={onDone}>
+            <UnCheckedIcon />
+          </Action>
+        )}
+      <Description done={done}>
+        {replaceLabels(stripOwner(desc), done, labels)}
+      </Description>
+      <Label onClick={onOwnerSelect}>{owner}</Label>
+      {!archived ? (
+        <>
+          <Action onClick={onEdit}>
+            <EditIcon padding />
+          </Action>
+          <Action onClick={onArchive}>
+            <ArchiveIcon padding />
+          </Action>
+        </>
+      ) : (
+          <>
+            <Action onClick={onUnArchive}>
+              <UnarchiveIcon padding />
+            </Action>
+          </>
+        )}
+    </ListItemContainer>
+  );
 
 TaskItem.propTypes = {
   archived: PropTypes.bool.isRequired,
@@ -97,6 +98,7 @@ TaskItem.propTypes = {
   onDone: PropTypes.func.isRequired,
   onArchive: PropTypes.func.isRequired,
   onUnArchive: PropTypes.func.isRequired,
+  onOwnerSelect: PropTypes.func.isRequired,
   owner: PropTypes.string.isRequired,
 };
 
@@ -120,8 +122,8 @@ const Description = styled.p`
       margin-right: 0;
     }
     ${({ done }) =>
-      done &&
-      `
+    done &&
+    `
     color: ${colors.grey};
     text-decoration: line-through;
   `};

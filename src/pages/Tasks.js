@@ -62,6 +62,17 @@ export default class Tasks extends Component {
     history.push(match.url);
   }
 
+  selectOwner = owner => {
+    const { history, match } = this.props;
+    const { filter } = this.state;
+
+    filter.owner = owner;
+
+    const search = filterToQuery(filter);
+
+    history.push(`${match.url}?${search}`);
+  }
+
   search = term => {
     const { history, match } = this.props;
     const { filter } = this.state;
@@ -108,7 +119,11 @@ export default class Tasks extends Component {
                         {tasks.tasks &&
                           filterTasks(tasks.tasks, filter).map(task => (
                             <li key={task.id}>
-                              <Task collaborators={collaborators} task={task} />
+                              <Task
+                                collaborators={collaborators}
+                                onOwnerSelect={this.selectOwner}
+                                task={task}
+                              />
                             </li>
                           ))}
                       </>

@@ -30,6 +30,7 @@ export default class Task extends Component {
 
   static propTypes = {
     collaborators: PropTypes.array.isRequired,
+    onOwnerSelect: PropTypes.func,
     task: PropTypes.shape({
       data: PropTypes.shape({
         desc: PropTypes.string.isRequired,
@@ -82,6 +83,12 @@ export default class Task extends Component {
       });
     }
   };
+
+  selectOwner = () => {
+    const { task, onOwnerSelect } = this.props;
+
+    onOwnerSelect(task.data.owner);
+  }
 
   toggleEditing = () => {
     const { task } = this.props;
@@ -149,6 +156,7 @@ export default class Task extends Component {
               complete(task.id);
             }}
             onEdit={this.toggleEditing}
+            onOwnerSelect={this.selectOwner}
           />
           <Modal
             on
@@ -185,6 +193,7 @@ export default class Task extends Component {
             complete(task.id);
           }}
           onEdit={this.toggleEditing}
+          onOwnerSelect={this.selectOwner}
         />
       </div>
     );
