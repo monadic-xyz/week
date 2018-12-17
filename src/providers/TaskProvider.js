@@ -12,17 +12,19 @@ const buildQuery = (db, filter) => {
     query = query.where('done', '==', filter.done);
   }
 
-  filter.label.forEach(label => {
-    query = query.where('labels', 'array-contains', label);
-  });
+  // filter.label.forEach(label => {
+  //   query = query.where('labels', 'array-contains', label);
+  // });
+
+  let orderBy = [['done'], ['owner'], ['createdAt', 'desc']];
 
   if (filter.owner && filter.owner !== '') {
     query = query.where('owner', '==', filter.owner);
+
+    orderBy = [['done'], ['createdAt', 'desc']];
   }
 
-  // TODO(xla): Implement task description text search.
-
-  [['done'], ['owner'], ['createdAt', 'desc']].forEach(order => {
+  orderBy.forEach(order => {
     query = query.orderBy(...order);
   });
 
@@ -67,6 +69,16 @@ export class TaskProvider extends Component {
       unsubscribe: buildQuery(next.db, next.filter).onSnapshot(this.onSnapshot),
       tasks: [],
     });
+  }
+
+  shouldComponentUpdate(_, nextState) {
+    const { tasks } = this.state;
+
+    if (JSON.stringify(tasks) !== JSON.stringify(nextState.tasks)) {
+      return true;
+    }
+
+    return false;
   }
 
   componentWillUnmount() {

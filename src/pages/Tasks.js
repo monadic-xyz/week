@@ -56,6 +56,12 @@ export default class Tasks extends Component {
     this.update(nextProps);
   }
 
+  clear = () => {
+    const { history, match } = this.props;
+
+    history.push(match.url);
+  }
+
   search = term => {
     const { history, match } = this.props;
     const { filter } = this.state;
@@ -85,7 +91,7 @@ export default class Tasks extends Component {
           <SegmentToggle />
           <Search onSubmit={this.search} term={filter.query || ''} />
         </Header>
-        <FilterBar />
+        <FilterBar filter={filter} onClear={this.clear} />
         <CollaboratorProvider db={firebase.firestore()}>
           <CollaboratorContext.Consumer>
             {collaborators => (

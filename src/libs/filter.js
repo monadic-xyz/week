@@ -11,12 +11,23 @@ export const FilterProp = PropTypes.exact({
   query: NullableString,
 });
 
-export const cleanFilter = (filter, term) => ({
-  ...filter,
-  archived: undefined,
-  done: undefined,
-  query: term,
-});
+export const cleanFilter = (filter, term) => {
+  const f = {
+    ...filter,
+    archived: undefined,
+    done: undefined,
+    query: term,
+  };
+
+  if (f.owner === null || f.owner === '') {
+    f.owner = undefined;
+  }
+  if (f.query === null || f.query === '') {
+    f.query = undefined;
+  }
+
+  return f;
+};
 
 export const defaultFilter = () => ({
   archived: false,
@@ -28,19 +39,42 @@ export const defaultFilter = () => ({
 
 export const filterTasks = (tasks, filter) =>
   tasks.filter(task => {
-    if (filter.query !== null) {
-      return (
-        filter.query === '' ||
-        task.data.desc.toLowerCase().includes(filter.query.toLowerCase()) ||
-        task.data.owner.toLowerCase().includes(filter.query.toLowerCase())
-      );
+    let hasLabels = true;
+
+    if (filter.label.length > 0) {
+      filter.label.forEach(label => {
+        if (hasLabels) {
+          hasLabels = task.data.labels.includes(label);
+        }
+      })
     }
-    return tasks;
+
+    if (!hasLabels) {
+      return false;
+    }
+
+    let hasQuery = true;
+
+    if (filter.query !== null && filter.query !== '') {
+      hasQuery =
+        task.data.desc.toLowerCase().includes(filter.query.toLowerCase());
+    }
+
+    return hasQuery;
   });
 
 export const filterToQuery = filter => queryString.stringify(filter);
 
-export const parseFilterFromQuery = search => ({
-  ...defaultFilter(),
-  ...queryString.parse(search),
-});
+export const parseFilterFromQuery = search => {
+  const f = {
+    ...defaultFilter(),
+    ...queryString.parse(search),
+  }
+
+  // Convert manually to a list if only one label is given.
+  if (typeof f.label === 'string') {
+    f.label = [f.label];
+  }
+
+  return f;
+};
