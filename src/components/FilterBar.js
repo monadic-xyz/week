@@ -10,6 +10,7 @@ import { colors } from 'styles';
 
 class FilterBar extends Component {
   static propTypes = {
+    deselectOwner: PropTypes.func.isRequired,
     filter: FilterProp.isRequired,
     onClear: PropTypes.func.isRequired,
   };
@@ -17,16 +18,16 @@ class FilterBar extends Component {
   state = {};
 
   render() {
-    const { filter, onClear } = this.props;
+    const { deselectOwner, filter, onClear } = this.props;
     const hasLabels = filter.label.length > 0;
     const hasOwner = !!filter.owner;
 
     // Botth labels and owner are present.
     if (hasLabels && hasOwner) {
       return (
-        <FilterContainer onClick={() => null}>
+        <FilterContainer>
           <span>Filtered by </span>
-          <FilterLabel owner text={filter.owner} />
+          <FilterLabel onClick={deselectOwner} owner text={filter.owner} />
           <span> with </span>
           <Labels>
             {filter.label.map(label => (
@@ -41,7 +42,7 @@ class FilterBar extends Component {
     // Only labels are present, but not owner.
     if (hasLabels && !hasOwner) {
       return (
-        <FilterContainer onClick={() => null}>
+        <FilterContainer>
           <span>Filtered by </span>
           <Labels>
             {filter.label.map(label => (
@@ -58,7 +59,7 @@ class FilterBar extends Component {
       return (
         <FilterContainer>
           <span>Filtered by </span>
-          <FilterLabel owner text={filter.owner} />
+          <FilterLabel onClick={deselectOwner} owner text={filter.owner} />
           <ClearButton onClick={onClear}>clear filters</ClearButton>
         </FilterContainer>
       );

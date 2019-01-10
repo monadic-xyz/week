@@ -5,13 +5,13 @@ import styled from 'styled-components';
 import colors, { lightGrey } from 'styles/colors';
 import { CrossIcon } from 'elements/icons';
 
-const FilterLabel = ({ owner, text }) => {
+const FilterLabel = ({ onClick, owner, text }) => {
   const labelBGColor = colors.strToHex(text);
   return (
     <Container
-      onClick={() => null}
-      color={colors.invertColor(labelBGColor, true)}
       backgroundColor={owner ? lightGrey : labelBGColor}
+      color={colors.invertColor(labelBGColor, true)}
+      onClick={onClick}
     >
       <span>{text}</span>
       <CrossIcon color={colors.invertColor(labelBGColor, true)} />

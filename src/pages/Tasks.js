@@ -62,6 +62,18 @@ export default class Tasks extends Component {
     history.push(match.url);
   };
 
+  deselectOwner = () => {
+    const { history, match } = this.props;
+    const { filter } = this.state;
+
+    console.log('deselect')
+    filter.owner = null;
+
+    const search = filterToQuery(cleanFilter(filter, null));
+
+    history.push(`${match.url}?${search}`);
+  };
+
   selectLabel = label => {
     const { history, match } = this.props;
     const { filter } = this.state;
@@ -113,7 +125,7 @@ export default class Tasks extends Component {
           <SegmentToggle />
           <Search onSubmit={this.search} term={filter.query || ''} />
         </Header>
-        <FilterBar filter={filter} onClear={this.clear} />
+        <FilterBar deselectOwner={this.deselectOwner} filter={filter} onClear={this.clear} />
         <CollaboratorProvider db={firebase.firestore()}>
           <CollaboratorContext.Consumer>
             {collaborators => (
