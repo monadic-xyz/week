@@ -15,7 +15,7 @@ import {
 } from 'elements/icons';
 import Label from 'elements/Label';
 
-const replaceLabels = (desc, done, labels) => {
+const replaceLabels = (desc, done, labels, onSelect) => {
   let parts = desc.split(/(?=\S)#([-_a-zA-Z0-9]+)/gm);
 
   parts = parts.filter(p => {
@@ -34,6 +34,7 @@ const replaceLabels = (desc, done, labels) => {
           backgroundColor={labelColor}
           color={colors.invertColor(labelColor, true)}
           done={done}
+          onClick={() => { onSelect(p) }}
         >
           {parts[i]}
         </Label>
@@ -54,6 +55,7 @@ const TaskItem = ({
   onEdit,
   onArchive,
   onUnArchive,
+  onLabelSelect,
   onOwnerSelect,
 }) => (
     <ListItemContainer archived={archived}>
@@ -67,7 +69,7 @@ const TaskItem = ({
           </Action>
         )}
       <Description done={done}>
-        {replaceLabels(stripOwner(desc), done, labels)}
+        {replaceLabels(stripOwner(desc), done, labels, onLabelSelect)}
       </Description>
       <Label onClick={onOwnerSelect}>{owner}</Label>
       {!archived ? (
@@ -98,6 +100,7 @@ TaskItem.propTypes = {
   onDone: PropTypes.func.isRequired,
   onArchive: PropTypes.func.isRequired,
   onUnArchive: PropTypes.func.isRequired,
+  onLabelSelect: PropTypes.func.isRequired,
   onOwnerSelect: PropTypes.func.isRequired,
   owner: PropTypes.string.isRequired,
 };

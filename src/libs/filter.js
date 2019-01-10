@@ -19,6 +19,11 @@ export const cleanFilter = (filter, term) => {
     query: term,
   };
 
+  f.label = [...new Set(f.label)];
+
+  if (f.label.length === 0) {
+    f.label = undefined
+  }
   if (f.owner === null || f.owner === '') {
     f.owner = undefined;
   }
