@@ -22,7 +22,7 @@ export const cleanFilter = (filter, term) => {
   f.label = [...new Set(f.label)];
 
   if (f.label.length === 0) {
-    f.label = undefined
+    f.label = undefined;
   }
   if (f.owner === null || f.owner === '') {
     f.owner = undefined;
@@ -51,7 +51,7 @@ export const filterTasks = (tasks, filter) =>
         if (hasLabels) {
           hasLabels = task.data.labels.includes(label);
         }
-      })
+      });
     }
 
     if (!hasLabels) {
@@ -61,8 +61,9 @@ export const filterTasks = (tasks, filter) =>
     let hasQuery = true;
 
     if (filter.query !== null && filter.query !== '') {
-      hasQuery =
-        task.data.desc.toLowerCase().includes(filter.query.toLowerCase());
+      hasQuery = task.data.desc
+        .toLowerCase()
+        .includes(filter.query.toLowerCase());
     }
 
     return hasQuery;
@@ -74,7 +75,7 @@ export const parseFilterFromQuery = search => {
   const f = {
     ...defaultFilter(),
     ...queryString.parse(search),
-  }
+  };
 
   // Convert manually to a list if only one label is given.
   if (typeof f.label === 'string') {

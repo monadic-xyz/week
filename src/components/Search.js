@@ -170,8 +170,8 @@ const SearchContainer = styled.div`
     transition: width 0.2s ease-in-out;
     overflow: hidden;
     ${({ enabled }) =>
-    enabled &&
-    css`
+      enabled &&
+      css`
         width: 320px;
       `};
   }

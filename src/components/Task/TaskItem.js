@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import shortid from 'shortid';
 
 import { stripOwner } from 'libs/description';
 
@@ -30,18 +31,20 @@ const replaceLabels = (desc, done, labels, onSelect) => {
 
       return (
         <Label
-          key={i}
+          key={shortid.generate()}
           backgroundColor={labelColor}
           color={colors.invertColor(labelColor, true)}
           done={done}
-          onClick={() => { onSelect(p) }}
+          onClick={() => {
+            onSelect(p);
+          }}
         >
           {parts[i]}
         </Label>
       );
     }
 
-    return <span key={i}>{parts[i].trim()}</span>;
+    return <span key={shortid.generate()}>{parts[i].trim()}</span>;
   });
 };
 
@@ -58,38 +61,38 @@ const TaskItem = ({
   onLabelSelect,
   onOwnerSelect,
 }) => (
-    <ListItemContainer archived={archived}>
-      {done ? (
-        <Action onClick={onDone}>
-          <CheckedIcon />
+  <ListItemContainer archived={archived}>
+    {done ? (
+      <Action onClick={onDone}>
+        <CheckedIcon />
+      </Action>
+    ) : (
+      <Action onClick={onDone}>
+        <UnCheckedIcon />
+      </Action>
+    )}
+    <Description done={done}>
+      {replaceLabels(stripOwner(desc), done, labels, onLabelSelect)}
+    </Description>
+    <Label onClick={onOwnerSelect}>{owner}</Label>
+    {!archived ? (
+      <>
+        <Action onClick={onEdit}>
+          <EditIcon padding />
         </Action>
-      ) : (
-          <Action onClick={onDone}>
-            <UnCheckedIcon />
-          </Action>
-        )}
-      <Description done={done}>
-        {replaceLabels(stripOwner(desc), done, labels, onLabelSelect)}
-      </Description>
-      <Label onClick={onOwnerSelect}>{owner}</Label>
-      {!archived ? (
-        <>
-          <Action onClick={onEdit}>
-            <EditIcon padding />
-          </Action>
-          <Action onClick={onArchive}>
-            <ArchiveIcon padding />
-          </Action>
-        </>
-      ) : (
-          <>
-            <Action onClick={onUnArchive}>
-              <UnarchiveIcon padding />
-            </Action>
-          </>
-        )}
-    </ListItemContainer>
-  );
+        <Action onClick={onArchive}>
+          <ArchiveIcon padding />
+        </Action>
+      </>
+    ) : (
+      <>
+        <Action onClick={onUnArchive}>
+          <UnarchiveIcon padding />
+        </Action>
+      </>
+    )}
+  </ListItemContainer>
+);
 
 TaskItem.propTypes = {
   archived: PropTypes.bool.isRequired,
@@ -125,8 +128,8 @@ const Description = styled.p`
       margin-right: 0;
     }
     ${({ done }) =>
-    done &&
-    `
+      done &&
+      `
     color: ${colors.grey};
     text-decoration: line-through;
   `};

@@ -13,6 +13,7 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.5",
     "react-timestamp": "^4.4.0",
+    "shortid": "^2.2.14",
     "styled-components": "^4.0.2",
     "textarea-caret": "^3.1.0"
   },

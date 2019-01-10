@@ -25,6 +25,8 @@ export default class Task extends Component {
   static contextType = TaskContext;
 
   static defaultProps = {
+    onLabelSelect: () => {},
+    onOwnerSelect: () => {},
     task: undefined,
   };
 
@@ -89,13 +91,13 @@ export default class Task extends Component {
     const { onLabelSelect } = this.props;
 
     onLabelSelect(label);
-  }
+  };
 
   selectOwner = () => {
     const { task, onOwnerSelect } = this.props;
 
     onOwnerSelect(task.data.owner);
-  }
+  };
 
   toggleEditing = () => {
     const { task } = this.props;
@@ -129,7 +131,7 @@ export default class Task extends Component {
       const { width } = this.wrapper.current.getBoundingClientRect();
       topModal = this.wrapper.current.offsetTop;
       widthModal = width;
-      wrapperRect = this.wrapper.current.getBoundingClientRect()
+      wrapperRect = this.wrapper.current.getBoundingClientRect();
     }
 
     if (editing && !task) {

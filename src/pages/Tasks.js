@@ -60,7 +60,7 @@ export default class Tasks extends Component {
     const { history, match } = this.props;
 
     history.push(match.url);
-  }
+  };
 
   selectLabel = label => {
     const { history, match } = this.props;
@@ -71,7 +71,7 @@ export default class Tasks extends Component {
     const search = filterToQuery(cleanFilter(filter, null));
 
     history.push(`${match.url}?${search}`);
-  }
+  };
 
   selectOwner = owner => {
     const { history, match } = this.props;
@@ -82,7 +82,7 @@ export default class Tasks extends Component {
     const search = filterToQuery(cleanFilter(filter, null));
 
     history.push(`${match.url}?${search}`);
-  }
+  };
 
   search = term => {
     const { history, match } = this.props;
