@@ -68,7 +68,7 @@ export default class Tasks extends Component {
 
     filter.owner = owner;
 
-    const search = filterToQuery(filter);
+    const search = filterToQuery(cleanFilter(filter, null));
 
     history.push(`${match.url}?${search}`);
   }
